@@ -224,6 +224,47 @@
     }
   </style>
 
+
+<style>
+/* COUPLED OSCILLATOR VISUAL REFINEMENT */
+
+:root {
+  --model-mist: #f5faf9;
+  --model-sage: #cbded7;
+  --model-blue: #9ec4d2;
+  --model-teal: #47858b;
+}
+
+/* Keep existing layout while refining the palette. */
+body {
+  background-color: var(--model-mist);
+}
+
+/* Smooth changes in the canvas glow. */
+#inference-canvas {
+  transition: filter 0.45s ease;
+}
+
+/* Slightly warmer controls. */
+input[type="range"] {
+  accent-color: var(--model-teal);
+}
+
+button {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #inference-canvas,
+  button {
+    transition: none;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -300,6 +341,23 @@
         </div>
 
         <div class="model-buttons">
+
+          <div class="control-group">
+            <label for="phase-lag">
+              Phase lag (α)
+              <span id="phase-lag-value">0.00</span>
+            </label>
+
+            <input
+              type="range"
+              id="phase-lag"
+              min="0"
+              max="1.57"
+              step="0.01"
+              value="0"
+            >
+          </div>
+
           <button type="button" id="perturb">
             Apply Perturbation
           </button>
@@ -379,5 +437,60 @@
   </main>
 
   <script src="../inference-sphere.js" defer></script>
+
+<script>
+/* Coherence-responsive appearance.
+   Visual effect only; does not change oscillator equations. */
+(() => {
+  const canvas = document.getElementById("inference-canvas");
+  const output = document.getElementById("order-parameter");
+
+  if (!canvas || !output) return;
+
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
+
+  let previous = -1;
+
+  function updateGlow() {
+    const value = Number(output.textContent);
+    if (!Number.isFinite(value)) return;
+
+    const R = Math.max(0, Math.min(1, value));
+
+    if (Math.abs(R - previous) < 0.015) return;
+    previous = R;
+
+    if (reduceMotion.matches) {
+      canvas.style.filter = "none";
+      return;
+    }
+
+    const opacity = (0.08 + R * 0.25).toFixed(3);
+    const spread = Math.round(8 + R * 20);
+
+    canvas.style.filter =
+      `drop-shadow(0 0 ${spread}px ` +
+      `rgba(63, 151, 165, ${opacity}))`;
+  }
+
+  const observer = new MutationObserver(updateGlow);
+
+  observer.observe(output, {
+    childList: true,
+    characterData: true,
+    subtree: true
+  });
+
+  updateGlow();
+
+  reduceMotion.addEventListener?.("change", () => {
+    previous = -1;
+    updateGlow();
+  });
+})();
+</script>
+
 </body>
 </html>

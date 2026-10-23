@@ -11,6 +11,8 @@
 
   const couplingInput = document.getElementById("coupling");
   const dispersionInput = document.getElementById("dispersion");
+  const phaseLagInput = document.getElementById("phase-lag");
+  const phaseLagValue = document.getElementById("phase-lag-value");
   const couplingValue = document.getElementById("coupling-value");
   const dispersionValue = document.getElementById("dispersion-value");
   const orderOutput = document.getElementById("order-parameter");
@@ -22,6 +24,7 @@
   let N = demoMode ? 72 : 66;
   let K = demoMode ? 1.5 : 1.8;
   let sigma = 0.7;
+  let alpha = 0;
 
   let phases = [];
   let frequencies = [];
@@ -99,7 +102,7 @@
     const next = phases.map((theta, i) => {
       const derivative =
         frequencies[i] +
-        K * R * Math.sin(psi - theta);
+        K * R * Math.sin(psi - theta - alpha);
 
       return (theta + derivative * dt) % (2 * Math.PI);
     });
@@ -285,7 +288,7 @@
     const threshold = radius * 0.42;
 
     let edges = 0;
-    const maxEdges = 300;
+    const maxEdges = 120;
 
     for (let i = 0; i < points.length; i++) {
       if (edges >= maxEdges) break;
@@ -312,9 +315,9 @@
 
         // Coherent oscillator pairs form brighter edges.
         ctx.strokeStyle =
-          `rgba(235,255,252,${0.08 + strength * 0.48})`;
+          `rgba(235,255,252,${0.06 + strength * 0.32})`;
 
-        ctx.lineWidth = 0.5 + strength * 0.7;
+        ctx.lineWidth = 0.45 + strength * 0.5;
 
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
@@ -325,24 +328,35 @@
       }
     }
 
-    // Phase-dependent particle illumination.
+    // Each oscillator's hue represents its instantaneous phase.
+    // Equal phases produce equal hues, independent of phase wrapping.
     for (const point of points) {
-      const brightness =
-        0.4 +
-        0.25 * point.depth +
-        0.25 * R;
+      const normalizedPhase =
+        ((point.phase % (2 * Math.PI)) + 2 * Math.PI)
+        % (2 * Math.PI);
+
+      // Cyclic hue mapping: 0 and 2π have matching colors.
+      const hue =
+        175 + 65 * Math.sin(normalizedPhase);
+
+      const saturation = 72;
+      const lightness = 58 + point.depth * 15;
+      const opacity = 0.65 + point.depth * 0.35;
+
+      const particleRadius =
+        point.size * (1.3 + point.depth * 0.7);
 
       ctx.beginPath();
       ctx.arc(
         point.x,
         point.y,
-        point.size * (0.7 + point.depth * 0.5),
+        particleRadius,
         0,
         Math.PI * 2
       );
 
       ctx.fillStyle =
-        `rgba(245,255,253,${Math.min(brightness, 1)})`;
+        `hsla(${hue}, ${saturation}%, ${lightness}%, ${opacity})`;
 
       ctx.fill();
     }
@@ -393,7 +407,7 @@
   function updateAnimation() {
     stopAnimation();
 
-    if (reducedMotion.matches || document.hidden) {
+    if (document.hidden) {
       draw();
     } else {
       animationId = requestAnimationFrame(frame);
@@ -403,6 +417,16 @@
   couplingInput?.addEventListener("input", event => {
     K = Number(event.target.value);
     updateLabels();
+    draw();
+  });
+
+  phaseLagInput?.addEventListener("input", event => {
+    alpha = Number(event.target.value);
+
+    if (phaseLagValue) {
+      phaseLagValue.textContent = alpha.toFixed(2);
+    }
+
     draw();
   });
 
@@ -451,7 +475,7 @@
     }
 
     const blob = new Blob(
-      [lines.join("\\n") + "\\n"],
+      [lines.join("\n") + "\n"],
       { type: "text/csv;charset=utf-8" }
     );
 
