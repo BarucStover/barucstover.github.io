@@ -47,6 +47,24 @@ const heroOrder =
 
   const dt = 0.04;
 
+
+  // Preserve parameters as they were when each sample was recorded.
+  function recordSample(event = "step") {
+    history.push({
+      time: elapsed,
+      R: getOrderParameter().R,
+      K,
+      sigma,
+      alpha,
+      dt,
+      integrator: "RK4",
+      event
+    });
+
+    // Bound the history retained in browser memory.
+    if (history.length > 1500) history.shift();
+  }
+
   function initialize() {
     phases = [];
     frequencies = [];
@@ -74,7 +92,9 @@ const heroOrder =
 
     elapsed = 0;
     lastFrame = 0;
-    history = [{ time: 0, R: getOrderParameter().R }];
+    history = [];
+    recordSample("initial");
+
 
     updateLabels();
   }
@@ -97,29 +117,69 @@ const heroOrder =
     };
   }
 
+  // Evaluate the coupled oscillator equations for any phase state.
+  // The collective order parameter is recalculated at every RK4 stage.
+  function rk4Derivative(state) {
+    let real = 0;
+    let imaginary = 0;
+
+    for (const theta of state) {
+      real += Math.cos(theta);
+      imaginary += Math.sin(theta);
+    }
+
+    real /= N;
+    imaginary /= N;
+
+    const R = Math.hypot(real, imaginary);
+    const psi = Math.atan2(imaginary, real);
+
+    return state.map((theta, i) =>
+      frequencies[i] +
+      K * R * Math.sin(psi - theta - alpha)
+    );
+  }
+
   function simulateStep() {
-    const { R, psi } = getOrderParameter();
+    const original = phases;
 
-    // Mean-field form of the all-to-all Kuramoto model.
-    // Equivalent to summing pairwise sinusoidal coupling.
-    const next = phases.map((theta, i) => {
-      const derivative =
-        frequencies[i] +
-        K * R * Math.sin(psi - theta - alpha);
+    const k1 = rk4Derivative(original);
 
-      return (theta + derivative * dt) % (2 * Math.PI);
+    const k2 = rk4Derivative(
+      original.map((theta, i) =>
+        theta + 0.5 * dt * k1[i]
+      )
+    );
+
+    const k3 = rk4Derivative(
+      original.map((theta, i) =>
+        theta + 0.5 * dt * k2[i]
+      )
+    );
+
+    const k4 = rk4Derivative(
+      original.map((theta, i) =>
+        theta + dt * k3[i]
+      )
+    );
+
+    const tau = 2 * Math.PI;
+
+    phases = original.map((theta, i) => {
+      const next = theta + (dt / 6) * (
+        k1[i] +
+        2 * k2[i] +
+        2 * k3[i] +
+        k4[i]
+      );
+
+      // Keep display phases within [0, 2π).
+      return ((next % tau) + tau) % tau;
     });
 
-    phases = next;
     elapsed += dt;
 
-    history.push({
-      time: elapsed,
-      R: getOrderParameter().R
-    });
-
-    // Keep at most 1,500 samples in browser memory.
-    if (history.length > 1500) history.shift();
+    recordSample("step");
   }
 
   function resize() {
@@ -577,12 +637,14 @@ if (orderOutput) {
 
   couplingInput?.addEventListener("input", event => {
     K = Number(event.target.value);
+    recordSample("coupling_change");
     updateLabels();
     draw();
   });
 
   phaseLagInput?.addEventListener("input", event => {
     alpha = Number(event.target.value);
+    recordSample("phase_lag_change");
 
     if (phaseLagValue) {
       phaseLagValue.textContent = alpha.toFixed(2);
@@ -602,6 +664,7 @@ if (orderOutput) {
       );
     }
 
+    recordSample("dispersion_change");
     updateLabels();
     draw();
   });
@@ -612,6 +675,7 @@ if (orderOutput) {
       theta + Math.sin(i * 3.17 + elapsed) * 1.8
     );
 
+    recordSample("perturbation");
     draw();
   });
 
@@ -625,15 +689,19 @@ if (orderOutput) {
   });
 
   exportButton?.addEventListener("click", () => {
-    const lines = ["time,R,K,sigma"];
+    const lines = ["time,R,K,sigma,alpha,dt,integrator,event"];
 
     for (const sample of history) {
-      lines.push(
-        sample.time.toFixed(4) + "," +
-        sample.R.toFixed(6) + "," +
-        K.toFixed(3) + "," +
-        sigma.toFixed(3)
-      );
+      lines.push([
+        sample.time.toFixed(4),
+        sample.R.toFixed(8),
+        sample.K.toFixed(4),
+        sample.sigma.toFixed(4),
+        sample.alpha.toFixed(4),
+        sample.dt.toFixed(4),
+        sample.integrator,
+        sample.event
+      ].join(","));
     }
 
     const blob = new Blob(

@@ -2303,3 +2303,112 @@ body {
 .hero-art #inference-canvas {
   display: block;
 }
+
+/* Numerical validation controls */
+
+#run-convergence {
+  background: #e5f3f2;
+  color: #17657a;
+  border: 1px solid #a7d3d4;
+  border-radius: 6px;
+  padding: 11px 18px;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#run-convergence:hover {
+  background: #d4eae8;
+}
+
+#run-convergence:focus-visible {
+  outline: 2px solid #17657a;
+  outline-offset: 3px;
+}
+
+#run-convergence:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+
+/* Euler versus RK4 experiment */
+
+#run-integration-comparison {
+  background: #e5f3f2;
+  color: #17657a;
+  border: 1px solid #a7d3d4;
+  border-radius: 6px;
+  padding: 11px 18px;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+#run-integration-comparison:hover {
+  background: #d4eae8;
+}
+
+#run-integration-comparison:focus-visible {
+  outline: 2px solid #17657a;
+  outline-offset: 3px;
+}
+
+#run-integration-comparison:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.integration-table-container {
+  overflow-x: auto;
+  margin-top: 24px;
+}
+
+.integration-table-container h4 {
+  margin-top: 30px;
+  margin-bottom: 12px;
+  color: #234a59;
+  font-weight: 600;
+}
+
+.integration-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.integration-table-container th,
+.integration-table-container td {
+  text-align: left;
+  padding: 12px 8px;
+  border-bottom: 1px solid #dce7e7;
+  white-space: nowrap;
+}
+
+
+/* Perturbation recovery experiment */
+
+#run-recovery, #run-amplitude-study {
+  background: #e5f3f2;
+  color: #17657a;
+  border: 1px solid #a7d3d4;
+  border-radius: 6px;
+  padding: 11px 18px;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+#run-recovery, #run-amplitude-study:hover {
+  background: #d4eae8;
+}
+
+#run-recovery, #run-amplitude-study:focus-visible {
+  outline: 2px solid #17657a;
+  outline-offset: 3px;
+}
+
+#run-recovery, #run-amplitude-study:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}

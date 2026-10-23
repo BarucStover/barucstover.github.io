@@ -529,7 +529,7 @@ button {
 
 <section id="coupling-experiment" class="comparison-section">
   <details class="comparison-details">
-    <summary>Controlled experiment — Compare coupling strength</summary>
+    <summary>Coupling Strength</summary>
 
     <div class="comparison-content">
       <p>
@@ -558,6 +558,130 @@ button {
         72 oscillators, σ = 0.7, α = 0, and Δt = 0.04.
         Synchronization time is defined as the first time
         R ≥ 0.9 remains sustained for five simulation-time units.
+      </p>
+    </div>
+  </details>
+</section>
+
+
+<section id="numerical-validation" class="comparison-section">
+  <details class="comparison-details">
+    <summary>Time-Step Convergence</summary>
+    <div class="comparison-content">
+      <p>
+        Test how the numerical integration step affects synchronization.
+        Each simulation uses identical initial conditions and is
+        compared against a finer reference calculation.
+      </p>
+
+      <button type="button" id="run-convergence">
+        Run Convergence Test
+      </button>
+
+      <p id="convergence-status" role="status"></p>
+
+      <div id="convergence-results" style="overflow-x:auto"></div>
+
+      <p class="comparison-note">
+        Forward Euler integration; 72 oscillators;
+        sigma = 0.7; alpha = 0; simulation duration = 40.
+        Reference step: 0.005. Errors compare R(t), not
+        individual oscillator phases.
+      </p>
+    </div>
+  </details>
+</section>
+
+
+<section id="integration-comparison" class="comparison-section">
+  <details class="comparison-details">
+    <summary>Euler vs. RK4</summary>
+
+    <div class="comparison-content">
+      <p>
+        Compare first-order Euler integration with fourth-order
+        Runge–Kutta using identical oscillator populations.
+        Both methods are evaluated against a finer RK4 reference.
+      </p>
+
+      <button type="button" id="run-integration-comparison">
+        Run Integration Comparison
+      </button>
+
+      <p id="integration-status" role="status"></p>
+
+      <div id="integration-results"
+           class="integration-table-container"></div>
+
+      <p class="comparison-note">
+        N = 72; sigma = 0.7; alpha = 0; duration = 40.
+        Reference: RK4 with dt = 0.0025.
+        Errors are calculated from synchronization R(t).
+      </p>
+    </div>
+  </details>
+</section>
+
+
+<section id="perturbation-recovery" class="comparison-section">
+  <details class="comparison-details">
+    <summary>Perturbation Recovery</summary>
+
+    <div class="comparison-content">
+      <p>
+        Compare how different coupling strengths respond to an
+        identical phase disturbance after 20 simulation-time units.
+      </p>
+
+      <button type="button" id="run-recovery">
+        Run Recovery Experiment
+      </button>
+
+      <p id="recovery-status" role="status"></p>
+
+      <div id="recovery-results"
+           style="overflow-x:auto; margin-top:20px;"></div>
+
+      <p class="comparison-note">
+        RK4; N = 72; sigma = 0.7; alpha = 0;
+        dt = 0.04. Perturbation at t = 20.
+        Recovery requires maintaining at least 90%
+        of pre-perturbation synchronization for
+        2 simulation-time units. Recovery is assessed
+        only when pre-perturbation R is at least 0.9.
+      </p>
+    </div>
+  </details>
+</section>
+
+
+<section id="amplitude-study" class="comparison-section">
+  <details class="comparison-details">
+    <summary>Disturbance Amplitude</summary>
+
+    <div class="comparison-content">
+      <p>
+        Investigate how the magnitude of a phase disturbance
+        affects synchronization recovery under different
+        coupling strengths.
+      </p>
+
+      <button type="button" id="run-amplitude-study">
+        Run Amplitude Study
+      </button>
+
+      <p id="amplitude-status" role="status"></p>
+
+      <div id="amplitude-results"
+           style="overflow-x:auto; margin-top:20px;"></div>
+
+      <p class="comparison-note">
+        RK4; N = 72; sigma = 0.7; alpha = 0;
+        dt = 0.04. Perturbation at t = 20.
+        Recovery requires maintaining 90% of
+        pre-disturbance coherence for 2 simulation-time
+        units. Recovery is assessed only when the
+        initial order parameter is at least 0.9.
       </p>
     </div>
   </details>
@@ -622,5 +746,9 @@ button {
 </script>
 
 <script src="../coupling-experiment.js" defer></script>
+<script src="../numerical-validation.js" defer></script>
+<script src="../integration-comparison.js" defer></script>
+<script src="../perturbation-recovery.js" defer></script>
+<script src="../amplitude-study.js" defer></script>
 </body>
 </html>
