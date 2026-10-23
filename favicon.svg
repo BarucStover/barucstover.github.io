@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 64 64">
+
+  <defs>
+    <linearGradient id="mycelium"
+                    x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#17647b"/>
+      <stop offset="100%" stop-color="#5cbfba"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Branching fungal hyphal network -->
+  <g fill="none"
+     stroke="url(#mycelium)"
+     stroke-width="2.5"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+    <!-- Main hyphal structure -->
+    <path d="M10 52 Q20 43 28 34 T42 16"/>
+    <path d="M28 34 Q37 38 51 35"/>
+    <path d="M21 42 Q17 31 11 25"/>
+    <path d="M35 26 Q29 17 31 9"/>
+
+    <!-- Secondary branches -->
+    <path d="M42 16 Q49 17 55 11"/>
+    <path d="M42 16 Q47 23 53 24"/>
+    <path d="M51 35 Q54 43 59 45"/>
+    <path d="M51 35 Q54 30 59 29"/>
+    <path d="M11 25 Q16 17 14 10"/>
+    <path d="M21 42 Q26 51 32 55"/>
+    <path d="M28 34 Q20 35 13 38"/>
+
+  </g>
+
+  <!-- Branching points -->
+  <g fill="#2b91a0">
+    <circle cx="28" cy="34" r="3"/>
+    <circle cx="42" cy="16" r="2.5"/>
+    <circle cx="51" cy="35" r="2.5"/>
+    <circle cx="21" cy="42" r="2.5"/>
+  </g>
+
+  <!-- Growing hyphal tips -->
+  <g fill="#83d8ca">
+    <circle cx="55" cy="11" r="2"/>
+    <circle cx="59" cy="45" r="2"/>
+    <circle cx="14" cy="10" r="2"/>
+    <circle cx="32" cy="55" r="2"/>
+  </g>
+
+</svg>

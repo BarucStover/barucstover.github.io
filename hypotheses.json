@@ -1,0 +1,41 @@
+[
+  {
+    "id": "H001",
+    "category": "Fungal Molecular Genetics",
+    "title": "Distinguishing siderophore-associated NRPS genes",
+    "question": "How can siderophore-associated NRPS genes be distinguished from other NRPS families in fungal genomes?",
+    "status": "Under investigation",
+    "updated": "2026-10-23",
+    "evidence": "Protein domain architecture, sequence similarity, phylogenetic relationships, and conserved genomic context may provide complementary evidence for functional annotation.",
+    "hypothesis": "Combining multiple independent genomic features may improve functional assignments compared with relying on sequence similarity alone.",
+    "alternatives": "Similar domain architectures may occur in NRPS enzymes producing different metabolites. Gene-cluster predictions may also be incomplete.",
+    "tests": "Compare candidate protein sequences, evaluate NRPS domain architectures, construct gene-family phylogenies, and examine available genomic context.",
+    "limitations": "Sequence-based predictions alone cannot establish the biochemical product of an uncharacterized pathway."
+  },
+  {
+    "id": "H002",
+    "category": "Ancient Evolutionary Genomics",
+    "title": "Evolutionary history of microbial iron acquisition",
+    "question": "What can ancient microbial genomes reveal about the evolutionary history of siderophore-associated genes?",
+    "status": "Exploratory",
+    "updated": "2026-10-23",
+    "evidence": "Ancient genomic sequences may provide temporally constrained observations of gene-family presence and sequence variation when authenticity and sample ages are adequately established.",
+    "hypothesis": "Comparison of well-characterized ancient and modern homologs may improve reconstruction of siderophore gene-family evolutionary histories.",
+    "alternatives": "Apparent gene absence may reflect incomplete assemblies, differential preservation, or annotation limitations rather than biological gene loss.",
+    "tests": "Validate genomic provenance and age metadata, identify homologous genes, build gene-family phylogenies, and evaluate uncertainty under alternative evolutionary models.",
+    "limitations": "Sample ages do not directly establish the origin dates of gene families. Contamination, incomplete recovery, and horizontal gene transfer may complicate inference."
+  },
+  {
+    "id": "H003",
+    "category": "Predictive Computational Biology",
+    "title": "Predicting biological responses to molecular change",
+    "question": "How can genomic variation and molecular mechanisms be integrated to predict biological responses to perturbations?",
+    "status": "Long-term direction",
+    "updated": "2026-10-23",
+    "evidence": "Genomic, biochemical, and experimental measurements can provide complementary information about molecular function, but biological responses depend strongly on cellular and environmental context.",
+    "hypothesis": "Models that integrate mechanistic constraints with evolutionary and experimental data may generate more informative predictions than sequence information alone.",
+    "alternatives": "Some responses may be dominated by regulatory, physiological, or environmental factors not represented in a sequence-centered model.",
+    "tests": "Begin with measurable biological phenotypes, establish simple predictive baselines, evaluate uncertainty, and compare predictions against independent experimental observations.",
+    "limitations": "This is a future research direction, not a validated predictive capability."
+  }
+]

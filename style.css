@@ -1,0 +1,1947 @@
+:root {
+  --ink: #173343;
+  --muted: #617985;
+  --blue: #147eaa;
+  --line: #dce9ec;
+  --background: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--ink);
+  font-family: "DejaVu Sans", Arial, sans-serif;
+  line-height: 1.7;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.site-header {
+  min-height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 7%;
+  background: white;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.brand-light { color: var(--muted); font-weight: 400; }
+
+nav { display: flex; gap: 30px; }
+
+nav a { font-size: 13px; color: var(--muted); }
+nav a:hover { color: var(--blue); }
+
+.hero {
+  min-height: 620px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 110px 7%;
+  background: linear-gradient(115deg, #fff 18%, #eef9fb 72%, #dceff1);
+}
+
+.hero-content { position: relative; z-index: 2; max-width: 770px; }
+
+.eyebrow {
+  color: #258eab;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 20px 0 28px;
+  font-size: clamp(36px, 4.4vw, 64px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -2px;
+}
+
+h1 span { color: #378a9f; }
+
+.hero-description {
+  max-width: 590px;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.button {
+  display: inline-flex;
+  gap: 38px;
+  padding: 13px 22px;
+  margin-top: 30px;
+  background: #197c9c;
+  color: white;
+  font-size: 13px;
+  border-radius: 4px;
+}
+
+.button:hover { background: #105975; }
+
+.hero-art {
+  position: absolute;
+  right: -100px;
+  top: 80px;
+  width: 520px;
+  height: 520px;
+  opacity: .55;
+}
+
+.orb {
+  position: absolute;
+  inset: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%,
+    #ffffff, #9ce1de 28%, #4babb5 65%, #22668f);
+  box-shadow: 0 0 100px #98e0e0;
+}
+
+.orb-core {
+  position: absolute;
+  inset: 185px;
+  border: 1px solid #ffffff;
+  border-radius: 50%;
+}
+
+.orbit {
+  position: absolute;
+  inset: 40px;
+  border: 1px solid #7bbbc7;
+  border-radius: 50%;
+}
+
+.orbit-one { transform: rotate(35deg) scaleY(.42); }
+.orbit-two { transform: rotate(-35deg) scaleY(.42); }
+
+.section {
+  padding: 100px 7%;
+  scroll-margin-top: 25px;
+}
+
+.section h2 {
+  max-width: 760px;
+  font-size: clamp(28px, 3vw, 43px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -1px;
+}
+
+.section-intro {
+  max-width: 750px;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.section-tinted { background: #f5f9fa; }
+
+.research-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 46px;
+}
+
+.research-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 34px;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.research-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px #17334310;
+}
+
+.card-number {
+  font-size: 10px;
+  color: #258eab;
+  letter-spacing: 1.4px;
+  font-weight: 700;
+}
+
+.research-card h3 {
+  font-size: 21px;
+  line-height: 1.4;
+  margin: 22px 0 14px;
+}
+
+.research-card p { font-size: 14px; color: var(--muted); }
+
+.interest-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 38px;
+}
+
+.interest-tags span {
+  padding: 10px 17px;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  color: #486b77;
+  font-size: 13px;
+}
+
+.contact-section {
+  background: linear-gradient(120deg, #eaf7f8, #f7fbfd);
+}
+
+.contact-section p:not(.eyebrow) {
+  max-width: 660px;
+  color: var(--muted);
+}
+
+.contact-location { font-size: 13px; margin-top: 35px; }
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 30px 7%;
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 800px) {
+  .site-header { flex-direction: column; align-items: flex-start; }
+  nav { gap: 17px; flex-wrap: wrap; }
+  .hero { min-height: 550px; padding: 80px 7%; }
+  .hero-art { opacity: .16; right: -280px; }
+  h1 { letter-spacing: -1px; }
+  .section { padding: 70px 7%; }
+  .research-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; }
+}
+
+/* Research Notebook */
+
+.notes-section {
+  background: linear-gradient(
+    145deg,
+    #ffffff 0%,
+    #f0f8fa 100%
+  );
+}
+
+.notes-toolbar {
+  margin: 35px 0;
+}
+
+.notes-toolbar input {
+  width: 100%;
+  max-width: 420px;
+  padding: 15px 18px;
+  border: 1px solid #dce9ec;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #173343;
+  font: inherit;
+  font-size: 14px;
+}
+
+.notes-toolbar input:focus {
+  outline: 2px solid #9ad5db;
+  outline-offset: 2px;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.note-card {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  border: 1px solid rgba(90, 153, 170, .18);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .86);
+  box-shadow: 0 8px 28px rgba(30, 90, 110, .035);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.note-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 35px rgba(30, 90, 110, .09);
+}
+
+.note-category {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: #258eab;
+}
+
+.note-card h3 {
+  margin: 20px 0 10px;
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.note-card p {
+  color: #617985;
+  font-size: 14px;
+  flex-grow: 1;
+}
+
+.note-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-top: 1px solid #e5eff1;
+  padding-top: 18px;
+  margin-top: 25px;
+  font-size: 11px;
+  color: #6d8c97;
+}
+
+@media (max-width: 900px) {
+  .notes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==============================
+   RESEARCH CONNECTIONS
+   ============================== */
+
+.connections-section {
+  background: #fff;
+  padding-top: 90px;
+  padding-bottom: 110px;
+}
+
+.connections-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 45px;
+  margin-bottom: 45px;
+}
+
+.connections-intro {
+  max-width: 360px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.network-panel {
+  border: 1px solid #d7e9ec;
+  border-radius: 14px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 46%, #e4f7f6 0%, transparent 60%),
+    linear-gradient(135deg, #fafefe, #edf8fa);
+}
+
+.network-stage {
+  position: relative;
+  width: 100%;
+  height: 440px;
+}
+
+.network-lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.network-center {
+  position: absolute;
+  left: 50%;
+  top: 47.73%;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 7px;
+  background: linear-gradient(145deg, #16576b, #168aa3);
+  color: white;
+  font-size: 12px;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  box-shadow:
+    0 0 0 10px rgba(70, 176, 189, .08),
+    0 15px 50px rgba(20, 120, 150, .22);
+}
+
+.center-symbol {
+  font-size: 30px;
+  font-weight: 400;
+  color: #aef2e8;
+}
+
+.network-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 125px;
+  min-height: 70px;
+  border: 1px solid #aad9dc;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .91);
+  color: #285b6a;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+  box-shadow: 0 6px 22px rgba(60, 140, 160, .07);
+  transition:
+    background .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+.network-node:hover,
+.network-node.active {
+  background: #e5fbf7;
+  border-color: #49acb5;
+  box-shadow: 0 8px 28px rgba(35, 140, 160, .18);
+}
+
+.network-node:focus-visible {
+  outline: 3px solid #258eab;
+  outline-offset: 3px;
+}
+
+.node-genetics {
+  left: 18.75%;
+  top: 21.59%;
+}
+
+.node-evolution {
+  left: 50%;
+  top: 12.5%;
+}
+
+.node-genomics {
+  left: 81.25%;
+  top: 21.59%;
+}
+
+.node-experimental {
+  left: 29.375%;
+  top: 78.41%;
+}
+
+.node-modeling {
+  left: 70.625%;
+  top: 78.41%;
+}
+
+.network-details {
+  min-height: 155px;
+  padding: 26px 35px;
+  background: rgba(255,255,255,.88);
+  border-top: 1px solid #dcebed;
+}
+
+.network-details h3 {
+  margin: 8px 0;
+  font-size: 20px;
+}
+
+.network-details p:last-child {
+  margin: 0;
+  max-width: 700px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Mobile layout */
+
+@media (max-width: 700px) {
+  .connections-header {
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
+
+  .network-stage {
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 25px;
+  }
+
+  .network-lines {
+    display: none;
+  }
+
+  .network-center,
+  .network-node {
+    position: static;
+    transform: none;
+  }
+
+  .network-center {
+    grid-column: 1 / -1;
+    margin: 0 auto 15px;
+  }
+
+  .network-node {
+    width: 100%;
+  }
+
+  .node-modeling {
+    grid-column: 1 / -1;
+    max-width: 200px;
+    justify-self: center;
+  }
+
+  .network-details {
+    padding: 25px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .network-node {
+    transition: none;
+  }
+}
+
+/* ==================================
+   RESEARCH HYPOTHESIS EXPLORER
+   ================================== */
+
+.hypotheses-section {
+  background: linear-gradient(
+    140deg,
+    #f4fafb 0%,
+    #ffffff 55%,
+    #eef7f8 100%
+  );
+}
+
+.hypotheses-heading {
+  margin-bottom: 38px;
+}
+
+.hypothesis-controls {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 35px;
+}
+
+.hypothesis-controls input,
+.hypothesis-controls select {
+  padding: 13px 16px;
+  border: 1px solid #d5e7e9;
+  border-radius: 6px;
+  background: white;
+  color: #284d5a;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.hypothesis-controls input {
+  flex: 1;
+  min-width: 230px;
+}
+
+.hypothesis-controls select {
+  min-width: 190px;
+}
+
+.hypothesis-controls input:focus-visible,
+.hypothesis-controls select:focus-visible {
+  outline: 2px solid #258eab;
+  outline-offset: 2px;
+}
+
+.hypothesis-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.hypothesis-card {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  border: 1px solid #dce9ec;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 8px 35px rgba(18, 77, 96, .04);
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.hypothesis-card:hover {
+  border-color: #91ccd1;
+  box-shadow: 0 12px 38px rgba(18, 77, 96, .09);
+}
+
+.hypothesis-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.hypothesis-id {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #4b8795;
+}
+
+.hypothesis-status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #e8f6f4;
+  color: #277e80;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.hypothesis-category {
+  color: #258eab;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.hypothesis-card h3 {
+  font-size: 22px;
+  line-height: 1.4;
+  margin: 16px 0;
+}
+
+.hypothesis-question {
+  color: #617985;
+  font-size: 14px;
+  flex-grow: 1;
+}
+
+.hypothesis-details {
+  margin-top: 24px;
+  border-top: 1px solid #e4eff0;
+  padding-top: 17px;
+}
+
+.hypothesis-details summary {
+  cursor: pointer;
+  color: #1886a4;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.hypothesis-details summary:hover {
+  color: #105975;
+}
+
+.hypothesis-details summary:focus-visible {
+  outline: 2px solid #258eab;
+  outline-offset: 4px;
+}
+
+.hypothesis-content {
+  margin-top: 24px;
+}
+
+.hypothesis-field {
+  margin-bottom: 21px;
+  padding-left: 14px;
+  border-left: 2px solid #c1e4e4;
+}
+
+.hypothesis-field h4 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: #276d7e;
+}
+
+.hypothesis-field p {
+  margin: 0;
+  color: #617985;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.hypothesis-updated {
+  margin-top: 24px;
+  font-size: 11px;
+  color: #8aa2aa;
+}
+
+.hypothesis-disclaimer {
+  margin-top: 30px;
+  font-size: 12px;
+  color: #738e97;
+}
+
+@media (max-width: 800px) {
+  .hypothesis-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hypothesis-card {
+    padding: 25px;
+  }
+}
+
+/* Scientific Research Pipeline */
+
+.pipeline-section {
+  background: linear-gradient(135deg, #f5fbfc, #eaf6f7);
+}
+
+.pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 45px;
+}
+
+.pipeline-step {
+  background: rgba(255,255,255,.95);
+  border: 1px solid #d5e8eb;
+  border-radius: 10px;
+  padding: 24px;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.pipeline-step:hover,
+.pipeline-step[open] {
+  border-color: #6db8c1;
+  box-shadow: 0 10px 30px rgba(25,100,120,.08);
+}
+
+.pipeline-step summary {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.pipeline-step summary::-webkit-details-marker {
+  display: none;
+}
+
+.pipeline-step summary:focus-visible {
+  outline: 2px solid #258eab;
+  outline-offset: 5px;
+}
+
+.pipeline-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  background: #e2f5f3;
+  color: #167d91;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pipeline-step strong {
+  font-size: 17px;
+  color: #173343;
+}
+
+.pipeline-step p {
+  margin: 20px 0 0;
+  color: #617985;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.pipeline-note {
+  margin-top: 35px;
+  color: #738f99;
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .pipeline-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Academic research workflow refinements */
+
+.pipeline-section h2 {
+  max-width: 950px;
+}
+
+.pipeline-subheading {
+  margin-top: 55px;
+  margin-bottom: 10px;
+  font-size: 21px;
+  font-weight: 600;
+  color: #173343;
+}
+
+.pipeline-section em {
+  font-style: italic;
+}
+
+
+/* =========================================
+   BIO-X INSPIRED CELESTIAL VISUALIZATION
+   Responsive positioning and orbital motion
+   ========================================= */
+
+/* Position the planet within the hero */
+
+.hero {
+  isolation: isolate;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-art {
+  position: absolute;
+
+  width: clamp(320px, 34vw, 520px);
+  height: clamp(320px, 34vw, 520px);
+
+  top: 50%;
+  right: 2%;
+
+  transform: translateY(-50%);
+
+  opacity: 0.75;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Planetary sphere */
+
+.hero-art .orb {
+  position: absolute;
+  inset: 19%;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      #f0fffd 0%,
+      #a8e9e4 22%,
+      #74cbd1 50%,
+      #398daa 78%,
+      #236680 100%
+    );
+
+  box-shadow:
+    inset -18px -15px 35px rgba(20, 75, 105, 0.19),
+    inset 12px 12px 25px rgba(255, 255, 255, 0.3),
+    0 0 75px rgba(91, 202, 209, 0.22);
+}
+
+/* Rotating atmospheric patterns */
+
+.hero-art .orb::before {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse at 28% 45%,
+      rgba(255,255,255,0.32),
+      transparent 35%
+    ),
+    conic-gradient(
+      from 20deg,
+      transparent 0deg,
+      rgba(218,255,248,0.24) 65deg,
+      transparent 125deg,
+      rgba(40,137,164,0.20) 210deg,
+      transparent 300deg
+    );
+
+  animation: planetaryRotation 38s linear infinite;
+}
+
+/* Soft atmospheric glow */
+
+.hero-art .orb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      rgba(255,255,255,0.42),
+      transparent 52%
+    );
+
+  box-shadow:
+    inset -12px -8px 25px rgba(22,80,110,0.12);
+}
+
+/* Planetary orbital paths */
+
+.hero-art .orbit {
+  position: absolute;
+  inset: 8%;
+
+  border: 1px solid rgba(85, 166, 184, 0.48);
+  border-radius: 50%;
+}
+
+/* Two orbital planes with different speeds */
+
+.hero-art .orbit-one {
+  animation: orbitalRotationOne 25s linear infinite;
+}
+
+.hero-art .orbit-two {
+  animation: orbitalRotationTwo 35s linear infinite;
+}
+
+/* Internal orbital core */
+
+.hero-art .orb-core {
+  position: absolute;
+  inset: 35%;
+
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 50%;
+
+  z-index: 2;
+}
+
+/* Animations */
+
+@keyframes planetaryRotation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbitalRotationOne {
+  from {
+    transform: rotate(35deg) scaleY(0.42);
+  }
+
+  to {
+    transform: rotate(395deg) scaleY(0.42);
+  }
+}
+
+@keyframes orbitalRotationTwo {
+  from {
+    transform: rotate(-35deg) scaleY(0.42);
+  }
+
+  to {
+    transform: rotate(-395deg) scaleY(0.42);
+  }
+}
+
+/* Tablet */
+
+@media (max-width: 1100px) {
+  .hero-art {
+    right: -6%;
+    opacity: 0.35;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  .hero {
+    overflow: hidden;
+  }
+
+  .hero-art {
+    width: 350px;
+    height: 350px;
+
+    top: 48%;
+    right: -125px;
+
+    transform: translateY(-50%);
+    opacity: 0.17;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 3;
+  }
+}
+
+/* Accessibility: reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-art .orb::before,
+  .hero-art .orbit-one,
+  .hero-art .orbit-two {
+    animation: none;
+  }
+}
+
+
+/* =================================
+   ACADEMIC TYPOGRAPHY
+   ================================= */
+
+:root {
+  --font-academic: "Source Serif 4", Georgia, serif;
+  --font-interface: "Inter", Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-interface);
+  font-size: 15px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-academic);
+  font-weight: 600;
+}
+
+h1 {
+  letter-spacing: -1.4px;
+  line-height: 1.12;
+}
+
+h2 {
+  letter-spacing: -0.6px;
+}
+
+p {
+  line-height: 1.85;
+}
+
+nav, .brand, .eyebrow,
+.button, .card-number,
+.note-category, .pipeline-number {
+  font-family: var(--font-interface);
+}
+
+.hero-description {
+  font-size: 16px;
+  line-height: 1.9;
+  max-width: 590px;
+}
+
+@media (max-width: 700px) {
+  h1 {
+    font-size: clamp(34px, 8vw, 48px);
+    letter-spacing: -0.8px;
+  }
+}
+
+
+/* =========================================
+   LIVING BIOLOGICAL SPHERE — VERSION 2
+   ========================================= */
+
+/* Soft atmospheric breathing */
+
+.hero-art .orb {
+  position: absolute;
+  isolation: isolate;
+
+  box-shadow:
+    inset -20px -15px 40px rgba(15,75,105,.20),
+    inset 12px 14px 35px rgba(255,255,255,.35),
+    0 0 70px rgba(70,190,200,.20);
+
+  animation: sphereBreathing 11s ease-in-out infinite;
+}
+
+/* Slowly circulating internal patterns */
+
+.hero-art .orb::before {
+  inset: -35%;
+
+  background:
+    radial-gradient(
+      ellipse at 30% 42%,
+      rgba(255,255,255,.42) 0%,
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 72% 67%,
+      rgba(27,130,164,.30) 0%,
+      transparent 40%
+    ),
+    conic-gradient(
+      from 30deg,
+      transparent,
+      rgba(175,250,237,.35),
+      transparent,
+      rgba(42,150,185,.20),
+      transparent
+    );
+
+  animation: livingCirculation 45s linear infinite;
+}
+
+/* Dynamic illumination */
+
+.hero-art .orb::after {
+  inset: 0;
+
+  background:
+    radial-gradient(
+      ellipse at 28% 25%,
+      rgba(255,255,255,.50),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at 72% 78%,
+      rgba(18,100,135,.15),
+      transparent 50%
+    );
+
+  animation: illuminationCycle 16s ease-in-out infinite;
+}
+
+/* Inner structure gently pulses */
+
+.hero-art .orb-core {
+  animation: corePulse 9s ease-in-out infinite;
+}
+
+/* Breathing animation */
+
+@keyframes sphereBreathing {
+  0%, 100% {
+    filter: brightness(1);
+    box-shadow:
+      inset -20px -15px 40px rgba(15,75,105,.20),
+      0 0 65px rgba(70,190,200,.18);
+  }
+
+  50% {
+    filter: brightness(1.055);
+    box-shadow:
+      inset -17px -12px 35px rgba(15,75,105,.16),
+      0 0 95px rgba(70,190,200,.28);
+  }
+}
+
+/* Atmospheric movement */
+
+@keyframes livingCirculation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Gradual light variation */
+
+@keyframes illuminationCycle {
+  0%, 100% {
+    opacity: .65;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Inner biological rhythm */
+
+@keyframes corePulse {
+  0%, 100% {
+    opacity: .45;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: .9;
+    transform: scale(1.07);
+  }
+}
+
+/* Pause animation when reduced motion is preferred */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-art .orb,
+  .hero-art .orb::before,
+  .hero-art .orb::after,
+  .hero-art .orb-core,
+  .hero-art .orbit-one,
+  .hero-art .orbit-two {
+    animation: none;
+  }
+}
+
+
+/* =====================================
+   ACADEMIC WORKFLOW TYPOGRAPHY
+   ===================================== */
+
+.pipeline-subheading {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+
+.pipeline-step summary strong {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+}
+
+.pipeline-step .pipeline-number {
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pipeline-step p {
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+
+/* ==========================================
+   RESONANT SPHERE
+   Conceptual biological dynamical system
+   ========================================== */
+
+/* Maintain spherical geometry */
+
+.hero-art {
+  isolation: isolate;
+}
+
+.hero-art .orb {
+  z-index: 1;
+}
+
+/* Internal wave field */
+
+.hero-art .resonance-field {
+  position: absolute;
+  inset: 19%;
+  z-index: 2;
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+/* Concentric wavefronts */
+
+.resonance-field::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  border-radius: 50%;
+
+  background:
+    repeating-radial-gradient(
+      ellipse at 50% 50%,
+      transparent 0,
+      transparent 22px,
+      rgba(230,255,252,0.18) 23px,
+      transparent 25px,
+      transparent 44px
+    );
+
+  animation: resonanceOscillation 14s ease-in-out infinite;
+}
+
+/* Slowly shifting phase */
+
+.resonance-field::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(220,255,250,0.20) 60deg,
+      transparent 125deg,
+      rgba(29,130,160,0.20) 210deg,
+      transparent 300deg,
+      rgba(220,255,250,0.15) 360deg
+    );
+
+  animation: resonancePhase 31s linear infinite;
+}
+
+/* Orbiting reference points */
+
+.hero-art .orbit-one::before,
+.hero-art .orbit-two::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+  background: #d8fffb;
+
+  box-shadow:
+    0 0 8px rgba(190,255,248,0.9),
+    0 0 20px rgba(80,190,210,0.5);
+}
+
+/* Gentle orbital response */
+
+.hero-art .orbit-one {
+  animation: resonantOrbitOne 28s linear infinite;
+}
+
+.hero-art .orbit-two {
+  animation: resonantOrbitTwo 39s linear infinite;
+}
+
+/* The interior appears to expand and contract */
+
+@keyframes resonanceOscillation {
+  0%, 100% {
+    transform: scale(0.94) rotate(0deg);
+    opacity: 0.35;
+  }
+
+  50% {
+    transform: scale(1.08) rotate(8deg);
+    opacity: 0.85;
+  }
+}
+
+/* Independent phase circulation */
+
+@keyframes resonancePhase {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Two independent orbital periods */
+
+@keyframes resonantOrbitOne {
+  from {
+    transform: rotate(35deg) scaleY(0.42);
+  }
+
+  to {
+    transform: rotate(395deg) scaleY(0.42);
+  }
+}
+
+@keyframes resonantOrbitTwo {
+  from {
+    transform: rotate(-35deg) scaleY(0.42);
+  }
+
+  to {
+    transform: rotate(-395deg) scaleY(0.42);
+  }
+}
+
+/* Motion accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .resonance-field::before,
+  .resonance-field::after,
+  .hero-art .orbit-one,
+  .hero-art .orbit-two {
+    animation: none;
+  }
+}
+
+
+/* =========================================
+   PROGRESS-RESPONSIVE RESEARCH SPHERE
+   ========================================= */
+
+.hero {
+  --sphere-hue: 0deg;
+  --sphere-saturation: 1;
+  --sphere-speed: 50s;
+  --orbit-speed-one: 35s;
+  --orbit-speed-two: 49s;
+  --resonance-speed: 24s;
+  --resonance-opacity: .20;
+  --pulse-color: #89cfd0;
+}
+
+/* Smooth visual transitions when progress changes */
+
+.hero-art .orb {
+  filter:
+    hue-rotate(var(--sphere-hue))
+    saturate(var(--sphere-saturation));
+
+  transition: filter 3s ease-in-out;
+}
+
+/* Replace previous orbital speeds */
+
+.hero-art .orbit-one {
+  animation-duration: var(--orbit-speed-one);
+}
+
+.hero-art .orbit-two {
+  animation-duration: var(--orbit-speed-two);
+}
+
+/* Increase visibility of internal patterns */
+
+.hero-art .resonance-field {
+  opacity: var(--resonance-opacity);
+  transition: opacity 3s ease;
+}
+
+.hero-art .resonance-field::before {
+  animation-duration: var(--resonance-speed);
+}
+
+/* Progress indicator */
+
+.research-pulse {
+  position: absolute;
+  right: 7%;
+  bottom: 35px;
+  z-index: 4;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  padding: 10px 15px;
+  border: 1px solid rgba(70,160,170,.24);
+  border-radius: 30px;
+
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(8px);
+}
+
+.pulse-light {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  background: var(--pulse-color);
+  box-shadow: 0 0 12px var(--pulse-color);
+
+  animation: researchHeartbeat 4s ease-in-out infinite;
+}
+
+.pulse-text {
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  color: #386c79;
+}
+
+/* Noticeable but gentle pulsation */
+
+@keyframes researchHeartbeat {
+  0%, 100% {
+    transform: scale(1);
+    opacity: .65;
+  }
+
+  50% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
+}
+
+/* Responsive indicator */
+
+@media (max-width: 700px) {
+  .research-pulse {
+    right: auto;
+    left: 7%;
+    bottom: 20px;
+    max-width: 86%;
+  }
+
+  .pulse-text {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-light {
+    animation: none;
+  }
+
+  .hero-art .orb,
+  .hero-art .resonance-field {
+    transition: none;
+  }
+}
+
+.hero-art .orb::before {
+  animation-duration: var(--sphere-speed);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-art .orb::before {
+    animation: none;
+  }
+}
+
+/* =========================================
+   LIVING PLANET — DYNAMIC CURRENTS
+   ========================================= */
+
+/* Remove the former activity badge */
+
+.research-pulse {
+  display: none !important;
+}
+
+/* Sphere */
+
+.hero-art .orb {
+  position: absolute;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Atmospheric circulation */
+
+.hero-art .planet-currents {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  overflow: hidden;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* First system: bright atmospheric currents */
+
+.current-layer-one {
+  opacity: .50;
+  transform-origin: center;
+  animation: currentRotationOne 22s linear infinite;
+}
+
+/* Second system: deeper internal currents */
+
+.current-layer-two {
+  opacity: .30;
+  transform-origin: center;
+  animation: currentRotationTwo 31s linear infinite;
+}
+
+/* Moving particles */
+
+.planet-particles {
+  fill: #efffff;
+  opacity: .75;
+  transform-origin: center;
+  animation: particleCirculation 18s linear infinite;
+}
+
+/* More visible internal lighting */
+
+.hero-art .orb::before {
+  z-index: 1;
+  opacity: .45;
+}
+
+.hero-art .orb::after {
+  z-index: 2;
+  opacity: .55;
+}
+
+/* Rotation in different directions */
+
+@keyframes currentRotationOne {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes currentRotationTwo {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+/* Particles circulate independently */
+
+@keyframes particleCirculation {
+  from {
+    transform: rotate(0deg);
+    opacity: .45;
+  }
+
+  50% {
+    opacity: .95;
+  }
+
+  to {
+    transform: rotate(360deg);
+    opacity: .45;
+  }
+}
+
+/* Gentle resonant breathing */
+
+.hero-art .orb {
+  animation: sphereBreathing 8s ease-in-out infinite;
+}
+
+/* Slightly more pronounced resonance */
+
+.hero-art .resonance-field {
+  opacity: .38;
+}
+
+/* Keep orbital movement visible */
+
+.hero-art .orbit {
+  border-color: rgba(65, 151, 175, .55);
+}
+
+/* Mobile appearance */
+
+@media (max-width: 700px) {
+  .hero-art {
+    opacity: .34;
+  }
+
+  .current-layer-one {
+    opacity: .65;
+  }
+
+  .current-layer-two {
+    opacity: .4;
+  }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .current-layer-one,
+  .current-layer-two,
+  .planet-particles,
+  .hero-art .orb {
+    animation: none;
+  }
+}
+
+
+/* =========================================
+   DYNAMIC ACADEMIC IDENTITY
+   ========================================= */
+
+.site-header .brand img {
+  transform-origin: center;
+  animation: molecularIdentity 24s ease-in-out infinite;
+  transition: filter .4s ease;
+}
+
+.site-header .brand:hover img {
+  filter: drop-shadow(0 0 7px rgba(38, 166, 177, .65));
+}
+
+@keyframes molecularIdentity {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  25% {
+    transform: rotate(12deg) scale(1.06);
+  }
+
+  50% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  75% {
+    transform: rotate(-12deg) scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header .brand img {
+    animation: none;
+  }
+}
+
+
+/* =========================================
+   LIVING INFERENCE SPHERE — NETWORK LAYER
+   ========================================= */
+
+.hero-art .orb {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.hero-art #inference-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  display: block;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Preserve the atmospheric layers beneath the network. */
+
+.hero-art .planet-currents {
+  z-index: 3;
+  opacity: .75;
+}
+
+.hero-art .orb::before {
+  z-index: 1;
+}
+
+.hero-art .orb::after {
+  z-index: 2;
+}
+
+/* Give the network enough contrast to remain visible. */
+
+.hero-art .orb {
+  background:
+    radial-gradient(
+      circle at 32% 25%,
+      #e5fffc 0%,
+      #a0e5e2 23%,
+      #65bec9 56%,
+      #327b9d 83%,
+      #205575 100%
+    );
+}
+
+/* Slightly increase the visibility of orbital structures. */
+
+.hero-art .orbit {
+  border-color: rgba(45, 135, 165, .58);
+}
+
+/* Preserve accessibility preferences. */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-art .orb,
+  .hero-art .planet-currents,
+  .hero-art .resonance-field::before,
+  .hero-art .resonance-field::after {
+    animation: none;
+  }
+}
+
+/* ====================================
+   ROTATING MOLECULAR IDENTITY
+   ==================================== */
+
+.site-header .brand img {
+  display: block;
+  transform-origin: 50% 50%;
+
+  animation: molecularSpin 18s linear infinite;
+
+  filter: drop-shadow(
+    0 0 3px rgba(54, 168, 183, 0.18)
+  );
+}
+
+.site-header .brand:hover img {
+  animation-duration: 5s;
+
+  filter: drop-shadow(
+    0 0 7px rgba(54, 168, 183, 0.55)
+  );
+}
+
+@keyframes molecularSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header .brand img {
+    animation: none;
+  }
+}
+
+
+/* Academic computational model link */
+
+.model-explore-link {
+  display: block;
+  width: fit-content;
+  margin-top: 24px;
+
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #187e99;
+  border-bottom: 1px solid #8ecbd1;
+  padding-bottom: 4px;
+
+  transition: color .2s;
+}
+
+.model-explore-link:hover {
+  color: #105975;
+}
+
+.model-explore-link:focus-visible {
+  outline: 2px solid #187e99;
+  outline-offset: 4px;
+}
+
+/* Scientific molecular identity */
+
+.site-header .brand img {
+  width: 38px;
+  height: 38px;
+
+  animation: scientificOrbit 30s linear infinite;
+  transform-origin: center;
+
+  filter: none;
+}
+
+.site-header .brand:hover img {
+  animation-duration: 15s;
+  filter: none;
+}
+
+@keyframes scientificOrbit {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header .brand img {
+    animation: none;
+  }
+}
+
+/* ==================================
+   FUNGAL MYCELIUM IDENTITY
+   ================================== */
+
+.site-header .brand img {
+  width: 39px;
+  height: 39px;
+
+  transform-origin: center;
+  animation: mycelialMotion 12s ease-in-out infinite;
+
+  filter: none;
+}
+
+.site-header .brand:hover img {
+  animation-duration: 6s;
+  filter: drop-shadow(
+    0 0 5px rgba(55, 160, 150, .35)
+  );
+}
+
+@keyframes mycelialMotion {
+  0%, 100% {
+    transform: rotate(-3deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(3deg) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header .brand img {
+    animation: none;
+  }
+}
+

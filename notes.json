@@ -1,0 +1,34 @@
+[
+  {
+    "id": "001",
+    "date": "2026-10-23",
+    "category": "Molecular Genetics",
+    "title": "Understanding Fungal Siderophore Biosynthesis",
+    "description": "A developing exploration of fungal iron acquisition, siderophore biosynthesis, and the challenges of identifying functional NRPS gene clusters.",
+    "status": "Developing"
+  },
+  {
+    "id": "002",
+    "date": "2026-10-23",
+    "category": "Evolutionary Genomics",
+    "title": "Reconstructing Ancient Microbial Functions",
+    "description": "Methodological questions surrounding ancient microbial genomes, gene-family evolution, phylogenetic inference, and uncertainty in ancestral-state reconstruction.",
+    "status": "Developing"
+  },
+  {
+    "id": "003",
+    "date": "2026-10-23",
+    "category": "Computational Biology",
+    "title": "Building Reproducible Computational Workflows",
+    "description": "Notes on organizing genomic datasets, documenting computational methods, and connecting biological questions with reproducible analyses.",
+    "status": "Developing"
+  },
+  {
+    "id": "004",
+    "date": "2026-10-23",
+    "category": "Molecular Biology",
+    "title": "Understanding Fungal Siderophore Biosynthesis",
+    "description": "Exploring the molecular mechanisms of fungal iron acquisition, including siderophore biosynthesis, NRPS enzymes, and the genetic organization of associated pathways.",
+    "status": "Developing"
+  }
+]
