@@ -19,60 +19,21 @@
   const endTime = 40;
   const holdSteps = Math.round(2 / dt);
 
-  const initial = Array.from(
-    { length: N },
-    (_, i) => (i * 2.399963) % (2 * Math.PI)
-  );
+  const core = window.KuramotoCore;
 
-  const frequencies = Array.from(
-    { length: N },
-    (_, i) => sigma * (
-      0.65 * Math.sin(i * 12.9898) +
-      0.35 * Math.cos(i * 7.233)
-    )
-  );
-
-  function order(state) {
-    let x = 0;
-    let y = 0;
-
-    for (const theta of state) {
-      x += Math.cos(theta);
-      y += Math.sin(theta);
-    }
-
-    return {
-      R: Math.hypot(x / N, y / N),
-      psi: Math.atan2(y, x)
-    };
+  if (!core) {
+    console.error("KuramotoCore was not loaded.");
+    return;
   }
 
-  function derivative(state, K) {
-    const { R, psi } = order(state);
+  const population = core.initializePopulation(N, sigma);
+  const initial = population.phases;
+  const frequencies = population.frequencies;
 
-    return state.map((theta, i) =>
-      frequencies[i] +
-      K * R * Math.sin(psi - theta - alpha)
-    );
-  }
-
-  function scaled(state, k, factor) {
-    return state.map(
-      (theta, i) => theta + factor * k[i]
-    );
-  }
+  const order = core.orderParameter;
 
   function rk4(state, K) {
-    const k1 = derivative(state, K);
-    const k2 = derivative(scaled(state, k1, dt / 2), K);
-    const k3 = derivative(scaled(state, k2, dt / 2), K);
-    const k4 = derivative(scaled(state, k3, dt), K);
-
-    return state.map((theta, i) =>
-      theta + dt / 6 * (
-        k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]
-      )
-    );
+    return core.rk4Step(state, frequencies, K, alpha, dt);
   }
 
   function prepareState(K) {
@@ -103,6 +64,22 @@
     ) {
       state = rk4(state, K);
       trajectory.push(order(state).R);
+    }
+
+    // Lowest coherence during the post-disturbance window.
+    const minimumR = Math.min(...trajectory);
+
+    // Trapezoidal integration of the coherence deficit.
+    // Includes the immediate post-disturbance state at t = 20.
+    const deficit = trajectory.map(
+      R => Math.max(0, before - R)
+    );
+
+    let integratedDeficit = 0;
+
+    for (let i = 0; i < deficit.length - 1; i++) {
+      integratedDeficit +=
+        0.5 * dt * (deficit[i] + deficit[i + 1]);
     }
 
     const eligible = before >= 0.9;
@@ -140,6 +117,8 @@
       before,
       after,
       loss: before - after,
+      minimumR,
+      integratedDeficit,
       recovery,
       eligible,
       finalR: trajectory[trajectory.length - 1]
@@ -180,6 +159,8 @@
           "R before",
           "R after",
           "Coherence loss",
+          "Min R",
+          "Integrated deficit",
           "Recovery time"
         ].forEach(label => cell(header, label, "th"));
 
@@ -196,6 +177,8 @@
           cell(row, result.before.toFixed(5));
           cell(row, result.after.toFixed(5));
           cell(row, result.loss.toFixed(5));
+          cell(row, result.minimumR.toFixed(5));
+          cell(row, result.integratedDeficit.toFixed(5));
 
           const recovery = !result.eligible
             ? "N/A"

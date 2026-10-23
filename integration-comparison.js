@@ -16,79 +16,28 @@
   const timeSteps = [0.04, 0.02, 0.01];
   const referenceStep = 0.0025;
 
-  const initialPhases = Array.from(
-    { length: N },
-    (_, i) => (i * 2.399963) % (2 * Math.PI)
-  );
+  const core = window.KuramotoCore;
 
-  const frequencies = Array.from(
-    { length: N },
-    (_, i) =>
-      sigma * (
-        0.65 * Math.sin(i * 12.9898) +
-        0.35 * Math.cos(i * 7.233)
-      )
-  );
-
-  function orderParameter(phases) {
-    let x = 0;
-    let y = 0;
-
-    for (const theta of phases) {
-      x += Math.cos(theta);
-      y += Math.sin(theta);
-    }
-
-    return {
-      R: Math.hypot(x / N, y / N),
-      psi: Math.atan2(y, x)
-    };
+  if (!core) {
+    console.error("KuramotoCore was not loaded.");
+    return;
   }
 
-  function derivative(phases, K) {
-    const { R, psi } = orderParameter(phases);
+  const population = core.initializePopulation(N, sigma);
+  const initialPhases = population.phases;
+  const frequencies = population.frequencies;
 
-    return phases.map(
-      (theta, i) =>
-        frequencies[i] +
-        K * R * Math.sin(psi - theta - alpha)
+  const orderParameter = core.orderParameter;
+
+  function eulerStep(state, K, dt) {
+    return core.eulerStep(
+      state, frequencies, K, alpha, dt
     );
   }
 
-  function addScaled(phases, derivativeVector, scale) {
-    return phases.map(
-      (theta, i) => theta + scale * derivativeVector[i]
-    );
-  }
-
-  function eulerStep(phases, K, dt) {
-    const k1 = derivative(phases, K);
-    return addScaled(phases, k1, dt);
-  }
-
-  function rk4Step(phases, K, dt) {
-    const k1 = derivative(phases, K);
-
-    const k2 = derivative(
-      addScaled(phases, k1, dt / 2), K
-    );
-
-    const k3 = derivative(
-      addScaled(phases, k2, dt / 2), K
-    );
-
-    const k4 = derivative(
-      addScaled(phases, k3, dt), K
-    );
-
-    return phases.map(
-      (theta, i) =>
-        theta + (dt / 6) * (
-          k1[i] +
-          2 * k2[i] +
-          2 * k3[i] +
-          k4[i]
-        )
+  function rk4Step(state, K, dt) {
+    return core.rk4Step(
+      state, frequencies, K, alpha, dt
     );
   }
 

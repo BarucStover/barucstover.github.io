@@ -18,67 +18,21 @@
 
   const couplingStrengths = [0.5, 1.5, 3.0];
 
-  const initialPhases = Array.from(
-    { length: N },
-    (_, i) => (i * 2.399963) % (2 * Math.PI)
-  );
+  const core = window.KuramotoCore;
 
-  const frequencies = Array.from(
-    { length: N },
-    (_, i) => sigma * (
-      0.65 * Math.sin(i * 12.9898) +
-      0.35 * Math.cos(i * 7.233)
-    )
-  );
-
-  function orderParameter(phases) {
-    let real = 0;
-    let imaginary = 0;
-
-    for (const theta of phases) {
-      real += Math.cos(theta);
-      imaginary += Math.sin(theta);
-    }
-
-    return {
-      R: Math.hypot(real / N, imaginary / N),
-      psi: Math.atan2(imaginary, real)
-    };
+  if (!core) {
+    console.error("KuramotoCore was not loaded.");
+    return;
   }
 
-  function derivative(state, K) {
-    const { R, psi } = orderParameter(state);
+  const population = core.initializePopulation(N, sigma);
+  const initialPhases = population.phases;
+  const frequencies = population.frequencies;
 
-    return state.map(
-      (theta, i) =>
-        frequencies[i] +
-        K * R * Math.sin(psi - theta - alpha)
-    );
-  }
-
-  function advance(state, vector, scale) {
-    return state.map(
-      (theta, i) => theta + scale * vector[i]
-    );
-  }
+  const orderParameter = core.orderParameter;
 
   function rk4(state, K) {
-    const k1 = derivative(state, K);
-    const k2 = derivative(
-      advance(state, k1, dt / 2), K
-    );
-    const k3 = derivative(
-      advance(state, k2, dt / 2), K
-    );
-    const k4 = derivative(
-      advance(state, k3, dt), K
-    );
-
-    return state.map(
-      (theta, i) => theta + dt / 6 * (
-        k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]
-      )
-    );
+    return core.rk4Step(state, frequencies, K, alpha, dt);
   }
 
   function runExperiment(K) {

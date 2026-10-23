@@ -16,51 +16,32 @@
   const steps = [0.04, 0.02, 0.01];
   const referenceStep = 0.005;
 
-  function orderParameter(phases) {
-    let real = 0;
-    let imaginary = 0;
+  const core = window.KuramotoCore;
 
-    for (const phase of phases) {
-      real += Math.cos(phase);
-      imaginary += Math.sin(phase);
-    }
-
-    return {
-      R: Math.hypot(real / N, imaginary / N),
-      psi: Math.atan2(imaginary, real)
-    };
+  if (!core) {
+    console.error("KuramotoCore was not loaded.");
+    return;
   }
 
   function simulate(K, dt) {
-    let phases = [];
-    const frequencies = [];
+    const population = core.initializePopulation(N, sigma);
 
-    for (let i = 0; i < N; i++) {
-      phases.push((i * 2.399963) % (2 * Math.PI));
+    let phases = population.phases;
+    const frequencies = population.frequencies;
 
-      frequencies.push(
-        sigma * (
-          Math.sin(i * 12.9898) * 0.65 +
-          Math.cos(i * 7.233) * 0.35
-        )
+    const steps = Math.round(duration / dt);
+    const values = [core.orderParameter(phases).R];
+
+    for (let step = 0; step < steps; step++) {
+      phases = core.eulerStep(
+        phases,
+        frequencies,
+        K,
+        alpha,
+        dt
       );
-    }
 
-    const count = Math.round(duration / dt);
-    const values = [orderParameter(phases).R];
-
-    for (let step = 1; step <= count; step++) {
-      const { R, psi } = orderParameter(phases);
-
-      phases = phases.map((theta, i) => {
-        const velocity =
-          frequencies[i] +
-          K * R * Math.sin(psi - theta - alpha);
-
-        return theta + dt * velocity;
-      });
-
-      values.push(orderParameter(phases).R);
+      values.push(core.orderParameter(phases).R);
     }
 
     return values;

@@ -66,22 +66,13 @@ const heroOrder =
   }
 
   function initialize() {
-    phases = [];
-    frequencies = [];
+    const population = core.initializePopulation(N, sigma);
+
+    phases = population.phases;
+    frequencies = population.frequencies;
     particles = [];
 
     for (let i = 0; i < N; i++) {
-      const phase = (i * 2.399963) % (2 * Math.PI);
-
-      // Deterministic frequency distribution.
-      const frequency = sigma * (
-        Math.sin(i * 12.9898) * 0.65 +
-        Math.cos(i * 7.233) * 0.35
-      );
-
-      phases.push(phase);
-      frequencies.push(frequency);
-
       particles.push({
         latitude: Math.acos(1 - 2 * (i + 0.5) / N),
         longitude: i * 2.399963,
@@ -99,86 +90,34 @@ const heroOrder =
     updateLabels();
   }
 
-  function getOrderParameter() {
-    let real = 0;
-    let imaginary = 0;
+  const core = window.KuramotoCore;
 
-    for (const theta of phases) {
-      real += Math.cos(theta);
-      imaginary += Math.sin(theta);
-    }
-
-    real /= N;
-    imaginary /= N;
-
-    return {
-      R: Math.hypot(real, imaginary),
-      psi: Math.atan2(imaginary, real)
-    };
+  if (!core) {
+    console.error("KuramotoCore was not loaded.");
+    return;
   }
 
-  // Evaluate the coupled oscillator equations for any phase state.
-  // The collective order parameter is recalculated at every RK4 stage.
-  function rk4Derivative(state) {
-    let real = 0;
-    let imaginary = 0;
-
-    for (const theta of state) {
-      real += Math.cos(theta);
-      imaginary += Math.sin(theta);
-    }
-
-    real /= N;
-    imaginary /= N;
-
-    const R = Math.hypot(real, imaginary);
-    const psi = Math.atan2(imaginary, real);
-
-    return state.map((theta, i) =>
-      frequencies[i] +
-      K * R * Math.sin(psi - theta - alpha)
-    );
+  function getOrderParameter() {
+    return core.orderParameter(phases);
   }
 
   function simulateStep() {
-    const original = phases;
-
-    const k1 = rk4Derivative(original);
-
-    const k2 = rk4Derivative(
-      original.map((theta, i) =>
-        theta + 0.5 * dt * k1[i]
-      )
-    );
-
-    const k3 = rk4Derivative(
-      original.map((theta, i) =>
-        theta + 0.5 * dt * k2[i]
-      )
-    );
-
-    const k4 = rk4Derivative(
-      original.map((theta, i) =>
-        theta + dt * k3[i]
-      )
-    );
-
     const tau = 2 * Math.PI;
 
-    phases = original.map((theta, i) => {
-      const next = theta + (dt / 6) * (
-        k1[i] +
-        2 * k2[i] +
-        2 * k3[i] +
-        k4[i]
-      );
+    const next = core.rk4Step(
+      phases,
+      frequencies,
+      K,
+      alpha,
+      dt
+    );
 
-      // Keep display phases within [0, 2π).
-      return ((next % tau) + tau) % tau;
-    });
+    // Preserve the original phase-wrapping behavior.
+    phases = next.map(theta =>
+      ((theta % tau) + tau) % tau
+    );
 
     elapsed += dt;
-
     recordSample("step");
   }
 
