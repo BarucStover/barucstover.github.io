@@ -2085,3 +2085,204 @@ body {
   gap: 12px;
 }
 
+
+
+/* Homepage oscillator interaction */
+
+.hero-interaction {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 22px 0;
+}
+
+.hero-perturb-button {
+  border: 1px solid #a9cdd0;
+  background: rgba(230, 244, 242, 0.8);
+  color: #315d65;
+  border-radius: 999px;
+  padding: 11px 19px;
+  min-height: 44px;
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.hero-perturb-button:hover {
+  background: #d8eeeb;
+}
+
+.hero-perturb-button:focus-visible {
+  outline: 2px solid #315d65;
+  outline-offset: 3px;
+}
+
+.hero-coherence {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #647d82;
+  font-size: 0.84rem;
+}
+
+.hero-coherence strong {
+  color: #315d65;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-perturb-button {
+    transition: none;
+  }
+}
+
+/* Interactive homepage sphere */
+
+.hero-art #inference-canvas {
+  cursor: crosshair;
+  touch-action: manipulation;
+}
+
+.hero-art .orb {
+  transition: filter 0.35s ease;
+}
+
+@media (hover: hover) {
+  .hero-art .orb:hover {
+    filter: brightness(1.06) saturate(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-art .orb {
+    transition: none;
+  }
+}
+
+
+/* Ensure the homepage canvas receives pointer events */
+.hero-art .orb #inference-canvas {
+  pointer-events: auto;
+  cursor: crosshair;
+  position: relative;
+  z-index: 5;
+}
+
+/* Decorative layers must not intercept interaction */
+.hero-art .resonance-field,
+.hero-art .orb-core,
+.hero-art .orbit {
+  pointer-events: none;
+}
+
+
+/* Keep decorative sphere layers from blocking interaction */
+.hero-art .orb-core,
+.hero-art .orbit,
+.hero-art .resonance-field {
+  pointer-events: none;
+}
+
+.hero-art #inference-canvas {
+  pointer-events: auto;
+  cursor: crosshair;
+}
+
+
+/* ==========================================
+   Responsive interactive sphere
+   ========================================== */
+
+.hero-art {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.hero-art .orb {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+}
+
+.hero-art #inference-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  pointer-events: auto;
+  touch-action: manipulation;
+  cursor: crosshair;
+  z-index: 5;
+}
+
+.hero-art .resonance-field,
+.hero-art .orb-core,
+.hero-art .orbit {
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .hero-art {
+    width: min(100%, 440px);
+    margin-inline: auto;
+  }
+}
+
+
+/* ==========================================
+   HERO SPHERE — RESPONSIVE LAYOUT TEST
+   ========================================== */
+
+/* Large desktop */
+@media (min-width: 1201px) {
+  .hero-art {
+    width: min(75vw, 1150px);
+    height: auto;
+    aspect-ratio: 1;
+    right: -18%;
+    top: 52%;
+    transform: translateY(-50%);
+    opacity: 0.85;
+  }
+}
+
+/* Half-screen and tablet */
+@media (min-width: 701px) and (max-width: 1200px) {
+  .hero-art {
+    width: min(65vw, 680px);
+    height: auto;
+    aspect-ratio: 1;
+    right: -12%;
+    top: 55%;
+    transform: translateY(-50%);
+    opacity: 0.58;
+  }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .hero-art {
+    width: min(90vw, 420px);
+    height: auto;
+    aspect-ratio: 1;
+    right: -32%;
+    top: 58%;
+    transform: translateY(-50%);
+    opacity: 0.25;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 3;
+  }
+}
+

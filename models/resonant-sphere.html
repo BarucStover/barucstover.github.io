@@ -265,6 +265,98 @@ button {
 }
 </style>
 
+
+<style>
+.comparison-section {
+  max-width: 1040px;
+  margin: 48px auto 70px;
+  padding: 0 24px;
+}
+
+.comparison-details {
+  background: #f8fbfa;
+  border: 1px solid #d8e7e7;
+  border-radius: 12px;
+}
+
+.comparison-details summary {
+  cursor: pointer;
+  padding: 22px 26px;
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 21px;
+  color: #234450;
+}
+
+.comparison-details summary:focus-visible,
+#run-coupling-comparison:focus-visible {
+  outline: 2px solid #247b8c;
+  outline-offset: 3px;
+}
+
+.comparison-content {
+  padding: 0 26px 28px;
+}
+
+.comparison-content > p {
+  max-width: 690px;
+  line-height: 1.7;
+}
+
+#run-coupling-comparison {
+  padding: 11px 18px;
+  border: 1px solid #afcfd1;
+  border-radius: 7px;
+  background: #e6f4f3;
+  color: #235a65;
+  cursor: pointer;
+}
+
+.comparison-chart-wrap {
+  width: 100%;
+  height: 290px;
+  margin-top: 22px;
+  background: white;
+  border: 1px solid #e2ecec;
+  border-radius: 8px;
+}
+
+#comparison-chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
+  font-size: 14px;
+}
+
+.comparison-table th,
+.comparison-table td {
+  text-align: left;
+  padding: 11px 8px;
+  border-bottom: 1px solid #e1e9e8;
+}
+
+.comparison-table th {
+  color: #315665;
+}
+
+.comparison-note {
+  font-size: 12px;
+  color: #66808a;
+}
+
+@media (max-width: 600px) {
+  .comparison-section { padding: 0 14px; }
+  .comparison-content { padding: 0 14px 22px; }
+  .comparison-chart-wrap { height: 230px; }
+  .comparison-details summary { font-size: 18px; padding: 18px 14px; }
+}
+</style>
+
 </head>
 
 <body>
@@ -434,7 +526,44 @@ button {
       </p>
     </section>
 
-  </main>
+
+<section id="coupling-experiment" class="comparison-section">
+  <details class="comparison-details">
+    <summary>Controlled experiment — Compare coupling strength</summary>
+
+    <div class="comparison-content">
+      <p>
+        Compare three coupling strengths using identical initial
+        phases and natural frequencies. The experiment runs
+        independently of the interactive visualization above.
+      </p>
+
+      <button type="button" id="run-coupling-comparison">
+        Run Comparison
+      </button>
+
+      <p id="comparison-status" role="status"></p>
+
+      <div class="comparison-chart-wrap">
+        <canvas id="comparison-chart"
+                role="img"
+                aria-label="Synchronization trajectories for three coupling strengths">
+        </canvas>
+      </div>
+
+      <div id="comparison-results"></div>
+
+      <p class="comparison-note">
+        Numerical experiment using forward Euler integration,
+        72 oscillators, σ = 0.7, α = 0, and Δt = 0.04.
+        Synchronization time is defined as the first time
+        R ≥ 0.9 remains sustained for five simulation-time units.
+      </p>
+    </div>
+  </details>
+</section>
+
+</main>
 
   <script src="../inference-sphere.js" defer></script>
 
@@ -492,5 +621,6 @@ button {
 })();
 </script>
 
+<script src="../coupling-experiment.js" defer></script>
 </body>
 </html>

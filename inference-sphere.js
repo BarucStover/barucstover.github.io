@@ -19,6 +19,9 @@
   const perturbButton = document.getElementById("perturb");
   const resetButton = document.getElementById("reset-model");
 
+const heroOrder =
+    document.getElementById("hero-order");
+
   const demoMode = Boolean(couplingInput);
 
   let N = demoMode ? 72 : 66;
@@ -263,6 +266,82 @@
     );
   }
 
+
+  // HOMEPAGE LIVING COLOR V1
+  // Cyclic color encoding for oscillator phase.
+  function phaseColor(theta, lightness = 65, opacity = 1) {
+    const tau = 2 * Math.PI;
+
+    const phase =
+      ((theta % tau) + tau) % tau;
+
+    const hue = 170 + 360 * phase / tau;
+
+    return `hsla(${hue}, 65%, ${lightness}%, ${opacity})`;
+  }
+
+
+  // LOCALIZED OSCILLATOR INTERACTION V1
+  // Pointer coordinates refer to the rendered sphere.
+  // The mathematical coupling remains all-to-all.
+
+  let pointerPosition = null;
+
+  function pointerCoordinates(event) {
+    const rect = canvas.getBoundingClientRect();
+
+    return {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top
+    };
+  }
+
+  function localDisturbance(x, y) {
+    if (demoMode) return;
+
+    const positions = getPositions();
+
+    const radius =
+      Math.min(canvas.clientWidth, canvas.clientHeight) * 0.24;
+
+    phases = phases.map((theta, i) => {
+      const point = positions[i];
+
+      const distance = Math.hypot(
+        point.x - x,
+        point.y - y
+      );
+
+      const influence = Math.exp(
+        -0.5 * (distance / radius) ** 2
+      );
+
+      return theta + 1.6 * influence;
+    });
+
+    draw();
+  }
+
+  canvas.addEventListener("pointermove", event => {
+    if (demoMode) return;
+
+    pointerPosition = pointerCoordinates(event);
+    draw();
+  });
+
+  canvas.addEventListener("pointerleave", () => {
+    pointerPosition = null;
+    draw();
+  });
+
+  canvas.addEventListener("click", event => {
+    if (demoMode) return;
+
+    const point = pointerCoordinates(event);
+
+    localDisturbance(point.x, point.y);
+  });
+
   function draw() {
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
@@ -314,8 +393,11 @@
         const strength = proximity * coherence;
 
         // Coherent oscillator pairs form brighter edges.
+        const edgeOpacity =
+          0.045 + strength * (0.16 + 0.14 * R);
+
         ctx.strokeStyle =
-          `rgba(235,255,252,${0.06 + strength * 0.32})`;
+          `rgba(170, 232, 224, ${edgeOpacity})`;
 
         ctx.lineWidth = 0.45 + strength * 0.5;
 
@@ -325,6 +407,81 @@
         ctx.stroke();
 
         edges++;
+      }
+    }
+
+    // SOFT POINTER FIELD V1
+    // Visual feedback for the pointer position.
+    // This does not change oscillator equations.
+    if (!demoMode && pointerPosition) {
+      const fieldRadius = 72;
+
+      const gradient = ctx.createRadialGradient(
+        pointerPosition.x,
+        pointerPosition.y,
+        0,
+        pointerPosition.x,
+        pointerPosition.y,
+        fieldRadius
+      );
+
+      gradient.addColorStop(
+        0,
+        "rgba(210, 245, 238, 0.28)"
+      );
+
+      gradient.addColorStop(
+        0.5,
+        "rgba(158, 218, 230, 0.12)"
+      );
+
+      gradient.addColorStop(
+        1,
+        "rgba(158, 218, 230, 0)"
+      );
+
+      ctx.beginPath();
+      ctx.arc(
+        pointerPosition.x,
+        pointerPosition.y,
+        fieldRadius,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fillStyle = gradient;
+      ctx.fill();
+    }
+
+    // Pointer illumination is visual only.
+    // It does not modify oscillator dynamics.
+    if (!demoMode && pointerPosition) {
+      for (const point of points) {
+        const distance = Math.hypot(
+          point.x - pointerPosition.x,
+          point.y - pointerPosition.y
+        );
+
+        const proximity = Math.exp(
+          -0.5 * (distance / 42) ** 2
+        );
+
+        if (proximity < 0.03) continue;
+
+        ctx.beginPath();
+
+        ctx.arc(
+          point.x,
+          point.y,
+          point.size * (2.4 + proximity * 2),
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fillStyle =
+          `rgba(174,235,225,${proximity * 0.55})`;
+
+        ctx.fill();
       }
     }
 
@@ -340,7 +497,7 @@
         175 + 65 * Math.sin(normalizedPhase);
 
       const saturation = 72;
-      const lightness = 58 + point.depth * 15;
+      const lightness = 56 + point.depth * 13 + R * 8;
       const opacity = 0.65 + point.depth * 0.35;
 
       const particleRadius =
@@ -356,14 +513,18 @@
       );
 
       ctx.fillStyle =
-        `hsla(${hue}, ${saturation}%, ${lightness}%, ${opacity})`;
+        phaseColor(
+          point.phase,
+          lightness,
+          opacity
+        );
 
       ctx.fill();
     }
 
     ctx.restore();
 
-    if (orderOutput) {
+if (orderOutput) {
       orderOutput.textContent = R.toFixed(3);
     }
 
@@ -455,6 +616,7 @@
   });
 
 
+
   pauseButton?.addEventListener("click", () => {
     paused = !paused;
     pauseButton.textContent = paused ? "Resume" : "Pause";
@@ -499,7 +661,15 @@
     draw();
   });
 
-  new ResizeObserver(resize).observe(canvas);
+  const sphereResizeObserver = new ResizeObserver(() => {
+    resize();
+  });
+
+  sphereResizeObserver.observe(canvas);
+
+  if (canvas.parentElement) {
+    sphereResizeObserver.observe(canvas.parentElement);
+  }
 
   reducedMotion.addEventListener(
     "change",
