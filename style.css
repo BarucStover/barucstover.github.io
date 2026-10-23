@@ -2286,3 +2286,20 @@ body {
   }
 }
 
+
+
+/* HERO ORBIT CLEANUP V1 */
+
+/* Remove decorative orbital rings. */
+.hero-art .orbit,
+.hero-art .orbit-one,
+.hero-art .orbit-two,
+.hero-art .orb::before,
+.hero-art .orb::after {
+  display: none !important;
+}
+
+/* Preserve the interactive oscillator canvas. */
+.hero-art #inference-canvas {
+  display: block;
+}
