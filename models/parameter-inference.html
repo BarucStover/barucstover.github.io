@@ -1177,6 +1177,264 @@ recorded after checking the generated numerical output.</p>
     assumptions, and temporal sampling resolution.
   </p>
 </section>
+
+<section id="statistical-distinguishability">
+<h2>14 / Statistical Distinguishability Under Noise</h2>
+
+<p>
+Experiments 29A–29C investigate whether two reflection-related
+Kuramoto trajectories can be distinguished when collective angular
+velocity is observed with Gaussian measurement noise.
+</p>
+
+<h3>Observation model</h3>
+
+<p>
+The original and reflected systems have equal synchronization
+magnitudes but opposite collective angular velocities:
+</p>
+
+\[
+R_m^A(t)=R_m^B(t), \qquad m=1,2
+\]
+
+\[
+\Omega_A(t)=-\Omega_B(t).
+\]
+
+<p>
+We assume observations of the form
+</p>
+
+\[
+Y_k=\Omega_H(t_k)+\epsilon_k,
+\qquad
+\epsilon_k\sim\mathcal N(0,s^2),
+\]
+
+<p>
+where H denotes the generating hypothesis and the measurement
+errors are independent with known, common standard deviation s.
+Both hypotheses are assigned equal prior probability.
+</p>
+
+<h3>Classification and statistical separation</h3>
+
+<p>
+For two known mean trajectories with common independent
+Gaussian measurement noise, define:
+</p>
+
+\[
+D^2=
+\frac{1}{s^2}
+\sum_{k=1}^{n}
+[\Omega_A(t_k)-\Omega_B(t_k)]^2.
+\]
+
+<p>
+Under the specified assumptions, the Bayes-optimal
+classification accuracy is:
+</p>
+
+\[
+P(\mathrm{correct})=
+\Phi\left(\frac{D}{2}\right),
+\]
+
+<p>
+where Φ denotes the standard normal cumulative distribution
+function. This describes discrimination between the two specified
+hypotheses, not reconstruction of every oscillator phase.
+</p>
+
+<h3>Experiment 29A — Statistical benchmark</h3>
+
+<p>
+A constant-signal benchmark compared angular velocities
++0.20 and −0.20 under Gaussian noise with s = 0.40.
+For n independent observations, the theoretical accuracy was
+</p>
+
+\[
+P(\mathrm{correct})=
+\Phi\left(\frac{0.20\sqrt n}{0.40}\right).
+\]
+
+<p>
+Monte Carlo simulations used 20,000 trials per hypothesis.
+The observed accuracies closely followed theory as the
+number of observations increased. The n = 25 result fell outside
+its individual approximate 95% sampling interval, illustrating
+that finite-sample validation does not require every trial
+estimate to lie inside its nominal interval.
+</p>
+
+<h3>Experiments 29B–29C — Time-dependent discrimination</h3>
+
+<p>
+The analysis was extended to the deterministic Kuramoto–Sakaguchi
+system with N = 72, K = 1.5, frequency dispersion σ = 0.7,
+phase lag α = 0.35, and RK4 step size 0.04.
+Four schedules used eight observations each.
+</p>
+
+<table>
+<thead>
+<tr>
+<th>Observation schedule</th>
+<th>Theory, s = 1.0</th>
+<th>Simulation, s = 1.0</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Early</td><td>87.6521%</td><td>87.7925%</td></tr>
+<tr><td>Uniform</td><td>88.3191%</td><td>88.1575%</td></tr>
+<tr><td>Late</td><td>90.0397%</td><td>89.9400%</td></tr>
+<tr><td>High separation</td><td>91.8918%</td><td>91.6975%</td></tr>
+</tbody>
+</table>
+
+<div class="finding">
+For these two specified trajectories, changing observation timing
+improved theoretical classification accuracy without increasing
+the measurement count. The high-separation schedule exceeded the
+early schedule by approximately 4.24 percentage points at s = 1.0.
+</div>
+
+<p>
+At lower noise levels, classification accuracy approached 100%,
+making differences between schedules difficult to resolve.
+Experiment 29C therefore examined higher synthetic noise levels.
+The preferred schedule depends on the underlying trajectories
+and noise assumptions.
+</p>
+</section>
+
+<section id="information-optimal-design">
+<h2>15 / Information-Optimal Observation Design</h2>
+
+<p>
+Experiment 30 formalizes measurement scheduling as a constrained
+optimization problem. Rather than selecting individually strong
+measurements, it searches for the best admissible combination.
+</p>
+
+<h3>Information objective</h3>
+
+<p>
+For a schedule \(\mathcal T\), the KL divergence between
+the two Gaussian observation distributions is
+</p>
+
+\[
+J(\mathcal T)=
+\frac{1}{2s^2}
+\sum_{t_k\in\mathcal T}
+[\Omega_A(t_k)-\Omega_B(t_k)]^2.
+\]
+
+<p>
+When s is fixed, maximizing this divergence is equivalent
+to maximizing the unscaled squared-separation objective:
+</p>
+
+\[
+S(\mathcal T)=
+\sum_{t_k\in\mathcal T}
+[\Omega_A(t_k)-\Omega_B(t_k)]^2.
+\]
+
+<p>
+We selected exactly eight observation times on a discrete grid
+from t = 0.4 to 11.6, imposing a minimum separation of 0.4
+simulation-time units between consecutive observations.
+</p>
+
+<h3>Dynamic programming</h3>
+
+<p>
+At each candidate time, the algorithm compares excluding that
+time with including it and skipping the subsequent forbidden
+interval. This recurrence gives an exact maximum-weight selection
+on the stated discrete grid.
+</p>
+
+<p>
+The implementation was independently compared against exhaustive
+search on a smaller synthetic problem. It also verified the
+measurement count, time bounds, and minimum spacing.
+</p>
+
+<h3>Optimal observation schedule</h3>
+
+\[
+\mathcal T^*=
+\{2.60,\ 3.00,\ 5.76,\ 6.16,\
+6.56,\ 10.80,\ 11.20,\ 11.60\}.
+\]
+
+<table>
+<thead>
+<tr>
+<th>Schedule</th>
+<th>Unscaled objective S</th>
+<th>Accuracy, s = 1.0</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Early</td><td>5.361726</td><td>87.6521%</td></tr>
+<tr><td>Uniform</td><td>5.674782</td><td>88.3191%</td></tr>
+<tr><td>Late</td><td>6.592759</td><td>90.0397%</td></tr>
+<tr><td>Greedy</td><td>7.815748</td><td>91.8918%</td></tr>
+<tr><td>Optimal DP</td><td>7.830217</td><td>91.9112%</td></tr>
+</tbody>
+</table>
+
+<div class="finding">
+Exact discrete optimization improved the squared-separation
+objective by 0.1851% relative to greedy scheduling.
+At s = 1.0, the theoretical classification-accuracy gain
+was approximately 0.0194 percentage points.
+</div>
+
+<h3>Independent numerical cross-validation</h3>
+
+<p>
+The original trajectories were generated independently using
+Python and the website's JavaScript Kuramoto core.
+Across 301 samples, maximum absolute discrepancies were:
+</p>
+
+<ul>
+<li>R₁: 7.77 × 10⁻¹⁶</li>
+<li>R₂: 9.99 × 10⁻¹⁶</li>
+<li>Ω: 8.88 × 10⁻¹⁶</li>
+</ul>
+
+<p>
+These results confirm close cross-implementation agreement
+for the tested parameter configuration. They do not establish
+global numerical accuracy or equivalence for all configurations.
+</p>
+
+<h3>Scope and limitations</h3>
+
+<p>
+Optimality is established only for the specified finite candidate
+grid, measurement budget, spacing constraint, and two known
+trajectories. The measurement model assumes independent Gaussian
+errors with known equal variance. The optimized schedule uses
+perfect knowledge of the predicted trajectories and may not remain
+optimal under parameter uncertainty or model misspecification.
+</p>
+
+<p>
+Future work will investigate robust observation schedules when
+coupling, dispersion, and phase lag are uncertain.
+</p>
+</section>
+
 <details class="numerical-methods" id="numerical-methods">
 <summary>Numerical Methods</summary>
 <div class="methods-content">
