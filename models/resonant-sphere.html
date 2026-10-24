@@ -1,21 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-  <title>Coupled Oscillator Model | Baruc Stover</title>
-
-  <link rel="icon" href="../favicon.svg">
-  <link rel="stylesheet" href="../style.css">
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coupled Oscillator Model | Baruc Stover</title>
+<link href="../favicon.svg" rel="icon"/>
+<link href="../style.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Source+Serif+4:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
     .model-page {
       max-width: 1100px;
       margin: auto;
@@ -185,8 +178,7 @@
       }
     }
   </style>
-
-  <style>
+<style>
     .model-extra-controls {
       margin-top: 20px;
       margin-bottom: 22px;
@@ -223,8 +215,6 @@
       margin-bottom: 0;
     }
   </style>
-
-
 <style>
 /* COUPLED OSCILLATOR VISUAL REFINEMENT */
 
@@ -264,8 +254,6 @@ button {
   }
 }
 </style>
-
-
 <style>
 .comparison-section {
   max-width: 1040px;
@@ -356,293 +344,260 @@ button {
   .comparison-details summary { font-size: 18px; padding: 18px 14px; }
 }
 </style>
+<style>
+/* Simplified mathematical project navigation */
 
-</head>
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
 
+.site-header .brand {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 44px;
+}
+
+.site-header .brand img {
+  display: block;
+  width: 34px;
+  height: 34px;
+}
+
+.site-header nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.site-header nav a {
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.site-header nav a[aria-current="page"] {
+  color: #187f9c;
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    gap: 12px;
+  }
+
+  .site-header nav {
+    gap: 12px;
+  }
+
+  .site-header nav a {
+    font-size: 0.8rem;
+  }
+}
+</style></head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="../index.html">
-      <img src="../favicon.svg" alt="" width="34" height="34">
-      <span>BARUC STOVER / RESEARCH</span>
-    </a>
+<header class="site-header">
+<a aria-label="Coupled Oscillators homepage" class="brand" href="../index.html" title="Home">
+<img alt="" height="34" src="../favicon.svg" width="34"/>
 
-    <nav aria-label="Main navigation">
-      <a href="../index.html">Home</a>
-      <a href="../index.html#research">Research</a>
-      <a href="../index.html#notes">Research Notes</a>
-    </nav>
-  </header>
-
-  <main class="model-page">
-
-    <div class="model-intro">
-      <p class="eyebrow">
+</a>
+<nav aria-label="Main navigation"><a href="../index.html">Home</a><a aria-current="page" href="resonant-sphere.html">Explore Model</a><a href="parameter-inference.html">Notebook</a></nav>
+</header>
+<main class="model-page">
+<div class="model-intro">
+<p class="eyebrow">
         COMPUTATIONAL BIOLOGY / MATHEMATICAL MODELS
       </p>
-
-      <h1>Coupled Oscillators and Collective Dynamics</h1>
-
-      <p>
+<h1>Coupled Oscillators and Collective Dynamics</h1>
+<p>
         An exploratory mathematical visualization
         investigating how interacting oscillators
         develop collective phase organization.
       </p>
-    </div>
-
-    <div class="model-layout">
-
-      <div class="model-visual">
-        <div class="model-planet">
-          <div class="orb">
-            <canvas id="inference-canvas"
-                    aria-label="Visualization of coupled oscillators">
-            </canvas>
-          </div>
-        </div>
-      </div>
-
-      <div class="model-controls">
-        <h2>Model Parameters</h2>
-
-        <div class="control-group">
-          <label for="coupling">
+</div>
+<div class="model-layout">
+<div class="model-visual">
+<div class="model-planet">
+<div class="orb">
+<canvas aria-label="Visualization of coupled oscillators" id="inference-canvas">
+</canvas>
+</div>
+</div>
+</div>
+<div class="model-controls">
+<h2>Model Parameters</h2>
+<div class="control-group">
+<label for="coupling">
             Coupling Strength (K)
             <span id="coupling-value">1.5</span>
-          </label>
-
-          <input type="range"
-                 id="coupling"
-                 min="0"
-                 max="5"
-                 step="0.1"
-                 value="1.5">
-        </div>
-
-        <div class="control-group">
-          <label for="dispersion">
+</label>
+<input id="coupling" max="5" min="0" step="0.1" type="range" value="1.5"/>
+</div>
+<div class="control-group">
+<label for="dispersion">
             Frequency Dispersion (σ)
             <span id="dispersion-value">0.7</span>
-          </label>
-
-          <input type="range"
-                 id="dispersion"
-                 min="0"
-                 max="3"
-                 step="0.1"
-                 value="0.7">
-        </div>
-
-        <div class="model-buttons">
-
-          <div class="control-group">
-            <label for="phase-lag">
+</label>
+<input id="dispersion" max="3" min="0" step="0.1" type="range" value="0.7"/>
+</div>
+<div class="model-buttons">
+<div class="control-group">
+<label for="phase-lag">
               Phase lag (α)
               <span id="phase-lag-value">0.00</span>
-            </label>
-
-            <input
-              type="range"
-              id="phase-lag"
-              min="0"
-              max="1.57"
-              step="0.01"
-              value="0"
-            >
-          </div>
-
-          <button type="button" id="perturb">
+</label>
+<input id="phase-lag" max="1.57" min="0" step="0.01" type="range" value="0"/>
+</div>
+<button id="perturb" type="button">
             Apply Perturbation
           </button>
-
-          <button type="button" id="reset-model">
+<button id="reset-model" type="button">
             Reset Model
           </button>
-        </div>
-
-
-        <div class="model-buttons model-extra-controls">
-          <button type="button" id="pause-model"
-                  aria-pressed="false">Pause</button>
-          <button type="button" id="export-model">
+</div>
+<div class="model-buttons model-extra-controls">
+<button aria-pressed="false" id="pause-model" type="button">Pause</button>
+<button id="export-model" type="button">
             Export CSV
           </button>
-        </div>
-
-        <div class="model-chart-panel">
-          <h3>Synchronization over time</h3>
-          <p>Order parameter R(t), over the latest 40 simulation-time units</p>
-
-          <canvas id="synchronization-chart"
-                  role="img"
-                  aria-label="Time-series graph of oscillator synchronization">
-          </canvas>
-
-          <p class="simulation-time">
+</div>
+<div class="model-chart-panel">
+<h3>Synchronization over time</h3>
+<p>Order parameter R(t), over the latest 40 simulation-time units</p>
+<canvas aria-label="Time-series graph of oscillator synchronization" id="synchronization-chart" role="img">
+</canvas>
+<p class="simulation-time">
             Simulation time:
             <strong id="simulation-time">0.00</strong>
-          </p>
-        </div>
-
-        <div class="order-display" aria-live="off">
-          <p>Synchronization Order Parameter</p>
-          <strong id="order-parameter">0.000</strong>
-          <p>
-            R ≈ 0: Low phase coherence<br>
+</p>
+</div>
+<div aria-live="off" class="order-display">
+<p>Synchronization Order Parameter</p>
+<strong id="order-parameter">0.000</strong>
+<p>
+            R ≈ 0: Low phase coherence<br/>
             R ≈ 1: High phase coherence
           </p>
-        </div>
-      </div>
-
-    </div>
-
-    <section class="model-methods">
-      <p class="eyebrow">MODEL DESCRIPTION</p>
-      <h2>Mathematical Foundations</h2>
-
-      <p>
+</div>
+</div>
+</div>
+<section class="model-methods">
+<p class="eyebrow">MODEL DESCRIPTION</p>
+<h2>Mathematical Foundations</h2>
+<p>
         The system implements an all-to-all coupled
         Kuramoto oscillator model using a discrete
         Euler integration scheme.
       </p>
-
-      <p>
+<p>
         Each oscillator has a natural frequency and an
         evolving phase. Coupling can produce collective
         synchronization, depending on the frequency
         distribution and initial conditions.
       </p>
-
-      <p>
+<p>
         The displayed spatial network is an illustrative
         projection of oscillator phases. Its geometry
         does not represent physical interactions,
         molecular coordinates, or experimental measurements.
       </p>
-
-      <p>
+<p>
         This demonstration is independent of ongoing
         experimental research and is not a validated
         biological or ferrofluid model.
       </p>
-    </section>
-
-  
-<section id="coupling-experiment" class="comparison-section">
-  <details class="comparison-details">
-    <summary>Coupling Strength</summary>
-
-    <div class="comparison-content">
-      <p>
+</section>
+<section class="comparison-section" id="coupling-experiment">
+<details class="comparison-details">
+<summary>Coupling Strength</summary>
+<div class="comparison-content">
+<p>
         Compare three coupling strengths using identical initial
         phases and natural frequencies. The experiment runs
         independently of the interactive visualization above.
       </p>
-
-      <button type="button" id="run-coupling-comparison">
+<button id="run-coupling-comparison" type="button">
         Run Comparison
       </button>
-
-      <p id="comparison-status" role="status"></p>
-
-      <div class="comparison-chart-wrap">
-        <canvas id="comparison-chart"
-                role="img"
-                aria-label="Synchronization trajectories for three coupling strengths">
-        </canvas>
-      </div>
-
-      <div id="comparison-results"></div>
-
-      <p class="comparison-note">
+<p id="comparison-status" role="status"></p>
+<div class="comparison-chart-wrap">
+<canvas aria-label="Synchronization trajectories for three coupling strengths" id="comparison-chart" role="img">
+</canvas>
+</div>
+<div id="comparison-results"></div>
+<p class="comparison-note">
         Numerical experiment using forward Euler integration,
         72 oscillators, σ = 0.7, α = 0, and Δt = 0.04.
         Synchronization time is defined as the first time
         R ≥ 0.9 remains sustained for five simulation-time units.
       </p>
-    </div>
-  </details>
+</div>
+</details>
 </section>
-
-
-<section id="numerical-validation" class="comparison-section">
-  <details class="comparison-details">
-    <summary>Time-Step Convergence</summary>
-    <div class="comparison-content">
-      <p>
+<section class="comparison-section" id="numerical-validation">
+<details class="comparison-details">
+<summary>Time-Step Convergence</summary>
+<div class="comparison-content">
+<p>
         Test how the numerical integration step affects synchronization.
         Each simulation uses identical initial conditions and is
         compared against a finer reference calculation.
       </p>
-
-      <button type="button" id="run-convergence">
+<button id="run-convergence" type="button">
         Run Convergence Test
       </button>
-
-      <p id="convergence-status" role="status"></p>
-
-      <div id="convergence-results" style="overflow-x:auto"></div>
-
-      <p class="comparison-note">
+<p id="convergence-status" role="status"></p>
+<div id="convergence-results" style="overflow-x:auto"></div>
+<p class="comparison-note">
         Forward Euler integration; 72 oscillators;
         sigma = 0.7; alpha = 0; simulation duration = 40.
         Reference step: 0.005. Errors compare R(t), not
         individual oscillator phases.
       </p>
-    </div>
-  </details>
+</div>
+</details>
 </section>
-
-
-<section id="integration-comparison" class="comparison-section">
-  <details class="comparison-details">
-    <summary>Euler vs. RK4</summary>
-
-    <div class="comparison-content">
-      <p>
+<section class="comparison-section" id="integration-comparison">
+<details class="comparison-details">
+<summary>Euler vs. RK4</summary>
+<div class="comparison-content">
+<p>
         Compare first-order Euler integration with fourth-order
         Runge–Kutta using identical oscillator populations.
         Both methods are evaluated against a finer RK4 reference.
       </p>
-
-      <button type="button" id="run-integration-comparison">
+<button id="run-integration-comparison" type="button">
         Run Integration Comparison
       </button>
-
-      <p id="integration-status" role="status"></p>
-
-      <div id="integration-results"
-           class="integration-table-container"></div>
-
-      <p class="comparison-note">
+<p id="integration-status" role="status"></p>
+<div class="integration-table-container" id="integration-results"></div>
+<p class="comparison-note">
         N = 72; sigma = 0.7; alpha = 0; duration = 40.
         Reference: RK4 with dt = 0.0025.
         Errors are calculated from synchronization R(t).
       </p>
-    </div>
-  </details>
+</div>
+</details>
 </section>
-
-
-<section id="perturbation-recovery" class="comparison-section">
-  <details class="comparison-details">
-    <summary>Perturbation Recovery</summary>
-
-    <div class="comparison-content">
-      <p>
+<section class="comparison-section" id="perturbation-recovery">
+<details class="comparison-details">
+<summary>Perturbation Recovery</summary>
+<div class="comparison-content">
+<p>
         Compare how different coupling strengths respond to an
         identical phase disturbance after 20 simulation-time units.
       </p>
-
-      <button type="button" id="run-recovery">
+<button id="run-recovery" type="button">
         Run Recovery Experiment
       </button>
-
-      <p id="recovery-status" role="status"></p>
-
-      <div id="recovery-results"
-           style="overflow-x:auto; margin-top:20px;"></div>
-
-      <p class="comparison-note">
+<p id="recovery-status" role="status"></p>
+<div id="recovery-results" style="overflow-x:auto; margin-top:20px;"></div>
+<p class="comparison-note">
         RK4; N = 72; sigma = 0.7; alpha = 0;
         dt = 0.04. Perturbation at t = 20.
         Recovery requires maintaining at least 90%
@@ -650,32 +605,24 @@ button {
         2 simulation-time units. Recovery is assessed
         only when pre-perturbation R is at least 0.9.
       </p>
-    </div>
-  </details>
+</div>
+</details>
 </section>
-
-
-<section id="amplitude-study" class="comparison-section">
-  <details class="comparison-details">
-    <summary>Disturbance Amplitude</summary>
-
-    <div class="comparison-content">
-      <p>
+<section class="comparison-section" id="amplitude-study">
+<details class="comparison-details">
+<summary>Disturbance Amplitude</summary>
+<div class="comparison-content">
+<p>
         Investigate how the magnitude of a phase disturbance
         affects synchronization recovery under different
         coupling strengths.
       </p>
-
-      <button type="button" id="run-amplitude-study">
+<button id="run-amplitude-study" type="button">
         Run Amplitude Study
       </button>
-
-      <p id="amplitude-status" role="status"></p>
-
-      <div id="amplitude-results"
-           style="overflow-x:auto; margin-top:20px;"></div>
-
-      <p class="comparison-note">
+<p id="amplitude-status" role="status"></p>
+<div id="amplitude-results" style="overflow-x:auto; margin-top:20px;"></div>
+<p class="comparison-note">
         RK4; N = 72; sigma = 0.7; alpha = 0;
         dt = 0.04. Perturbation at t = 20.
         Recovery requires maintaining 90% of
@@ -683,34 +630,26 @@ button {
         units. Recovery is assessed only when the
         initial order parameter is at least 0.9.
       </p>
-    </div>
-  </details>
+</div>
+</details>
 </section>
-
-
 <section style="max-width:900px;margin:60px auto;padding:24px;">
-  <p style="font-size:0.8rem;letter-spacing:0.1em;
+<p style="font-size:0.8rem;letter-spacing:0.1em;
             text-transform:uppercase;opacity:0.6;">
     Computational Research
   </p>
-
-  <h2>Synchronization & Parameter Inference</h2>
-
-  <p>
+<h2>Synchronization &amp; Parameter Inference</h2>
+<p>
     Explore the numerical investigation of synchronization,
     parameter recovery, and observation timing.
   </p>
-
-  <a href="parameter-inference.html">
+<a href="parameter-inference.html">
     Read the research study →
   </a>
 </section>
-
 </main>
-
-  <script src="../kuramoto-core.js" defer></script>
-<script src="../inference-sphere.js" defer></script>
-
+<script defer="" src="../kuramoto-core.js"></script>
+<script defer="" src="../inference-sphere.js"></script>
 <script>
 /* Coherence-responsive appearance.
    Visual effect only; does not change oscillator equations. */
@@ -764,12 +703,10 @@ button {
   });
 })();
 </script>
-
-<script src="../coupling-experiment.js" defer></script>
-<script src="../numerical-validation.js" defer></script>
-<script src="../integration-comparison.js" defer></script>
-<script src="../perturbation-recovery.js" defer></script>
-
-<script src="../amplitude-study.js" defer></script>
+<script defer="" src="../coupling-experiment.js"></script>
+<script defer="" src="../numerical-validation.js"></script>
+<script defer="" src="../integration-comparison.js"></script>
+<script defer="" src="../perturbation-recovery.js"></script>
+<script defer="" src="../amplitude-study.js"></script>
 </body>
 </html>
