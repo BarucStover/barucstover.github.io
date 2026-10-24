@@ -695,6 +695,50 @@ recorded after checking the generated numerical output.</p>
   </details>
 </section>
 
+
+<section id="observation-design">
+  <h2>Observation Timing &amp; Model Discrimination</h2>
+
+  <p>
+    Two parameter combinations were compared to investigate
+    when synchronization observations most effectively
+    distinguish competing dynamical models.
+  </p>
+
+  <figure>
+    <img
+      src="../figures/kuramoto-optimal-observation.png"
+      alt="Synchronization trajectories and their absolute difference across simulation time"
+      loading="lazy">
+
+    <figcaption>
+      Figure 7. Predicted synchronization trajectories for
+      two competing parameter combinations and their
+      absolute difference. The maximum sampled difference
+      within the original fitting interval occurs at t = 7.2.
+    </figcaption>
+  </figure>
+
+  <div class="finding">
+    The largest sampled model difference occurs during
+    the synchronization transition at t = 7.2,
+    where |R₁ − R₂| ≈ 0.02978.
+  </div>
+
+  <p>
+    Under an independent Gaussian measurement-noise model,
+    observations collected when predicted trajectories
+    diverge provide greater expected discrimination
+    between these two specified parameter combinations.
+  </p>
+
+  <p>
+    This result motivates model-guided observation timing.
+    The selected time is specific to the models, noise
+    assumptions, and temporal sampling resolution.
+  </p>
+</section>
+
 <footer class="article-footer">
     <p>
       <a href="resonant-sphere.html">
