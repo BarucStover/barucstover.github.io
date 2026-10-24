@@ -786,8 +786,80 @@ use RK4 integration, so a separate time-step refinement
 study is required to quantify integration error relative
 to the continuous-time differential equations.
 </p>
+</section><section class="" id="rk4-convergence">
+<h2>10 / Numerical Integration Accuracy &amp; RK4 Convergence</h2>
+<p>
+We investigated the numerical convergence of the fourth-order
+Runge–Kutta integrator used to evolve the Kuramoto system
+and its tangent sensitivity equations.
+</p>
+<h3>Mathematical prediction</h3>
+<p>
+For sufficiently smooth differential equations, RK4 has
+fourth-order global convergence over a fixed time interval.
+</p>
+
+\[
+E(h)\approx Ch^4
+\]
+
+<p>
+Consequently, halving the integration step should reduce
+the leading error by approximately a factor of sixteen.
+</p>
+<h3>Experimental method</h3>
+<p>
+We simulated 72 oscillators with coupling strength
+\(K=1.373\) and frequency dispersion \(\sigma=0.700\).
+Integration steps ranged from \(0.08\) to \(0.0025\).
+All trajectories were evaluated at identical observation times.
+</p>
+<p>
+To avoid assuming a numerical reference was exact,
+we compared successive refinements using the RMS difference:
+</p>
+
+\[
+D(h)=\left\|R_h-R_{h/2}\right\|_{\mathrm{RMS}}
+\]
+
+<p>
+We estimated the observed convergence order as:
+</p>
+
+\[
+p=\log_2\left(\frac{D(h)}{D(h/2)}\right)
+\]
+
+<h3>Results</h3>
+<p>
+All six investigated quantities exhibited convergence orders
+close to four. Across 24 estimates, the observed orders
+ranged from approximately 3.979 to 4.007.
+</p>
+<figure>
+<img alt="Fourth-order RK4 convergence for Kuramoto observables and parameter sensitivities." loading="lazy" src="../figures/kuramoto-rk4-convergence.png" style="width:100%;height:auto;"/>
+<figcaption>
+Successive-refinement differences for both synchronization
+harmonics and their sensitivities to coupling and dispersion.
+The approximately parallel lines exhibit fourth-order scaling.
+</figcaption>
+</figure>
+<h3>Interpretation</h3>
+<p>
+The observed convergence behavior supports the expected
+fourth-order numerical accuracy of RK4 for the tested
+Kuramoto system and tangent sensitivity equations.
+</p>
+<p>
+These results demonstrate numerical consistency across
+the investigated integration steps. They do not constitute
+a direct comparison against an exact continuous-time solution,
+nor do they establish fourth-order accuracy under every
+possible model parameterization.
+</p>
 </section><section>
-<h2>10 / Limitations and Future Work</h2>
+<h2>11 / Limitations and Future Work</h2>
 <p>
       These findings are based on deterministic initial
       conditions, a finite oscillator population,
@@ -808,7 +880,7 @@ to the continuous-time differential equations.
     </p>
 </section>
 <section id="research-notes">
-<h2>11 / Research Notes</h2>
+<h2>12 / Research Notes</h2>
 <p>
     Detailed numerical methods, experimental results,
     assumptions, and limitations are documented below.
