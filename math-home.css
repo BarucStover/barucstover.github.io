@@ -284,3 +284,33 @@ body.math-home .site-header svg {
   flex-shrink: 0;
 }
 
+
+
+/* Refined mathematical homepage typography */
+
+body.math-home .hero h1 {
+  font-size: clamp(3.1rem, 5vw, 5.3rem);
+  line-height: 1.08;
+}
+
+body.math-home .math-equation-formula {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  overflow-x: auto;
+  overflow-wrap: normal;
+  padding: 8px 0;
+}
+
+body.math-home .math-equation-formula mjx-container {
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  body.math-home .hero h1 {
+    font-size: clamp(2.8rem, 9vw, 3.8rem);
+  }
+
+  body.math-home .math-equation-formula {
+    font-size: 1.05rem;
+  }
+}
