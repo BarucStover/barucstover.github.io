@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Synchronization Dynamics & Parameter Inference</title>
+
+  <meta name="description"
+    content="A computational investigation of Kuramoto synchronization,
+    numerical parameter inference, sensitivity, and observation timing.">
+
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    body {
+      background: #080b10;
+      color: #e5e7eb;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .research-article {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 70px 24px 120px;
+      line-height: 1.8;
+    }
+
+    .research-article h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+      margin: 20px 0;
+    }
+
+    .research-article h2 {
+      font-size: 1.7rem;
+      margin-top: 85px;
+      margin-bottom: 24px;
+      letter-spacing: -0.025em;
+    }
+
+    .research-article p {
+      color: #aeb8c6;
+      font-size: 1.05rem;
+    }
+
+    .research-article .eyebrow {
+      color: #80abc6;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+    }
+
+    .research-article .intro {
+      font-size: 1.2rem;
+      color: #d5dce6;
+      max-width: 760px;
+    }
+
+    .research-article figure {
+      margin: 35px 0 45px;
+    }
+
+    .research-article figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: white;
+      border-radius: 8px;
+    }
+
+    .research-article figcaption {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #8793a5;
+      margin-top: 12px;
+    }
+
+    .research-article .equation {
+      text-align: center;
+      padding: 24px 12px;
+      margin: 30px 0;
+      background: #111821;
+      border: 1px solid #253140;
+      border-radius: 8px;
+      font-family: Georgia, serif;
+      font-size: 1.2rem;
+      overflow-x: auto;
+    }
+
+    .research-article .finding {
+      border-left: 2px solid #7ba9c6;
+      padding: 18px 25px;
+      background: #101720;
+      margin: 35px 0;
+      color: #dce5ef;
+    }
+
+    .research-article a {
+      color: #9dc5df;
+    }
+
+    .research-article .back {
+      display: inline-block;
+      margin-bottom: 45px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .research-article .research-meta {
+      font-size: 0.9rem;
+      color: #8290a2;
+      margin-bottom: 35px;
+    }
+
+    .research-article .article-footer {
+      margin-top: 90px;
+      padding-top: 30px;
+      border-top: 1px solid #27313f;
+    }
+  </style>
+
+<style>
+  .research-notes-panel {
+    margin-top: 28px;
+    border: 1px solid #293545;
+    border-radius: 10px;
+    background: #101720;
+    overflow: hidden;
+  }
+
+  .research-notes-panel summary {
+    padding: 20px 24px;
+    cursor: pointer;
+    color: #dce6f0;
+    font-size: 1rem;
+  }
+
+  .research-notes-panel summary:hover {
+    background: #172130;
+  }
+
+  .research-notes-content {
+    padding: 20px 24px;
+    border-top: 1px solid #293545;
+  }
+
+  .research-notes-content pre {
+    margin: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: #b5c1cf;
+  }
+</style>
+
+
+<style>
+  /* Formatted scientific research notes */
+
+  .research-article .research-notes-content {
+    padding: 28px;
+  }
+
+  .research-article .research-notes-content h1,
+  .research-article .research-notes-content h2,
+  .research-article .research-notes-content h3 {
+    color: #e5edf5;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+  }
+
+  .research-article .research-notes-content h1 {
+    font-size: 1.7rem;
+    margin: 15px 0 25px;
+  }
+
+  .research-article .research-notes-content h2 {
+    font-size: 1.35rem;
+    margin: 45px 0 18px;
+  }
+
+  .research-article .research-notes-content h3 {
+    font-size: 1.1rem;
+    margin: 28px 0 12px;
+  }
+
+  .research-article .research-notes-content p,
+  .research-article .research-notes-content li {
+    color: #afbdcc;
+    font-size: 0.95rem;
+    line-height: 1.85;
+  }
+
+  .research-article .research-notes-content ul,
+  .research-article .research-notes-content ol {
+    padding-left: 22px;
+  }
+
+  .research-article .research-notes-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9rem;
+  }
+
+  .research-article .research-notes-content th,
+  .research-article .research-notes-content td {
+    padding: 12px;
+    border-bottom: 1px solid #293545;
+    text-align: left;
+  }
+
+  .research-article .research-notes-content th {
+    color: #dce6f0;
+  }
+
+  .research-article .research-notes-content pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    background: #0b1119;
+    padding: 18px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.85rem;
+  }
+
+  .research-article .research-notes-content code {
+    color: #a8d5ed;
+  }
+</style>
+
+</head>
+
+<body>
+
+<main class="research-article">
+
+  <a class="back" href="resonant-sphere.html">
+    ← Back to Coupled Oscillators
+  </a>
+
+  <header>
+    <p class="eyebrow">Computational Research / Mathematical Modeling</p>
+
+    <h1>Synchronization Dynamics & Parameter Inference</h1>
+
+    <p class="intro">
+      Investigating how collective synchronization influences
+      the recovery of dynamical parameters from noisy observations.
+    </p>
+
+    <p class="research-meta">
+      Numerical study · Kuramoto oscillator model · 2026
+    </p>
+  </header>
+
+  <section>
+    <h2>01 / Research Question</h2>
+
+    <p>
+      When is a dynamical system most informative about the
+      parameters governing its behavior?
+    </p>
+
+    <p>
+      This investigation examines the relationship between
+      synchronization, coupling strength, numerical sensitivity,
+      and parameter identifiability in a population of
+      coupled phase oscillators.
+    </p>
+  </section>
+
+  <section>
+    <h2>02 / Mathematical Framework</h2>
+
+    <p>
+      The system consists of 72 oscillators governed by
+      the Kuramoto model.
+    </p>
+
+    <div class="equation">
+      dθᵢ/dt = ωᵢ + KR sin(ψ − θᵢ)
+    </div>
+
+    <p>
+      Here, K represents coupling strength, ωᵢ represents
+      the natural frequency of oscillator i, and R describes
+      collective synchronization.
+    </p>
+
+    <div class="equation">
+      R = |(1/N) Σ exp(iθᵢ)|
+    </div>
+
+    <p>
+      The numerical experiments use fourth-order
+      Runge–Kutta integration with deterministic
+      initial conditions and natural frequencies.
+    </p>
+  </section>
+
+  <section>
+    <h2>03 / Synchronization Landscape</h2>
+
+    <p>
+      A parameter sweep across 315 combinations of coupling
+      strength and frequency dispersion reveals distinct
+      regions of low and high coherence.
+    </p>
+
+    <figure>
+      <img
+        src="../figures/kuramoto-synchronization-landscape.png"
+        alt="Heatmap of mean synchronization across coupling strength and frequency dispersion"
+        loading="lazy">
+
+      <figcaption>
+        Figure 1. Mean synchronization over simulation time
+        35–40 for a 72-oscillator population.
+        Each cell represents one simulated parameter combination.
+      </figcaption>
+    </figure>
+
+    <div class="finding">
+      The numerical high-coherence boundary, defined by
+      mean synchronization R ≥ 0.9, was bracketed at
+      1.380 &lt; K/σ ≤ 1.385 under the matched
+      rescaled-time observation protocol.
+    </div>
+
+    <p>
+      This is an operational finite-time threshold for the
+      specified model and observation window, not a
+      universal critical coupling constant.
+    </p>
+  </section>
+
+  <section>
+    <h2>04 / Inverse Parameter Estimation</h2>
+
+    <p>
+      The inverse problem attempts to recover coupling
+      strength from observations of the synchronization
+      trajectory.
+    </p>
+
+    <div class="equation">
+      K̂ = arg min J(K)
+    </div>
+
+    <p>
+      The objective function measures the mean squared
+      difference between observed and predicted
+      synchronization trajectories.
+    </p>
+
+    <figure>
+      <img
+        src="../figures/kuramoto-inference-landscape.png"
+        alt="Parameter estimation loss as a function of coupling strength"
+        loading="lazy">
+
+      <figcaption>
+        Figure 2. Trajectory-fitting loss for synthetic
+        observations generated with K = 1.373.
+        The minimum occurs near the generating parameter.
+      </figcaption>
+    </figure>
+
+    <p>
+      Initial synthetic tests successfully recovered the
+      generating coupling parameter under known initial
+      conditions and known frequency dispersion.
+    </p>
+  </section>
+
+  <section>
+    <h2>05 / Measurement Noise</h2>
+
+    <p>
+      Repeated parameter-recovery experiments were conducted
+      under four levels of synthetic measurement noise.
+    </p>
+
+    <figure>
+      <img
+        src="../figures/kuramoto-inference-robustness.png"
+        alt="Boxplots of coupling estimates at four measurement-noise levels"
+        loading="lazy">
+
+      <figcaption>
+        Figure 3. Distribution of recovered coupling strengths
+        across 120 synthetic trials. Estimation variability
+        increases with measurement noise.
+      </figcaption>
+    </figure>
+
+    <p>
+      The results support accurate recovery under the tested
+      assumptions, while demonstrating that measurement
+      uncertainty influences parameter precision.
+    </p>
+  </section>
+
+  <section>
+    <h2>06 / Observation Timing and Information</h2>
+
+    <p>
+      Numerical sensitivity was evaluated as the local
+      response of synchronization to changes in coupling.
+    </p>
+
+    <div class="equation">
+      S(t;K) = |∂R(t;K)/∂K|
+    </div>
+
+    <p>
+      Across three tested coupling regimes, the sampled time
+      of maximum sensitivity shifted earlier as coupling
+      strength increased.
+    </p>
+
+    <figure>
+      <img
+        src="../figures/kuramoto-peak-time-relationship.png"
+        alt="Peak sensitivity time across 19 coupling strengths"
+        loading="lazy">
+
+      <figcaption>
+        Figure 4. Sampled maximum-sensitivity time across
+        19 coupling strengths. The overall relationship is
+        decreasing but nonmonotonic. Three conditions reach
+        their maximum at the observation endpoint.
+      </figcaption>
+    </figure>
+
+    <figure>
+      <img
+        src="../figures/kuramoto-synchronization-at-peak.png"
+        alt="Synchronization at peak parameter sensitivity compared with final synchronization"
+        loading="lazy">
+
+      <figcaption>
+        Figure 5. Synchronization at the sampled point of
+        maximum coupling sensitivity compared with
+        synchronization at the end of the simulation.
+      </figcaption>
+    </figure>
+
+    <div class="finding">
+      Near-complete synchronization can coincide with
+      low sensitivity to coupling strength, while earlier
+      transient dynamics remain informative.
+    </div>
+
+    <p>
+      The timing of observations therefore matters when
+      attempting to infer dynamical parameters.
+      The most informative window depends on the coupling
+      regime and need not coincide with maximum coherence.
+    </p>
+  </section>
+
+  <section>
+    <h2>07 / Limitations and Future Work</h2>
+
+    <p>
+      These findings are based on deterministic initial
+      conditions, a finite oscillator population,
+      synthetic observations, and specified noise models.
+      Local sensitivity does not by itself establish
+      global parameter identifiability.
+    </p>
+
+    <p>
+      Future investigations will consider joint estimation
+      of coupling strength and frequency dispersion,
+      uncertainty in initial conditions, and observation
+      schedules designed to maximize parameter information.
+    </p>
+
+    <p>
+      This study investigates an abstract dynamical model;
+      no equivalence with a particular biological regulatory
+      mechanism has been established.
+    </p>
+  </section>
+
+  
+<section id="research-notes">
+  <h2>08 / Research Notes</h2>
+
+  <p>
+    Detailed numerical methods, experimental results,
+    assumptions, and limitations are documented below.
+  </p>
+
+  <details class="research-notes-panel">
+    <summary>Read Full Research Notes</summary>
+
+    <div class="research-notes-content">
+<h1>Kuramoto Model: Coherence Boundary and Parameter Inference</h1>
+<h2>Research objectives</h2>
+<ol>
+<li>Estimate the finite-time high-coherence boundary.</li>
+<li>Verify the model's time-rescaling relationship.</li>
+<li>Recover coupling strength from synthetic synchronization observations.</li>
+</ol>
+<h2>Mathematical model</h2>
+<p>For N = 72 oscillators:</p>
+<p>d(theta_i)/dt = omega_i + K R sin(psi - theta_i - alpha)</p>
+<p>R exp(i psi) = (1/N) sum_i exp(i theta_i)</p>
+<p>Natural frequencies are constructed as omega_i = sigma * xi_i.</p>
+<p>For positive sigma, introducing tau = sigma*t and
+lambda = K/sigma gives:</p>
+<p>d(theta_i)/d(tau) = xi_i + lambda R sin(psi - theta_i - alpha)</p>
+<h2>Numerical method</h2>
+<ul>
+<li>Integrator: fourth-order Runge-Kutta</li>
+<li>Oscillators: 72</li>
+<li>Phase lag: 0</li>
+<li>Base numerical time step: 0.04</li>
+<li>Population initialization: deterministic</li>
+<li>Solver: shared kuramoto-core.js</li>
+</ul>
+<h2>Finding 1: Finite-time scaling</h2>
+<p>The previous scaling experiment demonstrated agreement
+of matched-rescaled-time mean synchronization measurements
+to approximately 1e-15 for the tested parameter combinations.</p>
+<p>The original fixed-time comparison produced different
+synchronization values at identical K/sigma ratios.</p>
+<p>This is consistent with the finite observation window
+affecting the apparent coherence boundary.</p>
+<h2>Finding 2: Matched-time coherence boundary</h2>
+<p>Measurement window: rescaled time 35 to 40.</p>
+<p>High-coherence criterion: mean R &gt;= 0.9</p>
+<p>Highest adjacent failing grid value:
+lambda = 1.380000
+mean R = 0.89922872</p>
+<p>First passing grid value:
+lambda = 1.385000
+mean R = 0.90034466</p>
+<p>Grid spacing: 0.005</p>
+<p>Number of later below-threshold grid points:
+0</p>
+<p>Interpretation:
+These are finite-time, finite-population numerical results.
+They do not establish an infinite-population critical coupling.</p>
+<h2>Finding 3: Synthetic parameter inference</h2>
+<p>Known frequency dispersion: 0.7
+True coupling: 1.373
+Estimated coupling: 1.373000
+Absolute estimation error: 0.000000</p>
+<p>Observations: 51
+Observation interval: 0.4
+Observation duration: 20
+Deterministic noise amplitude: 0.003</p>
+<p>Estimator:
+Minimize mean squared error between observed and
+simulated synchronization trajectories.</p>
+<p>Best mean squared error: 4.416487e-6
+Loss evaluated at true K: 4.416487e-6</p>
+<h2>Assumptions and limitations</h2>
+<ul>
+<li>The oscillator model is known and correctly specified.</li>
+<li>Frequency dispersion is assumed known during inference.</li>
+<li>Initial phases and deterministic frequency construction are known.</li>
+<li>Observations are synthetic, not experimental.</li>
+<li>Only synchronization magnitude R(t) is observed.</li>
+<li>The search is a discrete coarse-to-fine grid search.</li>
+<li>Identifiability and uncertainty have not been established.</li>
+<li>The boundary threshold R &gt;= 0.9 is an operational choice.</li>
+<li>Boundary monotonicity outside the tested grid is not established.</li>
+<li>No biological mechanism has been validated by these simulations.</li>
+</ul>
+<h2>Next investigations</h2>
+<ol>
+<li>Plot the parameter-inference loss landscape.</li>
+<li>Estimate uncertainty under independent observation-noise realizations.</li>
+<li>Test identifiability when both K and sigma are unknown.</li>
+<li>Investigate sensitivity to initial-condition uncertainty.</li>
+<li>Compare inference from R(t) with inference from full phase observations.</li>
+</ol>
+<h2>Experiment 10: Information Across Observation Windows</h2>
+<h3>Research question</h3>
+<p>How does the timing of synchronization observations affect
+the accuracy of coupling-strength inference?</p>
+<h3>Experimental design</h3>
+<ul>
+<li>Model: 72 coupled Kuramoto oscillators</li>
+<li>Frequency dispersion: sigma = 0.7</li>
+<li>Phase lag: alpha = 0</li>
+<li>RK4 time step: 0.04</li>
+<li>Coupling strengths: 0.9, 1.373, 2.3</li>
+<li>Observation noise SD: 0.01</li>
+<li>Independent synthetic datasets: 12 per coupling</li>
+<li>Equal-sized early, middle and late windows</li>
+<li>Observations per window: 13</li>
+</ul>
+<h3>Numerical findings</h3>
+<p>K = 0.900
+- Early: mean R = 0.0222, sensitivity = 0.05082
+- Middle: mean R = 0.0992, sensitivity = 0.40049
+- Late: mean R = 0.7729, sensitivity = 0.78454</p>
+<p>K = 1.373
+- Early: mean R = 0.0555, sensitivity = 0.15954
+- Middle: mean R = 0.8633, sensitivity = 1.08469
+- Late: mean R = 0.9591, sensitivity = 0.06891</p>
+<p>K = 2.300
+- Early: mean R = 0.2862, sensitivity = 0.46209
+- Middle: mean R = 0.9866, sensitivity = 0.01245
+- Late: mean R = 0.9866, sensitivity = 0.01213</p>
+<h3>Interpretation</h3>
+<p>Within the tested conditions, the observation window
+with greatest local sensitivity shifts earlier as
+coupling strength increases.</p>
+<p>For strong coupling, late-time synchronization
+approaches saturation and becomes relatively
+insensitive to coupling strength.</p>
+<p>This is consistent with increased uncertainty
+when estimating coupling from late-only measurements.</p>
+<h3>Limitations</h3>
+<ul>
+<li>Results depend on the specified oscillator population.</li>
+<li>Initial conditions and frequency dispersion are known.</li>
+<li>Only three true coupling strengths were tested.</li>
+<li>Twelve noise realizations per condition limit precision.</li>
+<li>Some strong-coupling fits reached optimizer bounds.</li>
+<li>Local sensitivity is not proof of global identifiability.</li>
+<li>The model has not been calibrated to biological observations.</li>
+</ul>
+<h3>Time-resolved analysis</h3>
+<p>Associated files:</p>
+<ul>
+<li>time-resolved-information.js</li>
+<li>kuramoto-time-resolved-information.csv</li>
+<li>plot-time-information.py</li>
+</ul>
+<p>These calculate and visualize synchronization and local
+coupling sensitivity at individual observation times.</p>
+<p>The peak times and their interpretation should be
+recorded after checking the generated numerical output.</p>
+</div>
+  </details>
+</section>
+
+<footer class="article-footer">
+    <p>
+      <a href="resonant-sphere.html">
+        Explore the interactive oscillator model →
+      </a>
+    </p>
+
+    <p>
+      <a href="../index.html">
+        Return to homepage →
+      </a>
+    </p>
+  </footer>
+
+</main>
+
+</body>
+</html>

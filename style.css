@@ -2399,16 +2399,67 @@ body {
   cursor: pointer;
 }
 
-#run-recovery, #run-amplitude-study:hover {
+#run-recovery:hover, #run-amplitude-study:hover {
   background: #d4eae8;
 }
 
-#run-recovery, #run-amplitude-study:focus-visible {
+#run-recovery:focus-visible, #run-amplitude-study:focus-visible {
   outline: 2px solid #17657a;
   outline-offset: 3px;
 }
 
-#run-recovery, #run-amplitude-study:disabled {
+#run-recovery:disabled, #run-amplitude-study:disabled {
   opacity: 0.6;
   cursor: wait;
 }
+
+
+/* Recovery experiment button styling */
+
+#run-recovery:not(:disabled) {
+  background: #e5f3f2;
+  color: #17657a;
+  opacity: 1;
+  cursor: pointer;
+}
+
+#run-recovery:not(:disabled):hover {
+  background: #d4eae8;
+}
+
+#run-recovery:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+#run-recovery:focus-visible {
+  outline: 2px solid #17657a;
+  outline-offset: 3px;
+}
+
+
+/* Computational model navigation */
+
+.model-feature .model-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.model-feature .model-actions .button {
+  margin: 0;
+}
+
+.model-feature .research-button {
+  background: transparent;
+  color: #177ea0;
+  border: 1px solid #177ea0;
+}
+
+.model-feature .research-button:hover {
+  background: #177ea0;
+  color: #ffffff;
+}
+
