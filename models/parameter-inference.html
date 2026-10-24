@@ -465,8 +465,55 @@
     </p>
   </section>
 
-  <section>
-    <h2>07 / Limitations and Future Work</h2>
+  
+<section id="joint-inference">
+  <h2>07 / Joint Parameter Inference</h2>
+
+  <p>
+    Coupling strength and frequency dispersion were estimated
+    simultaneously from synthetic synchronization trajectories.
+    The analysis investigated parameter compensation, numerical
+    identifiability, and optimization reliability.
+  </p>
+
+  <figure>
+    <img
+      src="../figures/kuramoto-joint-inference-landscape.png"
+      alt="Two-dimensional loss landscape for joint coupling and dispersion inference"
+      loading="lazy">
+
+    <figcaption>
+      Figure 6. Trajectory-fitting error across coupling strength
+      and frequency dispersion. The elongated low-loss region
+      indicates partial parameter compensation.
+    </figcaption>
+  </figure>
+
+  <div class="finding">
+    Continuous optimization recovered the generating parameters
+    K = 1.373 and σ = 0.700. Numerical curvature analysis also
+    supports a distinct alternative local minimum near
+    K = 1.578 and σ = 0.939.
+  </div>
+
+  <p>
+    At the generating parameters, the sensitivity matrix was
+    numerically full-rank, with a normalized condition number
+    of approximately 4.08. This supports local first-order
+    distinguishability under the tested observation protocol.
+  </p>
+
+  <p>
+    The existence of an alternative local minimum demonstrates
+    that successful optimizer termination does not necessarily
+    imply recovery of the globally best parameter combination.
+    These findings are specific to the synthetic model and
+    observation conditions investigated.
+  </p>
+</section>
+
+<section>
+    <h2>08 / Limitations and Future Work</h2>
 
     <p>
       These findings are based on deterministic initial
@@ -492,7 +539,7 @@
 
   
 <section id="research-notes">
-  <h2>08 / Research Notes</h2>
+  <h2>09 / Research Notes</h2>
 
   <p>
     Detailed numerical methods, experimental results,
