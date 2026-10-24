@@ -1,15 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Baruc Stover | Molecular Biology & Computational Genomics</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@400;500;600;700&display=swap" rel="stylesheet">
-<meta name="description" content="Baruc Stover is a graduate researcher in biochemistry at the University of Northern British Columbia, studying molecular genetics, microbial evolution, fungal siderophores, and computational genomics.">
-<meta name="author" content="Baruc Stover">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coupled Oscillators | Mathematical Explorations</title>
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Source+Serif+4:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<meta content="Baruc Stover is a graduate researcher in biochemistry at the University of Northern British Columbia, studying molecular genetics, microbial evolution, fungal siderophores, and computational genomics." name="description"/>
+<meta content="Baruc Stover" name="author"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -24,158 +24,70 @@
   }
 }
 </script>
+<link href="math-home.css" rel="stylesheet"/>
+<style>
+/* Minimal mathematical homepage preview */
+#about,
+#research,
+#models {
+    display: none !important;
+}
+
+body.math-home .hero h1 {
+    margin-top: 0;
+}
+</style>
 </head>
+<body class="math-home">
+<header class="site-header">
+<a aria-label="Home" class="brand" href="#home" title="Home"><img alt="" height="34" src="favicon.svg" width="34"/><span><span class="brand-light"></span></span></a>
 
-<body>
-  <header class="site-header">
-    <a class="brand" href="#home">
-      <img src="favicon.svg" alt="" width="34" height="34">
-      <span>BARUC STOVER <span class="brand-light">/ RESEARCH</span></span>
-    </a>
-
-    <nav aria-label="Main navigation">
-      <a href="#about">About</a>
-      <a href="#research">Research</a>
-      <a href="#models">Models</a>
-    </nav>
-  </header>
-
-  <main>
-    <section id="home" class="hero">
-      <div class="hero-content">
-        <p class="eyebrow">MOLECULAR BIOLOGY · EVOLUTIONARY GENOMICS · COMPUTATIONAL INFERENCE</p>
-
-        <h1>Molecular genetics, microbial evolution, and computational biology.</h1>
-
-        <p class="hero-description">My research examines microbial iron acquisition and the evolution of siderophore biosynthetic pathways, integrating molecular genetics, comparative genomics, and computational approaches.</p>
-
-        <a class="model-explore-link"
-           href="models/resonant-sphere.html">
-          Explore Computational Model ↗
-        </a>
-      
-
-        <a href="#research" class="button">Explore Research <span>↗</span></a>
-      </div>
-
-      
-    
-
-    <div class="hero-art" aria-hidden="true">
-        <div class="orb">
-      <canvas id="inference-canvas"
-              aria-hidden="true"></canvas>
-  <div class="resonance-field" aria-hidden="true"></div>
+</header>
+<main>
+<section class="hero" id="home">
+<div class="hero-content">
+<div class="math-intro">
+<h1>Coupled<br/>Oscillators<span class="math-period">.</span></h1>
+<p class="math-description">
+    Exploring synchronization, collective dynamics,
+    and the mathematics of complex systems.
+  </p>
+<div class="math-equation">
+<span class="math-equation-label">
+      KURAMOTO MODEL
+    </span>
+<div class="math-equation-formula">
+      dθ<sub>i</sub>/dt =
+      ω<sub>i</sub> + KR sin(ψ − θ<sub>i</sub>)
+    </div>
 </div>
-        <div class="orb-core"></div>
-        
-        
-      </div>
-    </section>
-
-    
-    
-    <section id="about" class="section academic-about">
-      <div class="academic-about-content">
-        <p class="eyebrow">ACADEMIC BACKGROUND</p>
-
-        <h2>About</h2>
-
-        <p class="academic-about-text">I am an MSc student in Biochemistry at the University of Northern British Columbia, with a BSc in Molecular Biology from San José State University. My research combines experimental genetics and computational genomics to investigate fungal siderophore biosynthesis and the evolutionary history of microbial iron acquisition.</p>
-      </div>
-    </section>
+<div class="math-home-actions">
+<a class="math-primary" href="models/resonant-sphere.html">
+      Explore Model ↗
+    </a>
+<a class="math-secondary" href="models/parameter-inference.html">Read About the Research ↗</a></div>
+</div>
+</div>
+<div aria-hidden="true" class="hero-art">
+<div class="orb">
+<canvas aria-hidden="true" id="inference-canvas"></canvas>
+<div aria-hidden="true" class="resonance-field"></div>
+</div>
+<div class="orb-core"></div>
+</div>
+</section>
 
 <!-- Interactive Research Network -->
-    
 
-
-    <section id="research" class="section section-tinted">
-      <p class="eyebrow">02 / CURRENT RESEARCH</p>
-      <h2>Research projects</h2>
-
-      <div class="research-grid">
-        <article class="research-card">
-          <span class="card-number">01 / MOLECULAR GENETICS</span>
-          <h3>Fungal Siderophore Biosynthesis</h3>
-          <p>
-            Investigating siderophore-associated genes and
-            biosynthetic pathways in Ilyonectria mors-panacis,
-            including computational annotation and CRISPR-based
-            experimental approaches.
-          </p>
-        </article>
-
-        <article class="research-card">
-          <span class="card-number">02 / EVOLUTIONARY GENOMICS</span>
-          <h3>Ancient Microbial Iron Acquisition</h3>
-          <p>
-            Exploring siderophore-associated gene families in
-            permafrost microbial genomes through comparative
-            genomics and evolutionary inference.
-          </p>
-        </article>
-
-        <article class="research-card">
-          <span class="card-number">03 / EXPERIMENTAL EVOLUTION</span>
-          <h3>Bacteriophage Evolution</h3>
-          <p>
-            Research interests in bacteriophage T7 adaptation,
-            genomic variation, and the molecular signatures
-            of experimental evolution.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    
-
-    
-    
-    
-
-
-
-
-
-
-    
-
-    
-  
-    <section id="models" class="section model-feature">
-      <div class="model-feature-inner">
-        <div>
-          <p class="eyebrow">03 / COMPUTATIONAL MODELS</p>
-          <h2>Coupled Oscillators and Collective Dynamics</h2>
-          <p>
-            An interactive Kuramoto-model simulation examining how
-            coupling strength, natural-frequency variation, and
-            phase lag influence collective synchronization.
-          </p>
-          <div class="model-actions">
-            <a class="button" href="models/resonant-sphere.html">
-              Explore Model <span>↗</span>
-            </a>
-
-            <a class="button research-button"
-               href="models/parameter-inference.html">
-              Read Research <span>↗</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <span>© 2026 Baruc Stover · Independent academic website</span>
-    <span>Biology · Computation · Evolution</span>
-  </footer>
-  <script src="notes.js" defer></script>
-  <script src="network.js" defer></script>
-  <script src="hypotheses.js" defer></script>
-  <script src="kuramoto-core.js" defer></script>
-  <script src="inference-sphere.js" defer></script>
+</main>
+<footer>
+<span>© 2026 Baruc Stover · Independent academic website</span>
+<span>Biology · Computation · Evolution</span>
+</footer>
+<script defer="" src="notes.js"></script>
+<script defer="" src="network.js"></script>
+<script defer="" src="hypotheses.js"></script>
+<script defer="" src="kuramoto-core.js"></script>
+<script defer="" src="inference-sphere.js"></script>
 </body>
 </html>

@@ -1,0 +1,286 @@
+/* Mathematical Explorations — homepage prototype */
+
+body.math-home {
+  background: #f8fbfb;
+  color: #183746;
+}
+
+/* HERO */
+
+body.math-home .hero {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.1fr)
+    minmax(0, 0.9fr);
+
+  align-items: center;
+  gap: 3rem;
+
+  min-height: 690px;
+  padding: 85px max(5vw, 30px);
+  overflow: hidden;
+}
+
+body.math-home .hero-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 650px;
+  margin: 0;
+}
+
+body.math-home .math-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  color: #1683a1;
+}
+
+body.math-home .hero h1 {
+  margin: 22px 0 28px;
+  font-family: Georgia, serif;
+
+  font-size: clamp(3.8rem, 6vw, 6.5rem);
+  font-weight: 400;
+
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+}
+
+body.math-home .math-period {
+  color: #48b7c3;
+}
+
+body.math-home .math-description {
+  max-width: 490px;
+  font-size: 1.08rem;
+  line-height: 1.8;
+  color: #557481;
+}
+
+/* EQUATION */
+
+body.math-home .math-equation {
+  margin-top: 34px;
+  padding-top: 20px;
+  border-top: 1px solid #cbdfe2;
+}
+
+body.math-home .math-equation-label {
+  display: block;
+  margin-bottom: 12px;
+
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: #74929b;
+}
+
+body.math-home .math-equation-formula {
+  font-family: Georgia, serif;
+  font-size: clamp(1rem, 1.7vw, 1.35rem);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+/* ACTIONS */
+
+body.math-home .math-home-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 36px;
+}
+
+body.math-home .math-home-actions a {
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+body.math-home .math-primary {
+  padding: 14px 23px;
+  background: #177f9c;
+  color: white;
+  border-radius: 3px;
+}
+
+body.math-home .math-primary:hover {
+  color: white;
+  background: #126983;
+}
+
+body.math-home .math-secondary {
+  border-bottom: 1px solid #7ab4c0;
+  padding-bottom: 5px;
+}
+
+/* EXISTING SCIENTIFIC SPHERE */
+
+body.math-home .hero-art {
+  position: relative;
+  inset: auto;
+  transform: none;
+
+  width: 100%;
+  min-width: 0;
+  height: 450px;
+}
+
+body.math-home .orb {
+  position: absolute;
+  width: min(440px, 100%);
+  height: auto;
+  aspect-ratio: 1;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+/* MATHEMATICAL EXPERIMENTS */
+
+body.math-home .math-experiments {
+  padding: 95px max(5vw, 30px) 110px;
+  background: #ffffff;
+}
+
+body.math-home .math-section-header {
+  max-width: 720px;
+  margin-bottom: 48px;
+}
+
+body.math-home .math-section-header h2 {
+  margin: 15px 0;
+  font-family: Georgia, serif;
+
+  font-size: clamp(2.3rem, 4vw, 3.7rem);
+  font-weight: 400;
+}
+
+body.math-home .math-section-header > p:last-child {
+  max-width: 560px;
+  line-height: 1.8;
+  color: #607b86;
+}
+
+body.math-home .math-experiment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+body.math-home .math-experiment {
+  display: block;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+body.math-home .math-experiment-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  aspect-ratio: 1.35;
+  overflow: hidden;
+
+  background: #f1f7f8;
+  border: 1px solid #e0ebed;
+}
+
+body.math-home .math-experiment-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+body.math-home .math-experiment-number {
+  display: block;
+  margin-top: 20px;
+
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #1683a1;
+}
+
+body.math-home .math-experiment h3 {
+  margin: 10px 0;
+  font-family: Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+body.math-home .math-experiment p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #607b86;
+}
+
+body.math-home .math-experiment:hover h3 {
+  color: #1683a1;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  body.math-home .hero {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 70px 7vw 45px;
+  }
+
+  body.math-home .hero-art {
+    height: 360px;
+  }
+
+  body.math-home .orb {
+    width: min(350px, 85vw);
+  }
+
+  body.math-home .math-experiment-grid {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+
+  body.math-home .math-experiment-image {
+    aspect-ratio: 1.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.math-home .math-experiment *,
+  body.math-home .math-home-actions * {
+    transition: none !important;
+  }
+}
+
+/* Minimal mathematical homepage refinements */
+
+body.math-home .math-home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
+}
+
+body.math-home .math-secondary {
+  color: #177f9c;
+  border-bottom: 1px solid #9bcad2;
+  font-size: 0.85rem;
+  padding-bottom: 5px;
+}
+
+body.math-home .math-secondary:hover {
+  color: #115e75;
+  border-color: #115e75;
+}
+
+/* Keep the hyphae icon prominent */
+body.math-home .site-header img,
+body.math-home .site-header svg {
+  flex-shrink: 0;
+}
+
