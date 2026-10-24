@@ -1435,6 +1435,99 @@ coupling, dispersion, and phase lag are uncertain.
 </p>
 </section>
 
+
+<section id="model-misspecification">
+<h2>16 / Detecting Model Misspecification</h2>
+
+<p>
+Experiment 32 investigates whether noisy observations generated
+by a modified Kuramoto system can be recognized as inconsistent
+with a restricted first-harmonic model family.
+</p>
+
+<h3>Alternative dynamical model</h3>
+
+\[
+\dot{\theta}_i =
+\omega_i +
+K_1R_1\sin(\psi_1-\theta_i-\alpha)
++
+K_2R_2\sin(\psi_2-2\theta_i).
+\]
+
+<p>
+The fitted model fixes K₂ = 0 and searches five possible
+values of K₁. Synthetic observations are generated at
+K₁ = 1.5 using K₂ = 0, 0.2, or 0.5.
+</p>
+
+<h3>Statistical method</h3>
+
+<p>
+Twenty-four collective-angular-velocity measurements
+were sampled over the simulation, with independent
+Gaussian noise of standard deviation 0.10.
+The test statistic is the smallest residual sum of
+squares over the five candidate first-harmonic models.
+</p>
+
+\[
+T(Y)=\min_{K_1\in\mathcal K}
+\sum_k [Y(t_k)-\Omega_0(t_k;K_1)]^2.
+\]
+
+<p>
+A conservative rejection threshold was constructed from
+separate simulated null datasets at each candidate K₁,
+using the maximum of their empirical 95th percentiles.
+The reported detection rates are based on independent
+evaluation simulations.
+</p>
+
+<h3>Results</h3>
+
+<table>
+<thead>
+<tr><th>True K₂</th><th>Mean residual sum of squares</th>
+<th>Detection rate</th></tr>
+</thead>
+<tbody>
+<tr><td>0.00</td><td>0.231058</td><td>4.00%</td></tr>
+<tr><td>0.20</td><td>0.241959</td><td>6.05%</td></tr>
+<tr><td>0.50</td><td>0.357889</td><td>43.70%</td></tr>
+</tbody>
+</table>
+
+<div class="finding">
+Detection increased across the three tested interaction strengths.
+</div>
+
+<h3>Interpretation and limitations</h3>
+
+<p>
+These results evaluate a finite family of synthetic dynamical
+models, not a biological or physical ferrofluid experiment.
+Rejection indicates inconsistency with the tested restricted
+model family under the assumed observation and noise models;
+it does not identify the omitted mechanism uniquely.
+</p>
+
+<p>
+Calibration covers only five candidate K₁ values and uses
+Monte Carlo estimates of the rejection threshold.
+The threshold is conservative across the tested grid,
+not a guarantee for all continuously varying parameters.
+The observed false-alarm and detection rates have finite
+Monte Carlo uncertainty.
+</p>
+
+<p>
+The experiment and numerical results are available in
+<a href="../experiments/experiment32_model_misspecification.py">the
+reproducible Python script</a> and
+<a href="../experiments/experiment32_results.csv">results CSV</a>.
+</p>
+</section>
 <details class="numerical-methods" id="numerical-methods">
 <summary>Numerical Methods</summary>
 <div class="methods-content">
