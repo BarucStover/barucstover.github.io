@@ -684,8 +684,110 @@ The ellipses describe local uncertainty around the
 generating parameters; they do not represent distant
 alternative solutions.
 </p>
+</section><section id="tangent-sensitivity">
+<h2>09 / Analytical Sensitivity Equations &amp; Numerical Validation</h2>
+<p>
+Rather than estimating parameter sensitivities exclusively
+through repeated simulations, we derived and integrated
+sensitivity equations directly from the Kuramoto model.
+</p>
+<h3>Governing equations</h3>
+<p>
+For zero phase lag, the oscillator dynamics can be written as:
+</p>
+<div class="math-display">
+\[
+\frac{d\theta_i}{dt}
+=
+\sigma\nu_i+
+\frac{K}{N}
+\sum_{j=1}^{N}
+\sin(\theta_j-\theta_i)
+\]
+</div>
+<p>
+The phase sensitivity to coupling strength is
+\(a_i=\partial\theta_i/\partial K\).
+Differentiating the governing equation gives:
+</p>
+<div class="math-display">
+\[
+\frac{da_i}{dt}
+=
+\frac{1}{N}\sum_j\sin(\theta_j-\theta_i)
++
+\frac{K}{N}\sum_j
+\cos(\theta_j-\theta_i)(a_j-a_i)
+\]
+</div>
+<p>
+Similarly, the sensitivity to frequency dispersion,
+\(b_i=\partial\theta_i/\partial\sigma\), satisfies:
+</p>
+<div class="math-display">
+\[
+\frac{db_i}{dt}
+=
+\nu_i+
+\frac{K}{N}\sum_j
+\cos(\theta_j-\theta_i)(b_j-b_i)
+\]
+</div>
+<p>
+Together, these equations propagate parameter sensitivities
+alongside the oscillator phases using fourth-order
+Runge–Kutta integration.
+</p>
+<h3>Numerical validation</h3>
+<p>
+At \(N=72\), \(K=1.373\), and \(\sigma=0.700\),
+the tangent-equation sensitivities agreed with
+central finite differences to within approximately
+\(6.6\times10^{-6}\) in the maximum absolute discrepancy
+across the four tested sensitivity series, using
+a finite-difference step of \(10^{-4}\).
+</p>
+<h3>Finite-difference convergence</h3>
+<p>
+Taylor expansion predicts that the central
+finite-difference derivative has second-order
+truncation error:
+</p>
+<div class="math-display">
+\[
+\frac{R(p+h)-R(p-h)}{2h}
+=
+\frac{\partial R}{\partial p}
++
+O(h^2)
+\]
+</div>
+<p>
+The observed convergence orders were approximately two
+across step sizes from \(10^{-2}\) to \(10^{-5}\).
+At \(h=10^{-6}\), the measured orders declined,
+consistent with increasing influence from
+floating-point cancellation.
+</p>
+<figure>
+<img alt="Logarithmic convergence plot comparing finite-difference sensitivities with tangent-equation sensitivities for R1 and R2." loading="lazy" src="../figures/kuramoto-fd-convergence.png" style="width:100%;height:auto;"/>
+<figcaption>
+Central finite-difference convergence for the first-
+and second-harmonic order parameters. All four sensitivity
+series exhibit approximately second-order convergence
+over a substantial range of step sizes.
+</figcaption>
+</figure>
+<h3>Scope of the validation</h3>
+<p>
+The experiment verifies agreement between two numerical
+approaches to parameter sensitivity. Both approaches
+use RK4 integration, so a separate time-step refinement
+study is required to quantify integration error relative
+to the continuous-time differential equations.
+</p>
 </section><section>
-<h2>09 / Limitations and Future Work</h2>
+<h2>10 / Limitations and Future Work</h2>
 <p>
       These findings are based on deterministic initial
       conditions, a finite oscillator population,
@@ -706,7 +808,7 @@ alternative solutions.
     </p>
 </section>
 <section id="research-notes">
-<h2>10 / Research Notes</h2>
+<h2>11 / Research Notes</h2>
 <p>
     Detailed numerical methods, experimental results,
     assumptions, and limitations are documented below.
