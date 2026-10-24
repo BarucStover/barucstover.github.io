@@ -858,8 +858,120 @@ a direct comparison against an exact continuous-time solution,
 nor do they establish fourth-order accuracy under every
 possible model parameterization.
 </p>
+</section><section class="" id="rotational-symmetry">
+<h2>11 / Rotational Symmetry &amp; Structural Observability</h2>
+<p>
+We investigated whether two Kuramoto systems evolving with
+opposite phase orientations can produce identical
+synchronization measurements.
+</p>
+<h3>Phase-reflection symmetry</h3>
+<p>
+For the zero-phase-lag Kuramoto system, consider the transformation:
+</p>
+
+\[
+\theta_i'(t)=-\theta_i(t),
+\qquad
+\omega_i'=-\omega_i
+\]
+
+<p>
+With the same coupling strength, the transformed trajectories
+satisfy the same form of governing equations.
+</p>
+<p>
+For harmonic order parameters,
+</p>
+
+\[
+Z_m(t)=\frac{1}{N}\sum_{j=1}^{N}e^{im\theta_j(t)},
+\]
+
+<p>
+phase reflection implies:
+</p>
+
+\[
+Z_m'(t)=Z_m(t)^*,
+\qquad
+R_m'(t)=R_m(t).
+\]
+
+<p>
+Thus, synchronization magnitudes cannot distinguish
+the original system from its reflected counterpart.
+</p>
+<h3>Experiment 27 — Synchronization measurements</h3>
+<p>
+We compared two deterministic systems of 72 oscillators
+at coupling strength \(K=1.373\) and frequency dispersion
+\(\sigma=0.700\). The second system used the negatives
+of the original initial phases and natural frequencies.
+</p>
+<figure>
+<img alt="Overlapping first- and second-harmonic synchronization trajectories for phase-reflected Kuramoto systems." loading="lazy" src="../figures/kuramoto-rotation-symmetry.png" style="width:100%;height:auto;"/>
+<figcaption>
+Both systems exhibit indistinguishable first- and
+second-harmonic synchronization magnitudes in the
+plotted trajectories.
+</figcaption>
+</figure>
+<h3>Collective angular velocity</h3>
+<p>
+The first-harmonic complex order parameter can be expressed as:
+</p>
+
+\[
+Z_1(t)=R_1(t)e^{i\psi(t)}.
+\]
+
+<p>
+Whenever \(R_1(t)&gt;0\), the collective angular velocity is:
+</p>
+
+\[
+\Omega(t)=\frac{d\psi}{dt}
+=\frac{\operatorname{Im}(Z_1^*\dot Z_1)}{|Z_1|^2}.
+\]
+
+<p>
+Unlike synchronization magnitude, angular velocity
+changes sign under phase reflection:
+</p>
+
+\[
+\Omega'(t)=-\Omega(t).
+\]
+
+<figure>
+<img alt="Opposite collective angular velocities in two reflected Kuramoto systems." loading="lazy" src="../figures/kuramoto-collective-rotation.png" style="width:100%;height:auto;"/>
+<figcaption>
+The collective angular velocities of the reflected
+systems have equal magnitudes and opposite signs
+at corresponding observation times.
+</figcaption>
+</figure>
+<h3>Implications for inverse inference</h3>
+<p>
+Measurements consisting only of \(R_1(t)\) and \(R_2(t)\)
+cannot distinguish phase-reflected systems when both
+the phases and natural frequencies are transformed.
+This is a structural observability limitation:
+information about rotational orientation has been
+discarded by the magnitude-only measurement process.
+</p>
+<p>
+Collective phase evolution can distinguish the two
+reflected systems whenever the collective angular
+velocity is defined and nonzero.
+This symmetry does not, by itself, demonstrate
+non-identifiability of coupling strength and positive
+frequency dispersion within our original restricted
+two-parameter inference model.
+</p>
 </section><section>
-<h2>11 / Limitations and Future Work</h2>
+<h2>12 / Limitations and Future Work</h2>
 <p>
       These findings are based on deterministic initial
       conditions, a finite oscillator population,
@@ -880,7 +992,7 @@ possible model parameterization.
     </p>
 </section>
 <section id="research-notes">
-<h2>12 / Research Notes</h2>
+<h2>13 / Research Notes</h2>
 <p>
     Detailed numerical methods, experimental results,
     assumptions, and limitations are documented below.
