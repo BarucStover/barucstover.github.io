@@ -1,18 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Synchronization Dynamics & Parameter Inference</title>
-
-  <meta name="description"
-    content="A computational investigation of Kuramoto synchronization,
-    numerical parameter inference, sensitivity, and observation timing.">
-
-  <link rel="stylesheet" href="../style.css">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Synchronization Dynamics &amp; Parameter Inference</title>
+<meta content="A computational investigation of Kuramoto synchronization,
+    numerical parameter inference, sensitivity, and observation timing." name="description"/>
+<link href="../style.css" rel="stylesheet"/>
+<style>
     body {
       background: #080b10;
       color: #e5e7eb;
@@ -120,7 +116,6 @@
       border-top: 1px solid #27313f;
     }
   </style>
-
 <style>
   .research-notes-panel {
     margin-top: 28px;
@@ -156,8 +151,6 @@
     color: #b5c1cf;
   }
 </style>
-
-
 <style>
   /* Formatted scientific research notes */
 
@@ -232,13 +225,9 @@
     color: #a8d5ed;
   }
 </style>
-
-
 <!-- Mathematical typesetting: pinned MathJax release -->
-<script defer
-  src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-chtml.js">
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-chtml.js">
 </script>
-
 <style>
   /* Mathematical notation */
   .research-article .equation {
@@ -253,8 +242,6 @@
     max-width: 100%;
   }
 </style>
-
-
 <style>
 /* Research article refinement v1 */
 
@@ -367,8 +354,6 @@
   }
 }
 </style>
-
-
 <style>
 /* Numerical Methods */
 
@@ -404,278 +389,207 @@
   overflow-x: auto;
 }
 </style>
-
 </head>
-
 <body>
-
 <main class="research-article">
-
-  <a class="back" href="resonant-sphere.html">
+<a class="back" href="resonant-sphere.html">
     ← Back to Coupled Oscillators
   </a>
-
-  <header>
-    <p class="eyebrow">Computational Research / Mathematical Modeling</p>
-
-    <h1>Synchronization Dynamics & Parameter Inference</h1>
-
-    <p class="intro">
+<header>
+<p class="eyebrow">Computational Research / Mathematical Modeling</p>
+<h1>Synchronization Dynamics &amp; Parameter Inference</h1>
+<p class="intro">
       Investigating how collective synchronization influences
       the recovery of dynamical parameters from noisy observations.
     </p>
-
-    <p class="research-meta">
+<p class="research-meta">
       Numerical study · Kuramoto oscillator model · 2026
     </p>
-  </header>
-
-  <section>
-    <h2>01 / Research Question</h2>
-
-    <p>
+</header>
+<section>
+<h2>01 / Research Question</h2>
+<p>
       When is a dynamical system most informative about the
       parameters governing its behavior?
     </p>
-
-    <p>
+<p>
       This investigation examines the relationship between
       synchronization, coupling strength, numerical sensitivity,
       and parameter identifiability in a population of
       coupled phase oscillators.
     </p>
-  </section>
-
-  <section>
-    <h2>02 / Mathematical Framework</h2>
-
-    <p>
+</section>
+<section>
+<h2>02 / Mathematical Framework</h2>
+<p>
       The system consists of 72 oscillators governed by
       the Kuramoto model.
     </p>
-
-    <div class="equation">
+<div class="equation">
       \[\frac{d\theta_i}{dt}=\omega_i+KR\sin(\psi-\theta_i)\]
     </div>
-
-    <p>
+<p>
       Here, K represents coupling strength, ωᵢ represents
       the natural frequency of oscillator i, and R describes
       collective synchronization.
     </p>
-
-    <div class="equation">
+<div class="equation">
       \[R(t)=\left|\frac{1}{N}\sum_{j=1}^{N}e^{i\theta_j(t)}\right|\]
     </div>
-
-    <p>
+<p>
       The numerical experiments use fourth-order
       Runge–Kutta integration with deterministic
       initial conditions and natural frequencies.
     </p>
-  </section>
-
-  <section>
-    <h2>03 / Synchronization Landscape</h2>
-
-    <p>
+</section>
+<section>
+<h2>03 / Synchronization Landscape</h2>
+<p>
       A parameter sweep across 315 combinations of coupling
       strength and frequency dispersion reveals distinct
       regions of low and high coherence.
     </p>
-
-    <figure>
-      <img
-        src="../figures/kuramoto-synchronization-landscape.png"
-        alt="Heatmap of mean synchronization across coupling strength and frequency dispersion"
-        loading="lazy">
-
-      <figcaption>
+<figure>
+<img alt="Heatmap of mean synchronization across coupling strength and frequency dispersion" loading="lazy" src="../figures/kuramoto-synchronization-landscape.png"/>
+<figcaption>
         Figure 1. Mean synchronization over simulation time
         35–40 for a 72-oscillator population.
         Each cell represents one simulated parameter combination.
       </figcaption>
-    </figure>
-
-    <div class="finding">
+</figure>
+<div class="finding">
       The numerical high-coherence boundary, defined by
       mean synchronization R ≥ 0.9, was bracketed at
       1.380 &lt; K/σ ≤ 1.385 under the matched
       rescaled-time observation protocol.
     </div>
-
-    <p>
+<p>
       This is an operational finite-time threshold for the
       specified model and observation window, not a
       universal critical coupling constant.
     </p>
-  </section>
-
-  <section>
-    <h2>04 / Inverse Parameter Estimation</h2>
-
-    <p>
+</section>
+<section>
+<h2>04 / Inverse Parameter Estimation</h2>
+<p>
       The inverse problem attempts to recover coupling
       strength from observations of the synchronization
       trajectory.
     </p>
-
-    <div class="equation">
+<div class="equation">
       \[\widehat K=\underset{K}{\arg\min}\,J(K)\]
     </div>
-
-    <p>
+<p>
       The objective function measures the mean squared
       difference between observed and predicted
       synchronization trajectories.
     </p>
-
-    <figure>
-      <img
-        src="../figures/kuramoto-inference-landscape.png"
-        alt="Parameter estimation loss as a function of coupling strength"
-        loading="lazy">
-
-      <figcaption>
+<figure>
+<img alt="Parameter estimation loss as a function of coupling strength" loading="lazy" src="../figures/kuramoto-inference-landscape.png"/>
+<figcaption>
         Figure 2. Trajectory-fitting loss for synthetic
         observations generated with K = 1.373.
         The minimum occurs near the generating parameter.
       </figcaption>
-    </figure>
-
-    <p>
+</figure>
+<p>
       Initial synthetic tests successfully recovered the
       generating coupling parameter under known initial
       conditions and known frequency dispersion.
     </p>
-  </section>
-
-  <section>
-    <h2>05 / Measurement Noise</h2>
-
-    <p>
+</section>
+<section>
+<h2>05 / Measurement Noise</h2>
+<p>
       Repeated parameter-recovery experiments were conducted
       under four levels of synthetic measurement noise.
     </p>
-
-    <figure>
-      <img
-        src="../figures/kuramoto-inference-robustness.png"
-        alt="Boxplots of coupling estimates at four measurement-noise levels"
-        loading="lazy">
-
-      <figcaption>
+<figure>
+<img alt="Boxplots of coupling estimates at four measurement-noise levels" loading="lazy" src="../figures/kuramoto-inference-robustness.png"/>
+<figcaption>
         Figure 3. Distribution of recovered coupling strengths
         across 120 synthetic trials. Estimation variability
         increases with measurement noise.
       </figcaption>
-    </figure>
-
-    <p>
+</figure>
+<p>
       The results support accurate recovery under the tested
       assumptions, while demonstrating that measurement
       uncertainty influences parameter precision.
     </p>
-  </section>
-
-  <section>
-    <h2>06 / Observation Timing and Information</h2>
-
-    <p>
+</section>
+<section>
+<h2>06 / Observation Timing and Information</h2>
+<p>
       Numerical sensitivity was evaluated as the local
       response of synchronization to changes in coupling.
     </p>
-
-    <div class="equation">
+<div class="equation">
       \[S(t;K)=\left|\frac{\partial R(t;K)}{\partial K}\right|\]
     </div>
-
-    <p>
+<p>
       Across three tested coupling regimes, the sampled time
       of maximum sensitivity shifted earlier as coupling
       strength increased.
     </p>
-
-    <figure>
-      <img
-        src="../figures/kuramoto-peak-time-relationship.png"
-        alt="Peak sensitivity time across 19 coupling strengths"
-        loading="lazy">
-
-      <figcaption>
+<figure>
+<img alt="Peak sensitivity time across 19 coupling strengths" loading="lazy" src="../figures/kuramoto-peak-time-relationship.png"/>
+<figcaption>
         Figure 4. Sampled maximum-sensitivity time across
         19 coupling strengths. The overall relationship is
         decreasing but nonmonotonic. Three conditions reach
         their maximum at the observation endpoint.
       </figcaption>
-    </figure>
-
-    <figure>
-      <img
-        src="../figures/kuramoto-synchronization-at-peak.png"
-        alt="Synchronization at peak parameter sensitivity compared with final synchronization"
-        loading="lazy">
-
-      <figcaption>
+</figure>
+<figure>
+<img alt="Synchronization at peak parameter sensitivity compared with final synchronization" loading="lazy" src="../figures/kuramoto-synchronization-at-peak.png"/>
+<figcaption>
         Figure 5. Synchronization at the sampled point of
         maximum coupling sensitivity compared with
         synchronization at the end of the simulation.
       </figcaption>
-    </figure>
-
-    <div class="finding">
+</figure>
+<div class="finding">
       Near-complete synchronization can coincide with
       low sensitivity to coupling strength, while earlier
       transient dynamics remain informative.
     </div>
-
-    <p>
+<p>
       The timing of observations therefore matters when
       attempting to infer dynamical parameters.
       The most informative window depends on the coupling
       regime and need not coincide with maximum coherence.
     </p>
-  </section>
-
-  
+</section>
 <section id="joint-inference">
-  <h2>07 / Joint Parameter Inference</h2>
-
-  <p>
+<h2>07 / Joint Parameter Inference</h2>
+<p>
     Coupling strength and frequency dispersion were estimated
     simultaneously from synthetic synchronization trajectories.
     The analysis investigated parameter compensation, numerical
     identifiability, and optimization reliability.
   </p>
-
-  <figure>
-    <img
-      src="../figures/kuramoto-joint-inference-landscape.png"
-      alt="Two-dimensional loss landscape for joint coupling and dispersion inference"
-      loading="lazy">
-
-    <figcaption>
+<figure>
+<img alt="Two-dimensional loss landscape for joint coupling and dispersion inference" loading="lazy" src="../figures/kuramoto-joint-inference-landscape.png"/>
+<figcaption>
       Figure 6. Trajectory-fitting error across coupling strength
       and frequency dispersion. The elongated low-loss region
       indicates partial parameter compensation.
     </figcaption>
-  </figure>
-
-  <div class="finding">
+</figure>
+<div class="finding">
     Continuous optimization recovered the generating parameters
     K = 1.373 and σ = 0.700. Numerical curvature analysis also
     supports a distinct alternative local minimum near
     K = 1.578 and σ = 0.939.
   </div>
-
-  <p>
+<p>
     At the generating parameters, the sensitivity matrix was
     numerically full-rank, with a normalized condition number
     of approximately 4.08. This supports local first-order
     distinguishability under the tested observation protocol.
   </p>
-
-  <p>
+<p>
     The existence of an alternative local minimum demonstrates
     that successful optimizer termination does not necessarily
     imply recovery of the globally best parameter combination.
@@ -683,45 +597,123 @@
     observation conditions investigated.
   </p>
 </section>
-
-<section>
-    <h2>08 / Limitations and Future Work</h2>
-
-    <p>
+<section id="parameter-uncertainty">
+<h2>08 / Parameter Sensitivity &amp; Uncertainty</h2>
+<p>
+How precisely can coupling strength and frequency dispersion
+be recovered from synchronization measurements?
+To investigate this question, we compared first-harmonic
+coherence, second-harmonic coherence, and their combined
+observations.
+</p>
+<h3>Two observables</h3>
+<p>
+The first-harmonic order parameter describes collective phase
+coherence. The second harmonic captures a different aspect
+of phase organization.
+</p>
+<div class="math-display">
+\[
+R_1(t)=\left|\frac{1}{N}
+\sum_{j=1}^{N}e^{i\theta_j(t)}\right|
+\]
+\[
+R_2(t)=\left|\frac{1}{N}
+\sum_{j=1}^{N}e^{2i\theta_j(t)}\right|
+\]
+</div>
+<p>
+In our numerical experiments, the second harmonic provided
+stronger local parameter sensitivities around the generating
+parameters K = 1.373 and sigma = 0.700.
+</p>
+<h3>Local parameter sensitivity</h3>
+<p>
+We calculated numerical derivatives of both observables with
+respect to coupling strength and frequency dispersion.
+These derivatives form sensitivity matrices that describe
+how small parameter changes affect the observations.
+</p>
+<table>
+<thead>
+<tr>
+<th>Observable</th>
+<th>Smallest singular value</th>
+<th>Condition number</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>R1</td><td>1.1783</td><td>4.68</td></tr>
+<tr><td>R2</td><td>3.0781</td><td>3.25</td></tr>
+<tr><td>Combined</td><td>3.4773</td><td>3.27</td></tr>
+</tbody>
+</table>
+<h3>Visualizing parameter uncertainty</h3>
+<p>
+Under a local linear approximation, the sensitivity
+matrix determines the approximate covariance of inferred
+parameters:
+</p>
+<div class="math-display">
+\[
+\Sigma_{\theta}\approx s^2(S^TS)^{-1}
+\]
+</div>
+<figure>
+<img alt="Comparison of local parameter uncertainty ellipses for R1, R2, and combined measurements." loading="lazy" src="../figures/kuramoto-uncertainty-ellipses.png" style="width:100%;height:auto;"/>
+<figcaption>
+Approximate 95% joint parameter-uncertainty ellipses.
+The generating parameters are K = 1.373 and sigma = 0.700.
+The calculation assumes independent Gaussian measurement
+errors with standard deviation 0.01 for each observation.
+</figcaption>
+</figure>
+<p>
+The combined observations produce the smallest local
+uncertainty ellipse. Compared with R2 alone, the
+predicted ellipse area decreases by approximately 22%
+under the assumed noise model.
+</p>
+<h3>Local precision versus global ambiguity</h3>
+<p>
+Improved local sensitivity does not guarantee globally
+unique parameter recovery. Our optimization experiments
+identified competing parameter solutions and demonstrated
+that numerical initialization can strongly affect recovery.
+The ellipses describe local uncertainty around the
+generating parameters; they do not represent distant
+alternative solutions.
+</p>
+</section><section>
+<h2>09 / Limitations and Future Work</h2>
+<p>
       These findings are based on deterministic initial
       conditions, a finite oscillator population,
       synthetic observations, and specified noise models.
       Local sensitivity does not by itself establish
       global parameter identifiability.
     </p>
-
-    <p>
+<p>
       Future investigations will consider joint estimation
       of coupling strength and frequency dispersion,
       uncertainty in initial conditions, and observation
       schedules designed to maximize parameter information.
     </p>
-
-    <p>
+<p>
       This study investigates an abstract dynamical model;
       no equivalence with a particular biological regulatory
       mechanism has been established.
     </p>
-  </section>
-
-  
+</section>
 <section id="research-notes">
-  <h2>09 / Research Notes</h2>
-
-  <p>
+<h2>10 / Research Notes</h2>
+<p>
     Detailed numerical methods, experimental results,
     assumptions, and limitations are documented below.
   </p>
-
-  <details class="research-notes-panel">
-    <summary>Read Full Research Notes</summary>
-
-    <div class="research-notes-content">
+<details class="research-notes-panel">
+<summary>Read Full Research Notes</summary>
+<div class="research-notes-content">
 <h1>Kuramoto Model: Coherence Boundary and Parameter Inference</h1>
 <h2>Research objectives</h2>
 <ol>
@@ -864,62 +856,46 @@ coupling sensitivity at individual observation times.</p>
 <p>The peak times and their interpretation should be
 recorded after checking the generated numerical output.</p>
 </div>
-  </details>
+</details>
 </section>
-
-
 <section id="observation-design">
-  <h2>Observation Timing &amp; Model Discrimination</h2>
-
-  <p>
+<h2>Observation Timing &amp; Model Discrimination</h2>
+<p>
     Two parameter combinations were compared to investigate
     when synchronization observations most effectively
     distinguish competing dynamical models.
   </p>
-
-  <figure>
-    <img
-      src="../figures/kuramoto-optimal-observation.png"
-      alt="Synchronization trajectories and their absolute difference across simulation time"
-      loading="lazy">
-
-    <figcaption>
+<figure>
+<img alt="Synchronization trajectories and their absolute difference across simulation time" loading="lazy" src="../figures/kuramoto-optimal-observation.png"/>
+<figcaption>
       Figure 7. Predicted synchronization trajectories for
       two competing parameter combinations and their
       absolute difference. The maximum sampled difference
       within the original fitting interval occurs at t = 7.2.
     </figcaption>
-  </figure>
-
-  <div class="finding">
+</figure>
+<div class="finding">
     The largest sampled model difference occurs during
     the synchronization transition at t = 7.2,
     where |R₁ − R₂| ≈ 0.02978.
   </div>
-
-  <p>
+<p>
     Under an independent Gaussian measurement-noise model,
     observations collected when predicted trajectories
     diverge provide greater expected discrimination
     between these two specified parameter combinations.
   </p>
-
-  <p>
+<p>
     This result motivates model-guided observation timing.
     The selected time is specific to the models, noise
     assumptions, and temporal sampling resolution.
   </p>
 </section>
-
-
-<details id="numerical-methods" class="numerical-methods">
-  <summary>Numerical Methods</summary>
-
-  <div class="methods-content">
-
-    <h3>Model and initialization</h3>
-
-    <p>
+<details class="numerical-methods" id="numerical-methods">
+<summary>Numerical Methods</summary>
+<div class="methods-content">
+<h3>Model and initialization</h3>
+<p>
       Simulations used a finite population of 72 globally
       coupled Kuramoto oscillators, with zero phase lag.
       Initial phases and intrinsic frequencies were generated
@@ -948,8 +924,7 @@ recorded after checking the generated numerical output.</p>
     \]
 
     <h3>Numerical integration</h3>
-
-    <p>
+<p>
       Oscillator trajectories were integrated using the
       classical fourth-order Runge–Kutta method (RK4).
       The joint-inference experiments used a time step
@@ -957,10 +932,8 @@ recorded after checking the generated numerical output.</p>
       integration methods and evaluated convergence
       under time-step refinement.
     </p>
-
-    <h3>Inverse parameter estimation</h3>
-
-    <p>
+<h3>Inverse parameter estimation</h3>
+<p>
       Synthetic observations were generated from known
       coupling and dispersion parameters. Candidate parameter
       combinations were evaluated by comparing their predicted
@@ -984,27 +957,22 @@ recorded after checking the generated numerical output.</p>
       were evaluated using numerical gradient and Hessian
       calculations.
     </p>
-
-    <h3>Identifiability and sensitivity</h3>
-
-    <p>
+<h3>Identifiability and sensitivity</h3>
+<p>
       A finite-difference sensitivity matrix was constructed
       from the derivatives of predicted synchronization
       measurements with respect to coupling and dispersion.
       Its singular values were used to assess local
       first-order parameter distinguishability.
     </p>
-
-    <p>
+<p>
       Positive Hessian eigenvalues and small numerical
       gradients supported the classification of two
       distinct local minima. This does not establish
       global uniqueness or complete identifiability.
     </p>
-
-    <h3>Observation timing</h3>
-
-    <p>
+<h3>Observation timing</h3>
+<p>
       Predicted synchronization trajectories from the
       generating and alternative parameter combinations
       were compared at discrete observation times.
@@ -1032,8 +1000,7 @@ recorded after checking the generated numerical output.</p>
     \]
 
     <h3>Scope and limitations</h3>
-
-    <p>
+<p>
       Results concern a deterministic, finite-population
       Kuramoto model with synthetic observations.
       Identifiability conclusions depend on the
@@ -1042,25 +1009,20 @@ recorded after checking the generated numerical output.</p>
       interpretations require independently justified
       mechanistic models and experimental validation.
     </p>
-
-  </div>
+</div>
 </details>
-
 <footer class="article-footer">
-    <p>
-      <a href="resonant-sphere.html">
+<p>
+<a href="resonant-sphere.html">
         Explore the interactive oscillator model →
       </a>
-    </p>
-
-    <p>
-      <a href="../index.html">
+</p>
+<p>
+<a href="../index.html">
         Return to homepage →
       </a>
-    </p>
-  </footer>
-
+</p>
+</footer>
 </main>
-
 </body>
 </html>
