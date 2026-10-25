@@ -139,7 +139,18 @@ const heroOrder =
   ].join(";");
 
   activityBadge.textContent = "MODEL ACTIVITY · Waiting for Explore";
-  canvas.insertAdjacentElement("afterend", activityBadge);
+  // MOBILE_LIVING_NETWORK_V8
+  // Place activity status inside the hero artwork container,
+  // outside the sphere itself.
+  activityBadge.classList.add("live-activity-badge");
+
+  const activityHost = canvas.closest(".hero-art");
+
+  if (activityHost) {
+    activityHost.appendChild(activityBadge);
+  } else {
+    canvas.insertAdjacentElement("afterend", activityBadge);
+  }
 
   function showActivity(message, emphasize = false) {
     activityBadge.textContent = message;
