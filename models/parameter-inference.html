@@ -1285,7 +1285,336 @@ The experiment and numerical results are available in
 reproducible Python script</a> and
 <a href="../experiments/experiment32_results.csv">results CSV</a>.
 </p>
-</div></details></section><details class="numerical-methods" id="numerical-methods">
+</div></details></section><section id="driven-dynamics"><h2>06 / Driven Dynamics &amp; Active Observability</h2>
+    <details class="numerical-methods">
+      <summary>Research Question and Mathematical Framework</summary>
+      <div class="methods-content">
+        
+<h3>Research question</h3>
+<p>
+How can controlled interventions reveal differences between
+dynamical states that are difficult to distinguish through
+passive observations alone?
+</p>
+
+<h3>Driven Kuramoto–Sakaguchi model</h3>
+
+<div class="equation">
+\[
+\frac{d\theta_i}{dt}
+=
+\sigma\nu_i+
+K(t)R_1\sin(\psi_1-\theta_i-\alpha)
+\]
+</div>
+
+<div class="equation">
+\[
+Z_1(t)=\frac{1}{N}\sum_{j=1}^{N}e^{i\theta_j(t)},
+\qquad
+R_1(t)=|Z_1(t)|
+\]
+</div>
+
+<p>
+The experiments use 72 oscillators. The driven simulations
+include a phase lag of \(\alpha=0.35\), and examine how
+time-dependent coupling changes collective behavior.
+</p>
+
+<div class="equation">
+\[
+K(t)=K_0+A\sin(2\pi ft+\phi)
+\]
+</div>
+
+<p>
+Here \(f\) is forcing frequency, \(\phi\) is starting phase,
+and \(A\) is forcing amplitude.
+Experiments 39–40C use \(K_0=2.5\), \(A=1\),
+and frequency dispersion \(\sigma=2.5\).
+</p>
+
+      </div>
+    </details>
+    
+    <details class="numerical-methods">
+      <summary>Driven Synchronization and Averaging</summary>
+      <div class="methods-content">
+        
+<h3>Experiments 33–34B</h3>
+
+<p>
+Periodic switching alternates the system between
+coupling-dominated and dispersion-dominated dynamics.
+The rapidly switched trajectories were compared with
+trajectories evolving under averaged parameters.
+</p>
+
+<div class="finding">
+For the tested finite observation intervals, faster
+switching produced closer agreement with the averaged
+system.
+</div>
+
+<p>
+In Experiment 34B, the RMS difference in first-harmonic
+synchronization decreased from approximately 0.0736
+to 0.0080 across the tested switching periods at the
+finest reported integration step.
+</p>
+
+<p>
+This supports finite-time averaging behavior for the
+studied configurations. It does not establish a general
+averaging theorem or demonstrate resonance.
+</p>
+
+      </div>
+    </details>
+    
+    <details class="numerical-methods">
+      <summary>Dynamical Memory and Active Observability</summary>
+      <div class="methods-content">
+        
+<h3>Hidden-state information</h3>
+
+<p>
+Distinct preparation histories can produce similar
+collective synchronization measurements while preserving
+different underlying oscillator phase configurations.
+</p>
+
+<p>
+Experiments 35–36 investigated whether a controlled
+coupling pulse could expose these hidden differences.
+Experiments 37–38 examined intervention strength,
+duration, cost, and population variability.
+</p>
+
+<h3>Statistical distinguishability</h3>
+
+<div class="equation">
+\[
+D^2 =
+\frac{1}{s^2}
+\sum_{k=1}^{n}
+\left[
+R_A(t_k)-R_B(t_k)
+\right]^2
+\]
+</div>
+
+<p>
+The measurement noise is modeled as independent
+Gaussian noise with standard deviation \(s\).
+Larger \(D^2\) means stronger separation between
+the two specified expected observation trajectories.
+</p>
+
+<div class="finding">
+A large change in synchronization is not necessarily
+a large increase in information about the hidden state.
+</div>
+
+<p>
+The initial active-observability example involved
+a selected pair of histories. Subsequent population
+experiments showed substantial variation in the
+benefit of different interventions.
+</p>
+
+      </div>
+    </details>
+    
+    <details class="numerical-methods">
+      <summary>Frequency and Phase Dependence</summary>
+      <div class="methods-content">
+        
+<h3>Experiments 39–40</h3>
+
+<p>
+We investigated the information gained by sinusoidally
+modulating coupling strength.
+</p>
+
+<div class="equation">
+\[
+\Delta D^2(f,\phi,T)
+=
+D^2_{\mathrm{forced}}(f,\phi,T)
+-
+D^2_{\mathrm{passive}}(T)
+\]
+</div>
+
+<p>
+Positive values indicate improved distinguishability
+relative to passive measurement. Negative values indicate
+reduced distinguishability.
+</p>
+
+<figure>
+<img src="../figures/experiment40_20261024-202038-440681_heatmap.png" loading="lazy"
+alt="Information gain across forcing frequency and phase">
+<figcaption>
+Experiment 40. Mean information gain as a function
+of forcing frequency and starting phase, across six
+populations and three probing times per population.
+</figcaption>
+</figure>
+
+<div class="finding">
+Information gain depends on both forcing frequency
+and starting phase. The same frequency can improve
+or reduce distinguishability under different phases.
+</div>
+
+<p>
+The observed frequency dependence is not sufficient
+to demonstrate physical resonance.
+</p>
+
+      </div>
+    </details>
+    
+    <details class="numerical-methods">
+      <summary>Numerical Robustness and Observation Time</summary>
+      <div class="methods-content">
+        
+<h3>Experiment 40B — Step-size validation</h3>
+
+<p>
+Targeted forcing conditions were evaluated with RK4
+time steps \(0.02\), \(0.01\), and \(0.005\).
+The largest observed spread in mean information gain
+was approximately \(5.09\times10^{-6}\).
+</p>
+
+<h3>Observation-window dependence</h3>
+
+<table>
+<thead>
+<tr>
+<th>Forcing condition</th>
+<th>T = 2.4</th>
+<th>T = 4.8</th>
+<th>T = 9.6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\(f=0.10,\ \phi=0\)</td>
+<td>+8.06</td><td>+15.36</td><td>−3.24</td>
+</tr>
+<tr>
+<td>\(f=0.10,\ \phi=\pi\)</td>
+<td>−4.84</td><td>−15.20</td><td>+8.47</td>
+</tr>
+<tr>
+<td>\(f=0.25,\ \phi=\pi/2\)</td>
+<td>+1.09</td><td>+10.08</td><td>+11.55</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Values are mean changes in squared statistical
+separation at the finest tested integration step.
+</p>
+
+<h3>Experiment 40C — Cumulative information</h3>
+
+<div class="equation">
+\[
+\Delta D^2(T)
+=
+\frac{1}{s^2}
+\sum_{t_k\leq T}
+\left[
+(\Delta R_F(t_k))^2
+-
+(\Delta R_P(t_k))^2
+\right]
+\]
+</div>
+
+<p>
+Here \(\Delta R_F\) and \(\Delta R_P\) denote the
+differences between the two preparation histories
+under forced and passive dynamics, respectively.
+</p>
+
+<figure>
+<img src="../figures/experiment40c_20261024-203143-231841_accumulation.png" loading="lazy"
+alt="Time-resolved cumulative information gain">
+<figcaption>
+Experiment 40C. Cumulative information gain over two
+forcing periods. Thin lines show population-level means
+over three probing times; black lines show the mean
+across populations.
+</figcaption>
+</figure>
+
+<div class="finding">
+An intervention that initially improves distinguishability
+can become less informative than passive observation
+over a longer measurement interval.
+</div>
+
+      </div>
+    </details>
+    
+    <details class="numerical-methods">
+      <summary>Interpretation, Validation, and Limitations</summary>
+      <div class="methods-content">
+        
+<h3>What the experiments support</h3>
+
+<p>
+The numerical experiments demonstrate that controlled
+forcing can alter the distinguishability of two specified
+oscillator histories. The effect depends on intervention
+frequency, starting phase, measurement duration, and
+the population under investigation.
+</p>
+
+<h3>Validation</h3>
+
+<p>
+Experiment 40B shows strong numerical stability under
+the tested integration-step refinements. This does not
+independently verify every implementation detail or
+establish the formal convergence order for these runs.
+</p>
+
+<h3>Limitations</h3>
+
+<p>
+The frequency–phase analyses used six independently
+initialized populations and three probing times per
+population. Probing times from a common population
+are not independent population realizations.
+</p>
+
+<p>
+The statistical analysis assumes known competing
+trajectories and independent Gaussian observation noise.
+Resonance, unknown-parameter inference, and
+generalization to arbitrary populations remain open.
+</p>
+
+<h3>Conclusion</h3>
+
+<div class="finding">
+The information value of a dynamical intervention
+is a property of the complete forcing and measurement
+protocol, not forcing strength or frequency alone.
+</div>
+
+      </div>
+    </details>
+    </section><details class="numerical-methods" id="numerical-methods">
 <summary>Numerical Methods</summary>
 <div class="methods-content">
 <h3>Model and initialization</h3>
