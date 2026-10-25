@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Living Network — Realtime Test</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #f4fafb;
+      color: #153745;
+      font: 16px/1.6 system-ui, sans-serif;
+    }
+
+    main {
+      width: min(540px, calc(100% - 36px));
+      margin: 50px auto;
+    }
+
+    h1 {
+      font-size: clamp(1.7rem, 5vw, 2.3rem);
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .panel {
+      padding: 24px;
+      margin: 22px 0;
+      border: 1px solid #d6e7e9;
+      background: white;
+      border-radius: 14px;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      padding: 12px;
+      border: 1px solid #bed5dc;
+      border-radius: 7px;
+      font: inherit;
+    }
+
+    input[type="range"] {
+      padding: 0;
+      accent-color: #1686a1;
+    }
+
+    button {
+      min-height: 44px;
+      padding: 10px 16px;
+      margin: 7px 7px 7px 0;
+      border: 0;
+      border-radius: 7px;
+      background: #137d98;
+      color: white;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    .secondary {
+      background: #e4f0f2;
+      color: #174758;
+    }
+
+    #status {
+      font-weight: 600;
+      color: #176679;
+    }
+
+    #events {
+      padding: 12px;
+      min-height: 100px;
+      max-height: 240px;
+      overflow: auto;
+      background: #f0f7f8;
+      border-radius: 7px;
+      font: 12px/1.7 monospace;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    small { color: #607e89; }
+  </style>
+</head>
+
+<body>
+<main>
+  <small>COUPLED OSCILLATORS / GLOBAL NETWORK V14</small>
+  <h1>Cross-Device Experiment Test</h1>
+
+  <p>
+    Connect two devices to the same private experiment channel.
+    This page does not modify the public Living Network.
+  </p>
+
+  <section class="panel">
+    <h2>Authentication</h2>
+
+    <label>
+      Email
+      <input id="email" type="email"
+             autocomplete="email">
+    </label>
+
+    <label>
+      Password
+      <input id="password" type="password"
+             autocomplete="current-password">
+    </label>
+
+    <button id="signup" disabled>Create test account</button>
+    <button id="login" disabled>Sign in</button>
+    <button id="logout" class="secondary" disabled>Sign out</button>
+
+    <p id="status" role="status">Loading...</p>
+    <small id="account"></small>
+  </section>
+
+  <section class="panel">
+    <h2>Experiment controls</h2>
+
+    <label>
+      Coupling K: <output id="k-value">1.50</output>
+      <input id="k" type="range"
+             min="0" max="5" step="0.05" value="1.5"
+             disabled>
+    </label>
+
+    <label>
+      Dispersion σ: <output id="s-value">0.70</output>
+      <input id="sigma" type="range"
+             min="0" max="3" step="0.05" value="0.7"
+             disabled>
+    </label>
+
+    <button id="send" disabled>Send parameters</button>
+    <button id="perturb" disabled>Send perturbation</button>
+    <button id="reset" class="secondary" disabled>Reset</button>
+  </section>
+
+  <section class="panel">
+    <h2>Received activity</h2>
+    <div id="events" role="log" aria-live="polite"></div>
+  </section>
+</main>
+
+<script type="module">
+import { createClient } from
+  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const PROJECT_URL =
+  "https://hjnrttmmudcbgtsnuljv.supabase.co";
+
+// Browser-safe publishable key; never use service_role here.
+const PUBLISHABLE_KEY =
+  "sb_publishable_7qmnPCBx6MDgtxOtZu1RNQ_lemOmL3-";
+
+const TOPIC = "living-network-test-v1";
+
+const supabase = createClient(
+  PROJECT_URL,
+  PUBLISHABLE_KEY
+);
+
+const $ = id => document.getElementById(id);
+
+let channel = null;
+let subscribed = false;
+let sequence = 0;
+
+function status(message) {
+  $("status").textContent = message;
+}
+
+function log(message) {
+  const line = document.createElement("div");
+  line.textContent = `${new Date().toLocaleTimeString()} ${message}`;
+
+  $("events").prepend(line);
+
+  while ($("events").children.length > 40) {
+    $("events").lastElementChild.remove();
+  }
+}
+
+function enableControls(enabled) {
+  for (const id of ["k", "sigma", "send", "perturb", "reset"]) {
+    $(id).disabled = !enabled;
+  }
+}
+
+function updateValues() {
+  $("k-value").textContent = Number($("k").value).toFixed(2);
+  $("s-value").textContent = Number($("sigma").value).toFixed(2);
+}
+
+function parameters() {
+  return {
+    K: Number($("k").value),
+    sigma: Number($("sigma").value),
+    alpha: 0
+  };
+}
+
+async function disconnect() {
+  subscribed = false;
+  enableControls(false);
+
+  if (channel) {
+    await supabase.removeChannel(channel);
+    channel = null;
+  }
+}
+
+async function connect(session) {
+  await disconnect();
+
+  $("account").textContent =
+    "Signed in: " + session.user.email;
+
+  $("login").disabled = true;
+  $("signup").disabled = true;
+  $("logout").disabled = false;
+
+  status("Connecting to private Realtime channel...");
+
+  await supabase.realtime.setAuth(session.access_token);
+
+  channel = supabase.channel(TOPIC, {
+    config: {
+      private: true,
+      broadcast: { self: false, ack: true }
+    }
+  });
+
+  channel.on(
+    "broadcast",
+    { event: "experiment" },
+    ({ payload }) => {
+      if (!payload || payload.version !== 1) return;
+      if (!["parameters", "perturbation", "reset"].includes(payload.type)) {
+        return;
+      }
+
+      const { K, sigma } = payload;
+
+      if (![K, sigma].every(Number.isFinite)) return;
+      if (K < 0 || K > 5 || sigma < 0 || sigma > 3) return;
+
+      $("k").value = K;
+      $("sigma").value = sigma;
+      updateValues();
+
+      log(
+        `RECEIVED ${payload.type} | ` +
+        `K=${K.toFixed(2)} σ=${sigma.toFixed(2)}`
+      );
+    }
+  );
+
+  channel.subscribe((state, error) => {
+    log(`Channel: ${state}`);
+
+    if (state === "SUBSCRIBED") {
+      subscribed = true;
+      enableControls(true);
+      status("Connected — ready for cross-device experiments");
+    } else if (state === "CHANNEL_ERROR" || state === "TIMED_OUT") {
+      subscribed = false;
+      enableControls(false);
+      status(
+        "Connection failed. Check account enrollment and Realtime policies."
+      );
+      if (error) console.error(error);
+    } else if (state === "CLOSED") {
+      subscribed = false;
+      enableControls(false);
+      status("Channel disconnected");
+    }
+  });
+}
+
+async function authenticate(mode) {
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  if (!email || !password) {
+    status("Enter an email and password.");
+    return;
+  }
+
+  try {
+    status(mode === "signup" ? "Creating account..." : "Signing in...");
+
+    const result = mode === "signup"
+      ? await supabase.auth.signUp({ email, password })
+      : await supabase.auth.signInWithPassword({ email, password });
+
+    if (result.error) throw result.error;
+
+    if (!result.data.session) {
+      status("Account created. Check your email for a confirmation link.");
+      log("Email confirmation may be required before sign-in.");
+      return;
+    }
+
+    await connect(result.data.session);
+  } catch (error) {
+    status("Authentication failed: " + error.message);
+    log("ERROR: " + error.message);
+  }
+}
+
+async function publish(type) {
+  if (!subscribed || !channel) return;
+
+  const message = {
+    version: 1,
+    type,
+    id: `${Date.now()}-${++sequence}`,
+    ...parameters()
+  };
+
+  try {
+    const result = await channel.send({
+      type: "broadcast",
+      event: "experiment",
+      payload: message
+    });
+
+    log(`SENT ${type} | ${result}`);
+  } catch (error) {
+    log("SEND ERROR: " + error.message);
+  }
+}
+
+$("signup").addEventListener("click", () => authenticate("signup"));
+$("login").addEventListener("click", () => authenticate("login"));
+
+$("logout").addEventListener("click", async () => {
+  await disconnect();
+  await supabase.auth.signOut();
+
+  $("account").textContent = "";
+  $("logout").disabled = true;
+  $("login").disabled = false;
+  $("signup").disabled = false;
+
+  status("Signed out");
+});
+
+$("k").addEventListener("input", updateValues);
+$("sigma").addEventListener("input", updateValues);
+
+$("send").addEventListener("click", () => publish("parameters"));
+$("perturb").addEventListener("click", () => publish("perturbation"));
+
+$("reset").addEventListener("click", () => {
+  $("k").value = 1.5;
+  $("sigma").value = 0.7;
+
+  updateValues();
+  publish("reset");
+});
+
+updateValues();
+
+$("login").disabled = false;
+$("signup").disabled = false;
+
+const { data: { session } } = await supabase.auth.getSession();
+
+if (session) {
+  await connect(session);
+} else {
+  status("Sign in to begin");
+}
+</script>
+</body>
+</html>
