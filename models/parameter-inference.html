@@ -389,6 +389,136 @@
   overflow-x: auto;
 }
 </style>
+
+<style>
+/* NOTEBOOK_STUDY_V1 — presentation only */
+
+html {
+  scroll-behavior: smooth;
+}
+
+.research-article {
+  max-width: 980px;
+}
+
+.research-article > section {
+  scroll-margin-top: 125px;
+}
+
+.research-article > section > h2 {
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  padding-bottom: 20px;
+}
+
+.research-article .methods-content {
+  max-width: 820px;
+  margin-inline: auto;
+}
+
+.research-article .methods-content > p {
+  max-width: 72ch;
+}
+
+.research-article .equation,
+.research-article .math-display {
+  margin-block: 34px;
+}
+
+.research-article figure {
+  max-width: 850px;
+  margin-inline: auto;
+}
+
+.research-article .numerical-methods summary {
+  line-height: 1.55;
+  transition: color .2s ease;
+}
+
+.research-article .numerical-methods summary:hover {
+  color: #9dc5df;
+}
+
+.study-navigation {
+  position: relative;
+  margin: 50px 0 65px;
+  border-top: 1px solid #293545;
+  border-bottom: 1px solid #293545;
+}
+
+.study-navigation-inner {
+  padding: 22px 0;
+}
+
+.study-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px 22px;
+}
+
+.study-links a {
+  display: block;
+  padding: 8px 0;
+  text-decoration: none;
+  color: #b2c0cf;
+  font-size: .84rem;
+  line-height: 1.5;
+}
+
+.study-links a:hover {
+  color: #e5edf5;
+}
+
+.study-links a span {
+  color: #80abc6;
+  margin-right: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.study-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.study-actions button {
+  padding: 9px 15px;
+  border: 1px solid #344355;
+  border-radius: 5px;
+  background: #121b26;
+  color: #c9d7e4;
+  font: inherit;
+  font-size: .8rem;
+  cursor: pointer;
+}
+
+.study-actions button:hover {
+  background: #1b2937;
+}
+
+
+
+@media (max-width: 700px) {
+  .study-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .study-navigation {
+    margin: 32px 0 45px;
+  }
+}
+
+@media (max-width: 430px) {
+  .study-links {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+</style>
 </head>
 <body>
 <main class="research-article"><a class="back" href="resonant-sphere.html">
@@ -403,18 +533,39 @@
 <p class="research-meta">
       Numerical study · Kuramoto oscillator model · 2026
     </p>
-</header><section><h2>01 / Collective Dynamics</h2><details class="numerical-methods"><summary>Research Question</summary><div class="methods-content">
+</header>
+<!-- NOTEBOOK_STUDY_V1 -->
+<nav class="study-navigation" aria-label="Notebook chapters">
+  <div class="study-navigation-inner">
+    <div class="study-links">
+      <a href="#chapter-01"><span>01</span> Collective Dynamics</a>
+<a href="#chapter-02"><span>02</span> Parameter Inference</a>
+<a href="#chapter-03"><span>03</span> Numerical Validation</a>
+<a href="#chapter-04"><span>04</span> Statistical Observability</a>
+<a href="#chapter-05"><span>05</span> Model Adequacy</a>
+<a href="#driven-dynamics"><span>06</span> Driven Dynamics</a>
+    </div>
+    <div class="study-actions">
+      <button id="study-open" type="button">Expand all</button>
+      <button id="study-close" type="button">Collapse all</button>
+    </div>
+  </div>
+  
+</nav>
+<section id="chapter-01"><h2>01 / Collective Dynamics</h2><details class="numerical-methods"><summary>Research Question</summary><div class="methods-content">
 
 <p>
-      When is a dynamical system most informative about the
-      parameters governing its behavior?
-    </p>
+When do the collective dynamics of coupled oscillators
+provide useful information about the parameters
+governing their evolution?
+</p>
 <p>
-      This investigation examines the relationship between
-      synchronization, coupling strength, numerical sensitivity,
-      and parameter identifiability in a population of
-      coupled phase oscillators.
-    </p>
+We examine how coupling strength and frequency dispersion
+influence synchronization in a population of phase oscillators.
+These collective dynamics provide the foundation for
+subsequent investigations of parameter sensitivity
+and identifiability.
+</p>
 </div></details><details class="numerical-methods"><summary>Mathematical Framework</summary><div class="methods-content">
 
 <p>
@@ -425,25 +576,30 @@
       \[\frac{d\theta_i}{dt}=\omega_i+KR\sin(\psi-\theta_i)\]
     </div>
 <p>
-      Here, K represents coupling strength, ωᵢ represents
-      the natural frequency of oscillator i, and R describes
-      collective synchronization.
-    </p>
+Here, \(K\) denotes coupling strength, \(\omega_i\)
+is the natural frequency of oscillator \(i\),
+and \(R\) measures collective phase coherence.
+The mean phase \(\psi\) determines the direction
+of the collective coupling term.
+</p>
 <div class="equation">
       \[R(t)=\left|\frac{1}{N}\sum_{j=1}^{N}e^{i\theta_j(t)}\right|\]
     </div>
 <p>
-      The numerical experiments use fourth-order
-      Runge–Kutta integration with deterministic
-      initial conditions and natural frequencies.
-    </p>
+The oscillator equations are integrated numerically
+using the fourth-order Runge–Kutta method.
+Deterministic initial conditions and natural frequencies
+allow controlled comparisons between parameter settings.
+</p>
 </div></details><details class="numerical-methods"><summary>Synchronization Landscape</summary><div class="methods-content">
 
 <p>
-      A parameter sweep across 315 combinations of coupling
-      strength and frequency dispersion reveals distinct
-      regions of low and high coherence.
-    </p>
+A sweep of 315 coupling-strength and
+frequency-dispersion combinations maps the
+collective synchronization landscape.
+The resulting coherence levels vary across
+the tested parameter space.
+</p>
 <figure>
 <img alt="Heatmap of mean synchronization across coupling strength and frequency dispersion" loading="lazy" src="../figures/kuramoto-synchronization-landscape.png"/>
 <figcaption>
@@ -459,16 +615,15 @@
       rescaled-time observation protocol.
     </div>
 <p>
-      This is an operational finite-time threshold for the
-      specified model and observation window, not a
-      universal critical coupling constant.
-    </p>
-</div></details></section><section><h2>02 / Inverse Parameter Inference</h2><details class="numerical-methods"><summary>Inverse Parameter Estimation</summary><div class="methods-content">
+This boundary is defined by the finite-time
+observation protocol and the chosen coherence
+criterion. It should not be interpreted as a
+universal critical coupling constant.
+</p>
+</div></details></section><section id="chapter-02"><h2>02 / Inverse Parameter Inference</h2><details class="numerical-methods"><summary>Inverse Parameter Estimation</summary><div class="methods-content">
 
 <p>
-      The inverse problem attempts to recover coupling
-      strength from observations of the synchronization
-      trajectory.
+      The inverse problem estimates coupling strength from an observed synchronization trajectory. The estimated parameter is the value that minimizes the discrepancy between simulated and observed coherence.
     </p>
 <div class="equation">
       \[\widehat K=\underset{K}{\arg\min}\,J(K)\]
@@ -487,9 +642,7 @@
       </figcaption>
 </figure>
 <p>
-      Initial synthetic tests successfully recovered the
-      generating coupling parameter under known initial
-      conditions and known frequency dispersion.
+      In the initial synthetic experiments, the generating coupling strength was recovered when initial conditions and frequency dispersion were known. This establishes parameter recovery under the tested assumptions, rather than uniqueness across all possible conditions.
     </p>
 </div></details><details class="numerical-methods"><summary>Measurement Noise</summary><div class="methods-content">
 
@@ -506,9 +659,7 @@
       </figcaption>
 </figure>
 <p>
-      The results support accurate recovery under the tested
-      assumptions, while demonstrating that measurement
-      uncertainty influences parameter precision.
+      The generating parameter remained recoverable under the tested noise conditions, although estimates became more variable as measurement noise increased. Recovery accuracy and estimation precision are therefore distinct aspects of inference reliability.
     </p>
 </div></details><details class="numerical-methods"><summary>Observation Timing and Information</summary><div class="methods-content">
 
@@ -547,10 +698,7 @@
       transient dynamics remain informative.
     </div>
 <p>
-      The timing of observations therefore matters when
-      attempting to infer dynamical parameters.
-      The most informative window depends on the coupling
-      regime and need not coincide with maximum coherence.
+      Observation timing affects parameter sensitivity. The most informative sampled window depends on the coupling regime and need not coincide with maximum coherence. Strong synchronization alone is therefore not evidence of precise parameter estimation.
     </p>
 </div></details><details class="numerical-methods"><summary>Joint Parameter Inference</summary><div class="methods-content">
 
@@ -581,11 +729,7 @@
     distinguishability under the tested observation protocol.
   </p>
 <p>
-    The existence of an alternative local minimum demonstrates
-    that successful optimizer termination does not necessarily
-    imply recovery of the globally best parameter combination.
-    These findings are specific to the synthetic model and
-    observation conditions investigated.
+    The alternative local minimum distinguishes local identifiability from global inference reliability. A full-rank sensitivity matrix supports local first-order distinguishability, but does not rule out competing solutions elsewhere in parameter space. Successful optimizer termination therefore does not guarantee global parameter recovery. These conclusions apply to the tested synthetic model and observation protocol.
   </p>
 </div></details><details class="numerical-methods"><summary>Parameter Sensitivity &amp; Uncertainty</summary><div class="methods-content">
 
@@ -666,15 +810,9 @@ under the assumed noise model.
 </p>
 <h3>Local precision versus global ambiguity</h3>
 <p>
-Improved local sensitivity does not guarantee globally
-unique parameter recovery. Our optimization experiments
-identified competing parameter solutions and demonstrated
-that numerical initialization can strongly affect recovery.
-The ellipses describe local uncertainty around the
-generating parameters; they do not represent distant
-alternative solutions.
+The uncertainty ellipses characterize local parameter precision under a linear approximation and the specified Gaussian noise model. Smaller ellipses indicate more precise local estimates, but do not establish global uniqueness. The competing solutions found during optimization demonstrate that initialization and nonlinear parameter compensation remain important.
 </p>
-</div></details></section><section><h2>03 / Numerical Validation &amp; Symmetry</h2><details class="numerical-methods"><summary>Analytical Sensitivity Equations &amp; Numerical Validation</summary><div class="methods-content">
+</div></details></section><section id="chapter-03"><h2>03 / Numerical Validation &amp; Symmetry</h2><details class="numerical-methods"><summary>Analytical Sensitivity Equations &amp; Numerical Validation</summary><div class="methods-content">
 
 <p>
 Rather than estimating parameter sensitivities exclusively
@@ -979,12 +1117,14 @@ non-identifiability of coupling strength and positive
 frequency dispersion within our original restricted
 two-parameter inference model.
 </p>
-</div></details></section><section><h2>04 / Statistical Observability</h2><details class="numerical-methods"><summary>Statistical Distinguishability Under Noise</summary><div class="methods-content">
+</div></details></section><section id="chapter-04"><h2>04 / Statistical Observability</h2><details class="numerical-methods"><summary>Statistical Distinguishability Under Noise</summary><div class="methods-content">
 
 <p>
-Experiments 29A–29C investigate whether two reflection-related
-Kuramoto trajectories can be distinguished when collective angular
-velocity is observed with Gaussian measurement noise.
+Experiments 29A–29C examine whether two phase-reflected
+Kuramoto trajectories remain statistically distinguishable
+when collective angular velocity is measured with Gaussian
+noise. Although their synchronization magnitudes are
+identical, their angular velocities have opposite signs.
 </p>
 <h3>Observation model</h3>
 <p>
@@ -1040,8 +1180,11 @@ P(\mathrm{correct})=
 
 <p>
 where Φ denotes the standard normal cumulative distribution
-function. This describes discrimination between the two specified
-hypotheses, not reconstruction of every oscillator phase.
+function. This accuracy characterizes discrimination between
+two specified trajectories under the assumed observation
+model. It does not imply reconstruction of individual
+oscillator phases or identification of arbitrary hidden
+states.
 </p>
 <h3>Experiment 29A — Statistical benchmark</h3>
 <p>
@@ -1057,11 +1200,12 @@ P(\mathrm{correct})=
 
 <p>
 Monte Carlo simulations used 20,000 trials per hypothesis.
-The observed accuracies closely followed theory as the
-number of observations increased. The n = 25 result fell outside
-its individual approximate 95% sampling interval, illustrating
-that finite-sample validation does not require every trial
-estimate to lie inside its nominal interval.
+The simulated classification accuracies generally
+agreed with the Gaussian prediction as the observation
+count increased. The estimate at n = 25 fell outside its
+individual approximate 95% sampling interval, consistent
+with the possibility of occasional interval exceedances
+in finite Monte Carlo experiments.
 </p>
 <h3>Experiments 29B–29C — Time-dependent discrimination</h3>
 <p>
@@ -1086,10 +1230,12 @@ Four schedules used eight observations each.
 </tbody>
 </table>
 <div class="finding">
-For these two specified trajectories, changing observation timing
-improved theoretical classification accuracy without increasing
-the measurement count. The high-separation schedule exceeded the
-early schedule by approximately 4.24 percentage points at s = 1.0.
+For these specified trajectories, changing observation
+times improved theoretical discrimination while keeping
+the number of measurements fixed. At s = 1.0, the
+high-separation schedule exceeded the early schedule
+by approximately 4.24 percentage points, demonstrating
+the importance of when observations are collected.
 </div>
 <p>
 At lower noise levels, classification accuracy approached 100%,
@@ -1136,10 +1282,12 @@ simulation-time units between consecutive observations.
 </p>
 <h3>Dynamic programming</h3>
 <p>
-At each candidate time, the algorithm compares excluding that
-time with including it and skipping the subsequent forbidden
-interval. This recurrence gives an exact maximum-weight selection
-on the stated discrete grid.
+Dynamic programming compares schedules that exclude
+each candidate time with those that include it while
+respecting the minimum-spacing constraint. This yields
+an exact maximum-weight schedule over the specified
+finite candidate grid, rather than a continuous-time
+global optimum.
 </p>
 <p>
 The implementation was independently compared against exhaustive
@@ -1171,10 +1319,14 @@ measurement count, time bounds, and minimum spacing.
 </tbody>
 </table>
 <div class="finding">
-Exact discrete optimization improved the squared-separation
-objective by 0.1851% relative to greedy scheduling.
-At s = 1.0, the theoretical classification-accuracy gain
-was approximately 0.0194 percentage points.
+Relative to greedy scheduling, dynamic programming
+improved the discrete squared-separation objective
+by 0.1851%. At s = 1.0, however, the corresponding
+increase in theoretical classification accuracy was
+only approximately 0.0194 percentage points.
+The improvement in the optimization objective
+therefore translated into a small classification gain
+under the tested noise conditions.
 </div>
 <h3>Independent numerical cross-validation</h3>
 <p>
@@ -1194,23 +1346,26 @@ global numerical accuracy or equivalence for all configurations.
 </p>
 <h3>Scope and limitations</h3>
 <p>
-Optimality is established only for the specified finite candidate
-grid, measurement budget, spacing constraint, and two known
-trajectories. The measurement model assumes independent Gaussian
-errors with known equal variance. The optimized schedule uses
-perfect knowledge of the predicted trajectories and may not remain
-optimal under parameter uncertainty or model misspecification.
+The schedule is optimal only over the specified
+finite grid, for the fixed measurement budget,
+spacing constraint, and two known trajectories.
+The calculation assumes independent Gaussian
+measurement errors with known common variance.
+Because optimization uses the predicted trajectories,
+the selected schedule need not remain optimal when
+model parameters or the governing dynamics are uncertain.
 </p>
 <p>
 Future work will investigate robust observation schedules when
 coupling, dispersion, and phase lag are uncertain.
 </p>
-</div></details></section><section><h2>05 / Model Adequacy</h2><details class="numerical-methods"><summary>Detecting Model Misspecification</summary><div class="methods-content">
+</div></details></section><section id="chapter-05"><h2>05 / Model Adequacy</h2><details class="numerical-methods"><summary>Detecting Model Misspecification</summary><div class="methods-content">
 
 <p>
-Experiment 32 investigates whether noisy observations generated
-by a modified Kuramoto system can be recognized as inconsistent
-with a restricted first-harmonic model family.
+Experiment 32 tests whether noisy observations generated
+by a Kuramoto system with an additional second-harmonic
+interaction can be distinguished from predictions of a
+restricted first-harmonic model family.
 </p>
 <h3>Alternative dynamical model</h3>
 
@@ -1261,23 +1416,34 @@ evaluation simulations.
 </tbody>
 </table>
 <div class="finding">
-Detection increased across the three tested interaction strengths.
+Detection was limited for the weaker second-harmonic
+interaction. At K₂ = 0.20, the detection rate was 6.05%,
+compared with a 4.00% false-alarm rate under K₂ = 0.
+At K₂ = 0.50, detection increased to 43.70%, but
+the test still failed to reject the restricted model
+in most evaluation trials.
 </div>
 <h3>Interpretation and limitations</h3>
 <p>
 These results evaluate a finite family of synthetic dynamical
 models, not a biological or physical ferrofluid experiment.
-Rejection indicates inconsistency with the tested restricted
-model family under the assumed observation and noise models;
-it does not identify the omitted mechanism uniquely.
+Rejection provides statistical evidence against the
+tested restricted model family under the specified
+observation and noise assumptions. It does not uniquely
+identify the omitted interaction. Conversely, failure
+to reject does not establish that the restricted model
+is correct; the test may have insufficient power to
+detect a departure from its assumptions.
 </p>
 <p>
 Calibration covers only five candidate K₁ values and uses
 Monte Carlo estimates of the rejection threshold.
-The threshold is conservative across the tested grid,
-not a guarantee for all continuously varying parameters.
-The observed false-alarm and detection rates have finite
-Monte Carlo uncertainty.
+The threshold is conservative across the tested
+five-point parameter grid, but does not guarantee
+false-alarm control for every continuously varying
+coupling strength. Both false-alarm and detection
+rates are estimated from finite Monte Carlo samples
+and therefore have sampling uncertainty.
 </p>
 <p>
 The experiment and numerical results are available in
@@ -1286,6 +1452,8 @@ reproducible Python script</a> and
 <a href="../experiments/experiment32_results.csv">results CSV</a>.
 </p>
 </div></details></section><section id="driven-dynamics"><h2>06 / Driven Dynamics &amp; Active Observability</h2>
+
+
     <details class="numerical-methods">
       <summary>Research Question and Mathematical Framework</summary>
       <div class="methods-content">
@@ -1745,5 +1913,33 @@ protocol, not forcing strength or frequency alone.
       </a>
 </p>
 </footer></main>
+
+<script>
+(() => {
+  const root = document.querySelector(".research-article");
+  const navigation = document.querySelector(".study-navigation");
+  if (!root || !navigation) return;
+
+  const sections = Array.from(
+    root.querySelectorAll("section")
+  );
+
+  const details = sections.flatMap(section =>
+    Array.from(
+      section.querySelectorAll("details.numerical-methods")
+    )
+  );
+
+  document.getElementById("study-open")
+    ?.addEventListener("click", () => {
+      details.forEach(panel => panel.open = true);
+    });
+
+  document.getElementById("study-close")
+    ?.addEventListener("click", () => {
+      details.forEach(panel => panel.open = false);
+    });
+})();
+</script>
 </body>
 </html>
