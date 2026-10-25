@@ -152,7 +152,14 @@ const heroOrder =
 
     // Gentle visual viewpoint rotation.
     // This does not affect Kuramoto dynamics.
-    const yaw = elapsed * 0.020;
+    const pointerYaw = pointerPosition
+      ? ((pointerPosition.x / Math.max(1, width)) - 0.5) * 0.40
+      : 0;
+
+    easedPointerYaw +=
+      (pointerYaw - easedPointerYaw) * 0.06;
+
+    const yaw = elapsed * 0.020 + easedPointerYaw;
     const tilt = 0.48;
 
     const cosYaw = Math.cos(yaw);
@@ -192,7 +199,7 @@ const heroOrder =
         y * sinTilt + rotatedZ * cosTilt;
 
       // Gentle perspective scaling.
-      const perspective = 1 + 0.10 * depthZ;
+      const perspective = 1 + 0.18 * depthZ;
 
       return {
         x: cx + radius * radial * rotatedX * perspective,
@@ -309,6 +316,7 @@ const heroOrder =
   // The mathematical coupling remains all-to-all.
 
   let pointerPosition = null;
+  let easedPointerYaw = 0;
 
   function pointerCoordinates(event) {
     const rect = canvas.getBoundingClientRect();
@@ -421,6 +429,30 @@ const heroOrder =
       }
     }
 
+
+    // HOMEPAGE_LIVING_NETWORK_V5
+    // Local phase-coherence scores for visual emphasis.
+    // These do not modify the Kuramoto coupling topology.
+
+    const coherenceSum = new Float64Array(points.length);
+    const neighborCount = new Uint16Array(points.length);
+
+    for (const candidate of candidates) {
+      const { i, j } = candidate;
+      const coherence =
+        (1 + Math.cos(points[i].phase - points[j].phase)) / 2;
+
+      coherenceSum[i] += coherence;
+      coherenceSum[j] += coherence;
+      neighborCount[i]++;
+      neighborCount[j]++;
+    }
+
+    const clusterCoherence = Array.from(
+      coherenceSum,
+      (sum, i) => sum / Math.max(1, neighborCount[i])
+    );
+
     // Prefer coherent and nearby connections.
     candidates.sort((a, b) => b.strength - a.strength);
 
@@ -474,26 +506,160 @@ const heroOrder =
       edges++;
     }
 
+
+    // HOMEPAGE_LIVING_NETWORK_V1
+    // Visual representation of phase relationships.
+    // Oscillator equations and interaction topology are unchanged.
+
+
     function drawConnection(i, j, strength) {
       const a = points[i];
       const b = points[j];
 
-      const depth =
-        (points[i].depth + points[j].depth) / 2;
+      const depth = Math.max(
+        0,
+        Math.min(1, (a.depth + b.depth) / 2)
+      );
 
-      const opacity =
-        (0.10 + strength * (0.29 + 0.16 * R)) *
-        (0.35 + depth * 0.65);
+      const coherence =
+        (1 + Math.cos(a.phase - b.phase)) / 2;
 
-      ctx.strokeStyle =
-        `rgba(57, 132, 157, ${opacity})`;
+      const cluster =
+        (clusterCoherence[i] + clusterCoherence[j]) / 2;
 
-      ctx.lineWidth = 0.5 + strength * 0.55;
+      // Favor coherent neighborhoods without obscuring depth.
+      const clusterLight =
+        Math.max(0, (cluster - 0.55) / 0.45);
+
+      const visibility = 0.35 + 0.65 * depth;
+
+      const opacity = Math.min(
+        0.70,
+        (
+          0.10 +
+          0.36 * strength +
+          0.13 * clusterLight * coherence
+        ) * visibility
+      );
+
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+
+      const mx = (a.x + b.x) / 2;
+      const my = (a.y + b.y) / 2;
+
+      const bend =
+        0.055 * Math.sin(i * 2.31 + j * 0.73);
+
+      const cx = mx - dy * bend;
+      const cy = my + dx * bend;
 
       ctx.beginPath();
       ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
+      ctx.quadraticCurveTo(cx, cy, b.x, b.y);
+
+      ctx.strokeStyle =
+        `rgba(64,148,160,${opacity})`;
+
+      ctx.lineWidth =
+        (0.42 + 0.90 * strength) *
+        (0.55 + 0.65 * depth);
+
       ctx.stroke();
+
+      // Traveling pulses are illustrative activity markers.
+      if (
+        reducedMotion.matches ||
+        strength < 0.10 ||
+        (i + j) % 3 !== 0
+      ) return;
+
+      const speed = 0.28 + 0.30 * strength;
+
+      const progress = (
+        elapsed * speed +
+        i * 0.137 +
+        j * 0.071
+      ) % 1;
+
+      function signalPosition(t) {
+        const u = 1 - t;
+
+        return {
+          x: u*u*a.x + 2*u*t*cx + t*t*b.x,
+          y: u*u*a.y + 2*u*t*cy + t*t*b.y,
+          depth: Math.max(
+            0,
+            Math.min(1, a.depth*u + b.depth*t)
+          )
+        };
+      }
+
+      // Short fading trails follow the Bezier filament.
+      // Keep trails restrained to preserve network clarity.
+      ctx.save();
+
+      for (let trail = 3; trail >= 1; trail--) {
+        const t = progress - trail * 0.028;
+
+        if (t < 0) continue;
+
+        const p = signalPosition(t);
+
+        const trailOpacity =
+          (0.16 - trail * 0.035) *
+          (0.35 + 0.65 * p.depth);
+
+        const radius =
+          (0.6 + 0.9 * strength) *
+          (0.55 + 0.65 * p.depth);
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+
+        ctx.fillStyle =
+          `rgba(145,255,247,${trailOpacity})`;
+
+        ctx.fill();
+      }
+
+      const p = signalPosition(progress);
+
+      const signalVisibility =
+        0.40 + 0.60 * p.depth;
+
+      const signalRadius =
+        (1.0 + 1.4 * strength) *
+        (0.65 + 0.65 * p.depth);
+
+      ctx.globalAlpha = signalVisibility;
+
+      ctx.shadowColor = "rgba(130,255,245,0.95)";
+      ctx.shadowBlur = 9 + 8 * strength;
+
+      ctx.beginPath();
+      ctx.arc(
+        p.x, p.y,
+        signalRadius * 2,
+        0, Math.PI * 2
+      );
+
+      ctx.fillStyle = "rgba(100,255,240,0.22)";
+      ctx.fill();
+
+      ctx.shadowBlur = 5;
+
+      ctx.beginPath();
+      ctx.arc(
+        p.x, p.y,
+        signalRadius,
+        0, Math.PI * 2
+      );
+
+      ctx.fillStyle = "rgba(245,255,255,0.98)";
+      ctx.fill();
+
+      ctx.restore();
     }
 
     // SOFT POINTER FIELD V1

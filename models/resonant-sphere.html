@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Coupled Oscillator Model | Baruc Stover</title>
+<title>Coupled Oscillator Dynamics | Baruc Stover</title>
 <link href="../favicon.svg" rel="icon"/>
 <link href="../style.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Source+Serif+4:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
@@ -712,6 +712,43 @@ button {
 }
 </style>
 
+<style>
+#living-network-toggle {
+  border: 1px solid rgba(44,145,185,.25);
+  border-radius: 999px;
+  background: rgba(60,160,200,.10);
+  color: inherit;
+  padding: 11px 19px;
+  cursor: pointer;
+}
+#living-network-toggle[aria-pressed="false"] {
+  background: transparent;
+  opacity: .65;
+}
+</style>
+
+<style>
+.living-network-description {
+  max-width: 610px;
+  margin: 8px auto 28px;
+  padding: 0 18px;
+  text-align: center;
+}
+
+.living-network-description strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: #276a79;
+  letter-spacing: 0.02em;
+}
+
+.living-network-description p {
+  margin: 7px 0 0;
+  color: #68858c;
+  font-size: 12px;
+  line-height: 1.75;
+}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -725,7 +762,7 @@ button {
 <p class="eyebrow">
         COMPUTATIONAL BIOLOGY / MATHEMATICAL MODELS
       </p>
-<h1>Coupled Oscillators and Collective Dynamics</h1>
+<h1>Coupled Oscillator Dynamics</h1>
 <p>
         An exploratory mathematical visualization
         investigating how interacting oscillators
@@ -752,6 +789,10 @@ button {
 </label>
 <input id="dispersion" max="3" min="0" step="0.1" type="range" value="0.7"/>
 </div></div><div class="resonant-minimal-controls">
+<button aria-pressed="true" id="living-network-toggle" type="button"
+    title="Visual filaments and pulses; oscillator equations remain unchanged">
+  ✧ Living network: On
+</button>
 <button aria-pressed="false" id="resonant-reflection" type="button">
     ↺ Reflection
   </button>
@@ -760,7 +801,14 @@ button {
 <span>R₂ <strong id="resonant-r2">—</strong></span>
 <span>Ω <strong id="resonant-omega">—</strong></span>
 </div>
-</div><details class="resonant-analysis"><summary>Explore Analysis</summary><div class="model-controls">
+</div>
+<div class="living-network-description" id="living-network-description">
+  <strong>Living Network</strong>
+  <p>
+    A visualization of oscillator phase relationships. Connections reflect local phase coherence, while moving markers illustrate activity along selected links.
+</p>
+</div>
+<details class="resonant-analysis"><summary>Explore Analysis</summary><div class="model-controls">
 <h2>Model Parameters</h2>
 <div class="model-buttons">
 <div class="control-group">

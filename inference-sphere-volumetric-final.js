@@ -102,6 +102,26 @@ const heroOrder =
   }
 
 
+  // LIVING_NETWORK_V1 — visual layer only.
+  let livingNetwork = true;
+
+  const livingToggle =
+    document.getElementById("living-network-toggle");
+
+  livingToggle?.addEventListener("click", () => {
+    livingNetwork = !livingNetwork;
+
+    livingToggle.setAttribute(
+      "aria-pressed", String(livingNetwork)
+    );
+
+    livingToggle.textContent = livingNetwork
+      ? "✧ Living network: On"
+      : "✧ Living network: Off";
+
+    draw();
+  });
+
   let resonantReflected = false;
 
   const reflectionButton =
@@ -280,7 +300,7 @@ const heroOrder =
         y * sinTilt + rotatedZ * cosTilt;
 
       // Gentle perspective scaling.
-      const perspective = 1 + 0.10 * depthZ;
+      const perspective = 1 + 0.18 * depthZ;
 
       return {
         x: cx + radius * radial * rotatedX * perspective,
@@ -563,27 +583,126 @@ const heroOrder =
       edges++;
     }
 
-    function drawConnection(i, j, strength) {
-      const a = points[i];
-      const b = points[j];
+  
+  
+function drawConnection(i, j, strength) {
+    // LIVING_DEPTH_V3 — depth-aware visual rendering only.
+    const a = points[i];
+    const b = points[j];
 
-      const depth =
-        (points[i].depth + points[j].depth) / 2;
+    const depth = Math.max(
+      0,
+      Math.min(1, (a.depth + b.depth) / 2)
+    );
 
-      const opacity =
-        (0.08 + strength * (0.25 + 0.14 * R)) *
-        (0.30 + depth * 0.70);
+    // Back-facing links fade into the sphere.
+    const depthVisibility = 0.34 + 0.66 * depth;
+    const opacity = Math.min(
+      0.60,
+      (0.11 + 0.43 * strength) * depthVisibility
+    );
 
-      ctx.strokeStyle =
-        `rgba(57, 132, 157, ${opacity})`;
-
-      ctx.lineWidth = 0.5 + strength * 0.55;
-
+    if (!livingNetwork) {
       ctx.beginPath();
       ctx.moveTo(a.x, a.y);
       ctx.lineTo(b.x, b.y);
+
+      ctx.strokeStyle =
+        `rgba(57,132,157,${opacity})`;
+
+      ctx.lineWidth =
+        (0.35 + 0.65 * strength) *
+        (0.55 + 0.65 * depth);
+
       ctx.stroke();
+      return;
     }
+
+    const mx = (a.x + b.x) / 2;
+    const my = (a.y + b.y) / 2;
+
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+
+    // Subtle curvature: retain organic filaments
+    // without obscuring perspective.
+    const bend =
+      0.060 * Math.sin(i * 2.31 + j * 0.73);
+
+    const cx = mx - dy * bend;
+    const cy = my + dx * bend;
+
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.quadraticCurveTo(cx, cy, b.x, b.y);
+
+    ctx.strokeStyle =
+      `rgba(65,151,160,${opacity})`;
+
+    ctx.lineWidth =
+      (0.40 + 0.95 * strength) *
+      (0.45 + 0.85 * depth);
+
+    ctx.stroke();
+
+
+    // LIVING_SIGNALS_V4
+    // Luminous visual signals, not simulated biological transport.
+
+    if (
+      reducedMotion.matches ||
+      strength < 0.10 ||
+      (i + j) % 3 !== 0
+    ) return;
+
+    const speed = 0.28 + 0.30 * strength;
+
+    const t = (
+      elapsed * speed +
+      i * 0.137 +
+      j * 0.071
+    ) % 1;
+
+    const u = 1 - t;
+
+    const px =
+      u*u*a.x + 2*u*t*cx + t*t*b.x;
+
+    const py =
+      u*u*a.y + 2*u*t*cy + t*t*b.y;
+
+    const pulseDepth = Math.max(
+      0,
+      Math.min(1, a.depth * u + b.depth * t)
+    );
+
+    const visibility = 0.40 + 0.60 * pulseDepth;
+
+    const radius =
+      (1.0 + 1.5 * strength) *
+      (0.65 + 0.65 * pulseDepth);
+
+    // Subtle cyan halo surrounding a neon-white core.
+    ctx.save();
+
+    ctx.globalAlpha = visibility;
+    ctx.shadowColor = "rgba(130,255,245,0.95)";
+    ctx.shadowBlur = 9 + 8 * strength;
+
+    ctx.beginPath();
+    ctx.arc(px, py, radius * 2, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(100,255,240,0.22)";
+    ctx.fill();
+
+    ctx.shadowBlur = 5;
+
+    ctx.beginPath();
+    ctx.arc(px, py, radius, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(245,255,255,0.98)";
+    ctx.fill();
+
+    ctx.restore();
+  }
 
     // SOFT POINTER FIELD V1
     // Visual feedback for the pointer position.
