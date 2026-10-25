@@ -316,7 +316,40 @@ body.math-home .math-equation-formula mjx-container {
 }
 
 
-/* Living Network: remove decorative inner ring */
-body.math-home .hero-art .orb-core {
-    display: none;
+/* HOMEPAGE_LIVING_NETWORK_V7
+   Larger scientific visualization, restrained on mobile. */
+
+@media (min-width: 901px) {
+  body.math-home .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+  }
+
+  body.math-home .hero-art {
+    height: 550px;
+  }
+
+  body.math-home .hero-art .orb {
+    width: min(520px, 100%);
+  }
+}
+
+@media (max-width: 900px) {
+  body.math-home .hero-art {
+    height: 390px;
+  }
+
+  body.math-home .hero-art .orb {
+    width: min(380px, 88vw);
+  }
+}
+
+@media (max-width: 480px) {
+  body.math-home .hero-art {
+    height: 335px;
+  }
+
+  body.math-home .hero-art .orb {
+    width: min(320px, 88vw);
+  }
 }

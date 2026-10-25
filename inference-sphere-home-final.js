@@ -1,3 +1,4 @@
+// HOMEPAGE_MOUSE_INTERACTION_DISABLED_V1
 (() => {
   const canvas = document.getElementById("inference-canvas");
   if (!canvas) return;
@@ -120,6 +121,128 @@ const heroOrder =
     elapsed += dt;
     recordSample("step");
   }
+
+  
+  // LIVE_EXPERIMENT_ACTIVITY_V1
+  // Receives activity from Explore the Model on the same origin.
+  const activityKey = "coupled-oscillators-live-activity-v1";
+  let lastActivityId = null;
+
+  const activityBadge = document.createElement("div");
+  activityBadge.setAttribute("aria-live", "polite");
+  activityBadge.style.cssText = [
+    "font: 12px/1.6 system-ui, sans-serif",
+    "color: #8faebd",
+    "letter-spacing: .025em",
+    "margin: 10px 0 0",
+    "max-width: 100%"
+  ].join(";");
+
+  activityBadge.textContent = "MODEL ACTIVITY · Waiting for Explore";
+  canvas.insertAdjacentElement("afterend", activityBadge);
+
+  function showActivity(message, emphasize = false) {
+    activityBadge.textContent = message;
+    activityBadge.style.color = emphasize ? "#e5fbff" : "#8faebd";
+
+    if (emphasize) {
+      activityBadge.style.textShadow = "0 0 12px #61e4ff";
+      setTimeout(() => {
+        activityBadge.style.textShadow = "none";
+        activityBadge.style.color = "#8faebd";
+      }, 1000);
+    }
+  }
+
+  function applyExperimentActivity(message) {
+    if (!message || message.version !== 1) return;
+    if (!["parameters", "perturbation", "reset"].includes(message.type)) return;
+    if (!message.id || message.id === lastActivityId) return;
+
+    const values = [message.K, message.sigma, message.alpha];
+
+    if (!values.every(v => typeof v === "number" && Number.isFinite(v))) {
+      return;
+    }
+
+    if (
+      message.K < 0 || message.K > 100 ||
+      message.sigma < 0 || message.sigma > 100 ||
+      Math.abs(message.alpha) > 10
+    ) return;
+
+    lastActivityId = message.id;
+
+    K = message.K;
+    alpha = message.alpha;
+
+    if (sigma !== message.sigma) {
+      sigma = message.sigma;
+
+      // Reproduce the Explore page's frequency-update convention.
+      for (let i = 0; i < N; i++) {
+        frequencies[i] = sigma * (
+          Math.sin(i * 12.9898) * 0.65 +
+          Math.cos(i * 7.233) * 0.35
+        );
+      }
+    }
+
+    if (message.type === "reset") {
+      initialize();
+      showActivity("MODEL ACTIVITY · Experiment reset", true);
+    } else if (message.type === "perturbation") {
+      // Matching perturbation rule; independent local trajectory.
+      phases = phases.map(
+        (theta, i) => theta + Math.sin(i * 3.17 + elapsed) * 1.8
+      );
+      recordSample("remote_perturbation");
+      showActivity("MODEL ACTIVITY · Perturbation received", true);
+    } else {
+      recordSample("remote_parameter_change");
+      showActivity(
+        `MODEL ACTIVITY · K ${K.toFixed(2)} · ` +
+        `σ ${sigma.toFixed(2)} · α ${alpha.toFixed(2)}`,
+        true
+      );
+    }
+
+    updateLabels();
+    draw();
+  }
+
+  if ("BroadcastChannel" in window) {
+    const activityChannel = new BroadcastChannel(activityKey);
+    activityChannel.addEventListener(
+      "message",
+      event => applyExperimentActivity(event.data)
+    );
+  }
+
+  window.addEventListener("storage", event => {
+    if (event.key !== activityKey || !event.newValue) return;
+
+    try {
+      applyExperimentActivity(JSON.parse(event.newValue));
+    } catch (_) {}
+  });
+
+  // Restore parameters only, never replay a past perturbation.
+  setTimeout(() => {
+    try {
+      const last = JSON.parse(localStorage.getItem(activityKey));
+      if (last && last.type === "parameters") {
+        applyExperimentActivity(last);
+      } else if (last && last.version === 1) {
+        applyExperimentActivity({
+          ...last,
+          id: "restore-" + last.id,
+          type: "parameters"
+        });
+      }
+    } catch (_) {}
+  }, 0);
+
 
   function resize() {
     const rect = canvas.getBoundingClientRect();
@@ -353,19 +476,19 @@ const heroOrder =
     draw();
   }
 
-  canvas.addEventListener("pointermove", event => {
+  if (false) canvas.addEventListener("pointermove", event => {
     if (demoMode) return;
 
     pointerPosition = pointerCoordinates(event);
     draw();
   });
 
-  canvas.addEventListener("pointerleave", () => {
+  if (false) canvas.addEventListener("pointerleave", () => {
     pointerPosition = null;
     draw();
   });
 
-  canvas.addEventListener("click", event => {
+  if (false) canvas.addEventListener("click", event => {
     if (demoMode) return;
 
     const point = pointerCoordinates(event);
@@ -430,7 +553,6 @@ const heroOrder =
     }
 
 
-    // HOMEPAGE_LIVING_VISIBILITY_V6
     // HOMEPAGE_LIVING_NETWORK_V5
     // Local phase-coherence scores for visual emphasis.
     // These do not modify the Kuramoto coupling topology.
@@ -571,8 +693,8 @@ const heroOrder =
       // Traveling pulses are illustrative activity markers.
       if (
         reducedMotion.matches ||
-        strength < 0.055 ||
-        (i + j) % 2 !== 0
+        strength < 0.10 ||
+        (i + j) % 3 !== 0
       ) return;
 
       const speed = 0.28 + 0.30 * strength;
@@ -627,7 +749,7 @@ const heroOrder =
       const p = signalPosition(progress);
 
       const signalVisibility =
-        0.65 + 0.35 * p.depth;
+        0.40 + 0.60 * p.depth;
 
       const signalRadius =
         (1.0 + 1.4 * strength) *
@@ -636,7 +758,7 @@ const heroOrder =
       ctx.globalAlpha = signalVisibility;
 
       ctx.shadowColor = "rgba(130,255,245,0.95)";
-      ctx.shadowBlur = 12 + 10 * strength;
+      ctx.shadowBlur = 9 + 8 * strength;
 
       ctx.beginPath();
       ctx.arc(
@@ -765,6 +887,40 @@ const heroOrder =
         Math.PI * 2
       );
 
+      // HOMEPAGE_LIVING_NETWORK_V7
+      // Phase color remains the core oscillator encoding.
+      // A restrained cyan halo improves visibility.
+      ctx.save();
+
+      const glowRadius = particleRadius * 2.4;
+
+      const halo = ctx.createRadialGradient(
+        point.x, point.y, particleRadius * 0.3,
+        point.x, point.y, glowRadius
+      );
+
+      halo.addColorStop(
+        0, `rgba(105,245,250,${0.22 + 0.30 * point.depth})`
+      );
+      halo.addColorStop(1, "rgba(105,245,250,0)");
+
+      ctx.beginPath();
+      ctx.arc(
+        point.x, point.y, glowRadius,
+        0, Math.PI * 2
+      );
+      ctx.fillStyle = halo;
+      ctx.fill();
+
+      ctx.shadowColor = "rgba(74,235,250,0.8)";
+      ctx.shadowBlur = 5 + 5 * point.depth;
+
+      ctx.beginPath();
+      ctx.arc(
+        point.x, point.y, particleRadius,
+        0, Math.PI * 2
+      );
+
       ctx.fillStyle =
         phaseColor(
           point.phase,
@@ -773,6 +929,8 @@ const heroOrder =
         );
 
       ctx.fill();
+
+      ctx.restore();
     }
 
     ctx.restore();
