@@ -24,7 +24,7 @@
   }
 }
 </script>
-<link href="math-home.css?v=badge-v13" rel="stylesheet"/>
+<link href="math-home.css?v=15.5.0" rel="stylesheet"/>
 <style>
 /* Minimal mathematical homepage preview */
 #about,
@@ -40,6 +40,43 @@ body.math-home .hero h1 {
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-chtml.js"></script>
 <meta property="og:title" content="Baruc Stover | Mathematical Modeling &amp; Computational Biology">
 <meta property="og:description" content="Independent research in mathematical modeling, dynamical systems, and computational biology. Exploring coupled oscillators, synchronization, parameter inference, and molecular systems.">
+
+<!-- LIVING_NETWORK_V15_VISUAL -->
+<style>
+/*
+ * Living Network v15
+ * Visual enhancement only.
+ * Mathematical dynamics remain unchanged.
+ */
+
+/* Increase the visual prominence of the sphere. */
+@media (min-width: 781px) {
+  #inference-canvas {
+    scale: 1.08;
+    transform-origin: center center;
+  }
+}
+
+/* Improve phase-color and connection visibility. */
+#inference-canvas {
+  filter:
+    contrast(1.13)
+    saturate(1.24)
+    brightness(1.035);
+}
+
+/* Preserve a more restrained appearance on mobile. */
+@media (max-width: 780px) {
+  #inference-canvas {
+    scale: 1;
+    filter:
+      contrast(1.09)
+      saturate(1.15)
+      brightness(1.02);
+  }
+}
+</style>
+
 </head>
 <body class="math-home">
 <header class="site-header">
@@ -90,7 +127,10 @@ body.math-home .hero h1 {
 <span>© 2026 Baruc Stover · Independent academic website</span>
 <span>Biology · Computation · Evolution</span>
 </footer>
+<script defer="" src="notes.js"></script>
+<script defer="" src="network.js"></script>
+<script defer="" src="hypotheses.js"></script>
 <script defer="" src="kuramoto-core.js"></script>
-<script defer="" src="inference-sphere-home-final.js?v=badge-v13"></script>
+<script defer="" src="inference-sphere-home-final.js"></script>
 </body>
 </html>

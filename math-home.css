@@ -490,3 +490,116 @@ body.math-home .live-activity-badge {
 body.math-home .live-activity-badge {
   display: none !important;
 }
+
+
+/* =====================================================
+   LIVING_NETWORK_V15_5_MOBILE
+   Mobile homepage refinement.
+   Desktop layout and oscillator dynamics unchanged.
+   ===================================================== */
+
+@media (max-width: 640px) {
+
+  /* Balanced mobile hero */
+  body.math-home .hero {
+    min-height: 0;
+    padding: 38px 7vw 30px;
+    gap: 8px;
+    align-items: start;
+  }
+
+  body.math-home .hero-content {
+    max-width: 100%;
+  }
+
+  /* Typography */
+  body.math-home .hero h1 {
+    margin: 12px 0 17px;
+    font-size: clamp(2.65rem, 9vw, 3.35rem);
+    line-height: 1.06;
+  }
+
+  body.math-home .math-description {
+    font-size: 0.98rem;
+    line-height: 1.65;
+    margin-bottom: 0;
+  }
+
+  /* Equation */
+  body.math-home .math-equation {
+    margin-top: 23px;
+    padding-top: 17px;
+  }
+
+  body.math-home .math-equation-label {
+    margin-bottom: 7px;
+  }
+
+  body.math-home .math-equation-formula {
+    font-size: clamp(0.9rem, 3.8vw, 1.08rem);
+    line-height: 1.5;
+    padding: 5px 0;
+    margin: 0;
+  }
+
+  /* Compact navigation */
+  body.math-home .math-home-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 14px;
+    margin-top: 23px;
+  }
+
+  body.math-home .math-home-actions a {
+    font-size: 0.93rem;
+    line-height: 1.4;
+  }
+
+  body.math-home .math-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 12px 19px;
+    border-radius: 5px;
+  }
+
+  body.math-home .math-secondary {
+    display: inline-block;
+    padding-bottom: 4px;
+  }
+
+  /* Sphere: preserve diameter, improve placement */
+  body.math-home .hero-art {
+    position: relative;
+    width: 100%;
+    height: 335px;
+    min-height: 0;
+    margin: 2px 0 0;
+    overflow: visible;
+  }
+
+  body.math-home .hero-art .orb {
+    width: min(310px, 88vw);
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    left: 50%;
+    top: 49%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Keep the canvas at its proper scale */
+  body.math-home #inference-canvas {
+    max-width: 100%;
+    scale: 1;
+  }
+
+  /* Hide unused activity badge */
+  body.math-home .hero-art .live-activity-badge {
+    display: none !important;
+  }
+}
+

@@ -156,7 +156,46 @@ const heroOrder =
     canvas.insertAdjacentElement("afterend", activityBadge);
   }
 
+
+  // LIVING_NETWORK_V15_2_RESPONSE
+  // Visual acknowledgment only: never changes oscillator dynamics.
+  let lastVisualResponse = 0;
+
+  function acknowledgeExperimentActivity() {
+    if (reducedMotion.matches || document.hidden) return;
+    if (typeof canvas.animate !== "function") return;
+
+    const now = performance.now();
+
+    // Avoid flashing repeatedly during rapid slider movement.
+    if (now - lastVisualResponse < 700) return;
+    lastVisualResponse = now;
+
+    canvas.animate(
+      [
+        {
+          filter: "brightness(1) saturate(1)",
+          transform: "scale(1)"
+        },
+        {
+          filter: "brightness(1.18) saturate(1.22)",
+          transform: "scale(1.018)"
+        },
+        {
+          filter: "brightness(1) saturate(1)",
+          transform: "scale(1)"
+        }
+      ],
+      {
+        duration: 850,
+        easing: "ease-in-out",
+        iterations: 1
+      }
+    );
+  }
+
   function showActivity(message, emphasize = false) {
+    if (emphasize) acknowledgeExperimentActivity();
     activityBadge.textContent = message;
     activityBadge.style.color = emphasize ? "#e5fbff" : "#8faebd";
 
@@ -241,6 +280,110 @@ const heroOrder =
       applyExperimentActivity(JSON.parse(event.newValue));
     } catch (_) {}
   });
+
+
+  // SHARED_EXPERIMENT_ACTIVITY_V14_4
+  // Read-only aggregate activity from Supabase.
+  // Does not expose experiment IDs or enable database writes.
+
+  const sharedActivityURL =
+    "https://hjnrttmmudcbgtsnuljv.supabase.co" +
+    "/rest/v1/rpc/living_network_summary";
+
+  const sharedActivityKey = "sb_publishable_7qmnPCBx6MDgtxOtZu1RNQ_lemOmL3-";
+
+  let lastSharedSignature = null;
+  let sharedRequestPending = false;
+
+  async function receiveSharedExperimentActivity() {
+    if (document.hidden || sharedRequestPending) return;
+
+    sharedRequestPending = true;
+
+    try {
+      const response = await fetch(sharedActivityURL, {
+        method: "POST",
+        headers: {
+          apikey: sharedActivityKey,
+          "Content-Type": "application/json"
+        },
+        body: "{}",
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        throw new Error("HTTP " + response.status);
+      }
+
+      const summary = await response.json();
+
+      const count = summary.active_experiments;
+
+      if (
+        !Number.isInteger(count) ||
+        count < 0
+      ) {
+        throw new Error("Invalid active experiment count");
+      }
+
+      if (count === 0) {
+        lastSharedSignature = null;
+        return;
+      }
+
+      const K = summary.mean_coupling;
+      const sigma = summary.mean_dispersion;
+      const alpha = summary.mean_phase_lag;
+
+      if (
+        ![K, sigma, alpha].every(Number.isFinite) ||
+        K < 0 || K > 5 ||
+        sigma < 0 || sigma > 3 ||
+        alpha < -1.5 || alpha > 1.5
+      ) {
+        throw new Error("Invalid shared parameters");
+      }
+
+      const signature = JSON.stringify([
+        count, K, sigma, alpha
+      ]);
+
+      if (signature === lastSharedSignature) return;
+
+      lastSharedSignature = signature;
+
+      applyExperimentActivity({
+        version: 1,
+        id: "shared-" + signature,
+        type: "parameters",
+        K,
+        sigma,
+        alpha
+      });
+
+      console.info(
+        "Living Network: shared parameters received",
+        {
+          activeExperiments: count,
+          K,
+          sigma,
+          alpha
+        }
+      );
+
+    } catch (error) {
+      console.warn(
+        "Living Network: shared activity unavailable",
+        error.message
+      );
+    } finally {
+      sharedRequestPending = false;
+    }
+  }
+
+  receiveSharedExperimentActivity();
+
+  setInterval(receiveSharedExperimentActivity, 5000);
 
   // Restore parameters only, never replay a past perturbation.
   setTimeout(() => {
@@ -704,12 +847,21 @@ const heroOrder =
       ctx.moveTo(a.x, a.y);
       ctx.quadraticCurveTo(cx, cy, b.x, b.y);
 
+      // LIVING_NETWORK_V15_1_COHERENCE
+      // Emphasize coherent visual relationships.
+      // This does not alter the coupling matrix.
+      const visibleOpacity = Math.min(
+        0.62,
+        (0.035 + 0.70 * strength * coherence) *
+        (0.45 + 0.55 * depth)
+      );
+
       ctx.strokeStyle =
-        `rgba(32,109,139,${Math.min(0.54, Math.max(0.16, opacity * 1.9))})`;
+        `rgba(32,109,139,${visibleOpacity})`;
 
       ctx.lineWidth =
-        (0.42 + 0.90 * strength) *
-        (0.55 + 0.65 * depth);
+        (0.45 + 1.05 * strength * coherence) *
+        (0.65 + 0.55 * depth);
 
       ctx.stroke();
 
@@ -896,10 +1048,14 @@ const heroOrder =
 
       const saturation = 72;
       const lightness = 56 + point.depth * 13 + R * 8;
-      const opacity = 0.12 + point.depth * 0.88;
+      // Keep distant oscillators visible while retaining depth.
+      const opacity = Math.min(
+        1,
+        0.36 + point.depth * 0.64
+      );
 
       const particleRadius =
-        point.size * (1.25 + point.depth * 1.15);
+        point.size * (1.38 + point.depth * 1.12);
 
       ctx.beginPath();
       ctx.arc(
@@ -915,7 +1071,7 @@ const heroOrder =
       // A restrained cyan halo improves visibility.
       ctx.save();
 
-      const glowRadius = particleRadius * 2.4;
+      const glowRadius = particleRadius * 2.65;
 
       const halo = ctx.createRadialGradient(
         point.x, point.y, particleRadius * 0.3,
@@ -936,7 +1092,7 @@ const heroOrder =
       ctx.fill();
 
       ctx.shadowColor = "rgba(74,235,250,0.8)";
-      ctx.shadowBlur = 5 + 5 * point.depth;
+      ctx.shadowBlur = 6 + 6 * point.depth;
 
       ctx.beginPath();
       ctx.arc(
