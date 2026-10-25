@@ -451,10 +451,42 @@ body.math-home .hero-art .live-activity-badge:not(:empty) {
   background: transparent;
   border: none;
   box-shadow: none;
-  color: #417b88 !important;
+  color: #195364 !important;
   font-size: 11px !important;
   font-weight: 500;
   letter-spacing: .06em;
   padding: 5px 0;
   text-shadow: none !important;
+}
+
+
+/* LIVING_NETWORK_VISUAL_CLARITY_V11 */
+
+/* Make the experiment status readable on light backgrounds. */
+body.math-home .hero-art .live-activity-badge:not(:empty) {
+  color: #195364 !important;
+  font-size: 12px !important;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  opacity: 1;
+}
+
+body.math-home .hero-art .live-activity-badge:empty {
+  display: none !important;
+}
+
+
+/* LIVING_NETWORK_CLEAR_CONNECTIONS_V12 */
+
+/* The homepage is a passive experiment visualization.
+   Experiment events continue to update the simulation,
+   but parameter/status text belongs in Explore the Model. */
+
+body.math-home .live-activity-badge {
+  display: none !important;
+}
+
+/* REMOVE_ACTIVITY_BADGE_V13 */
+body.math-home .live-activity-badge {
+  display: none !important;
 }

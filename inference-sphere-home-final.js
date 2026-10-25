@@ -1,3 +1,4 @@
+// LIVING_NETWORK_CLEAR_CONNECTIONS_V12
 // HOMEPAGE_MOUSE_INTERACTION_DISABLED_V1
 (() => {
   const canvas = document.getElementById("inference-canvas");
@@ -129,7 +130,10 @@ const heroOrder =
   let lastActivityId = null;
 
   const activityBadge = document.createElement("div");
-  activityBadge.setAttribute("aria-live", "polite");
+  // REMOVE_ACTIVITY_BADGE_V13
+  activityBadge.setAttribute("aria-live", "off");
+  activityBadge.hidden = true;
+  activityBadge.style.display = "none";
   activityBadge.style.cssText = [
     "font: 12px/1.6 system-ui, sans-serif",
     "color: #8faebd",
@@ -441,7 +445,15 @@ const heroOrder =
 
     const hue = 170 + 360 * phase / tau;
 
-    return `hsla(${hue}, 65%, ${lightness}%, ${opacity})`;
+    // LIVING_NETWORK_VISUAL_CLARITY_V11
+    const visibleLightness = Math.max(
+      39,
+      Math.min(61, lightness - 10)
+    );
+
+    const visibleOpacity = Math.max(0.42, opacity);
+
+    return `hsla(${hue}, 88%, ${visibleLightness}%, ${visibleOpacity})`;
   }
 
 
@@ -693,7 +705,7 @@ const heroOrder =
       ctx.quadraticCurveTo(cx, cy, b.x, b.y);
 
       ctx.strokeStyle =
-        `rgba(64,148,160,${opacity})`;
+        `rgba(32,109,139,${Math.min(0.54, Math.max(0.16, opacity * 1.9))})`;
 
       ctx.lineWidth =
         (0.42 + 0.90 * strength) *
