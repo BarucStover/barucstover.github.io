@@ -867,6 +867,25 @@ For the zero-phase-lag Kuramoto system, consider the transformation:
 \]
 
 <p>
+For the Kuramoto–Sakaguchi model with nonzero phase lag,
+the reflection transformation must also reverse the
+phase-lag parameter:
+</p>
+
+\[
+(\theta_i,\omega_i,\alpha)
+\longmapsto
+(-\theta_i,-\omega_i,-\alpha).
+\]
+
+<p>
+The phase and frequency transformation alone is sufficient
+when the phase lag is zero. With nonzero phase lag, reversing
+alpha is necessary to preserve the reflected dynamics.
+</p>
+
+
+<p>
 With the same coupling strength, the transformed trajectories
 satisfy the same form of governing equations.
 </p>
@@ -1358,7 +1377,7 @@ reproducible Python script</a> and
 
     \[
     \Delta R(t)=
-    |R_1(t)-R_2(t)|
+    |R^{(A)}(t)-R^{(B)}(t)|
     \]
 
     <p>
@@ -1370,8 +1389,8 @@ reproducible Python script</a> and
     </p>
 
     \[
-    D(t)=
-    \frac{[R_1(t)-R_2(t)]^2}{2s^2}
+    D_{\mathrm{KL}}(t)=
+    \frac{[R^{(A)}(t)-R^{(B)}(t)]^2}{2s^2}
     \]
 
     <h3>Scope and limitations</h3>
