@@ -437,3 +437,24 @@ body.math-home .hero-art .live-activity-badge {
 body.math-home .hero-art .orb-core {
   display: none !important;
 }
+
+
+/* LIVE_ACTIVITY_MINIMAL_V9 */
+
+/* Hide activity indicator when there is no activity. */
+body.math-home .hero-art .live-activity-badge:empty {
+  display: none !important;
+}
+
+/* Subtle experimental status rather than a large card. */
+body.math-home .hero-art .live-activity-badge:not(:empty) {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: #417b88 !important;
+  font-size: 11px !important;
+  font-weight: 500;
+  letter-spacing: .06em;
+  padding: 5px 0;
+  text-shadow: none !important;
+}

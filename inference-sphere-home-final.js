@@ -138,7 +138,7 @@ const heroOrder =
     "max-width: 100%"
   ].join(";");
 
-  activityBadge.textContent = "MODEL ACTIVITY · Waiting for Explore";
+  activityBadge.textContent = "";
   // MOBILE_LIVING_NETWORK_V8
   // Place activity status inside the hero artwork container,
   // outside the sphere itself.
