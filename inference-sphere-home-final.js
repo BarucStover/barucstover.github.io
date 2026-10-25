@@ -1135,14 +1135,55 @@ if (orderOutput) {
     }
   }
 
-  function frame(now) {
-    if (now - lastFrame >= 33) {
-      lastFrame = now;
+  // LIVING_NETWORK_V16_CLOCK
+  // Fixed-step RK4 integration, independent of render frame rate.
+  const FIXED_STEP = dt;
+  const MAX_STEPS_PER_FRAME = 4;
 
-      // Fixed simulation increment per rendered frame.
-      // This is a visualization clock, not wall-clock physics.
-      if (!paused) simulateStep();
+  let accumulatedTime = 0;
+  let lastDraw = 0;
+
+  function frame(now) {
+    if (lastFrame === 0) {
+      lastFrame = now;
+    }
+
+    const frameSeconds = Math.min(
+      Math.max((now - lastFrame) / 1000, 0),
+      0.16
+    );
+
+    lastFrame = now;
+
+    if (!paused) {
+      accumulatedTime += frameSeconds;
+
+      let steps = 0;
+
+      while (
+        accumulatedTime >= FIXED_STEP &&
+        steps < MAX_STEPS_PER_FRAME
+      ) {
+        simulateStep();
+        accumulatedTime -= FIXED_STEP;
+        steps++;
+      }
+
+      // Prevent indefinite catch-up on overloaded devices.
+      if (steps === MAX_STEPS_PER_FRAME) {
+        accumulatedTime = Math.min(
+          accumulatedTime,
+          FIXED_STEP
+        );
+      }
+    } else {
+      accumulatedTime = 0;
+    }
+
+    // Drawing remains capped near 30 FPS to limit mobile GPU work.
+    if (lastDraw === 0 || now - lastDraw >= 33) {
       draw();
+      lastDraw = now;
     }
 
     animationId = requestAnimationFrame(frame);
@@ -1158,9 +1199,17 @@ if (orderOutput) {
   function updateAnimation() {
     stopAnimation();
 
+    // Avoid catching up for time spent in a background tab.
+    lastFrame = 0;
+    lastDraw = 0;
+    accumulatedTime = 0;
+
     if (document.hidden) {
       draw();
     } else {
+      // Refresh the collective state when returning to the page.
+      receiveSharedExperimentActivity();
+
       animationId = requestAnimationFrame(frame);
     }
   }
