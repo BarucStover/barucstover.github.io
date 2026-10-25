@@ -314,3 +314,9 @@ body.math-home .math-equation-formula mjx-container {
     font-size: 1.05rem;
   }
 }
+
+
+/* Living Network: remove decorative inner ring */
+body.math-home .hero-art .orb-core {
+    display: none;
+}

@@ -430,6 +430,7 @@ const heroOrder =
     }
 
 
+    // HOMEPAGE_LIVING_VISIBILITY_V6
     // HOMEPAGE_LIVING_NETWORK_V5
     // Local phase-coherence scores for visual emphasis.
     // These do not modify the Kuramoto coupling topology.
@@ -570,8 +571,8 @@ const heroOrder =
       // Traveling pulses are illustrative activity markers.
       if (
         reducedMotion.matches ||
-        strength < 0.10 ||
-        (i + j) % 3 !== 0
+        strength < 0.055 ||
+        (i + j) % 2 !== 0
       ) return;
 
       const speed = 0.28 + 0.30 * strength;
@@ -626,7 +627,7 @@ const heroOrder =
       const p = signalPosition(progress);
 
       const signalVisibility =
-        0.40 + 0.60 * p.depth;
+        0.65 + 0.35 * p.depth;
 
       const signalRadius =
         (1.0 + 1.4 * strength) *
@@ -635,7 +636,7 @@ const heroOrder =
       ctx.globalAlpha = signalVisibility;
 
       ctx.shadowColor = "rgba(130,255,245,0.95)";
-      ctx.shadowBlur = 9 + 8 * strength;
+      ctx.shadowBlur = 12 + 10 * strength;
 
       ctx.beginPath();
       ctx.arc(
