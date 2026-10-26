@@ -586,7 +586,7 @@ const heroOrder =
     const phase =
       ((theta % tau) + tau) % tau;
 
-    const hue = 170 + 360 * phase / tau;
+    const hue = 195 + 15 * Math.sin(phase);
 
     // LIVING_NETWORK_VISUAL_CLARITY_V11
     const visibleLightness = Math.max(
@@ -596,7 +596,7 @@ const heroOrder =
 
     const visibleOpacity = Math.max(0.42, opacity);
 
-    return `hsla(${hue}, 88%, ${visibleLightness}%, ${visibleOpacity})`;
+    return `hsla(${hue}, 72%, ${visibleLightness}%, ${visibleOpacity})`;
   }
 
 
