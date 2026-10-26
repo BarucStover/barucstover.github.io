@@ -116,8 +116,8 @@ const heroOrder =
     );
 
     livingToggle.textContent = livingNetwork
-      ? "✧ Living network: On"
-      : "✧ Living network: Off";
+      ? "✧ Network: On"
+      : "✧ Network: Off";
 
     draw();
   });
@@ -408,7 +408,15 @@ const heroOrder =
 
     const hue = 170 + 360 * phase / tau;
 
-    return `hsla(${hue}, 65%, ${lightness}%, ${opacity})`;
+    // LIVING_NETWORK_VISUAL_CLARITY_V11
+    const visibleLightness = Math.max(
+      39,
+      Math.min(61, lightness - 10)
+    );
+
+    const visibleOpacity = Math.max(0.42, opacity);
+
+    return `hsla(${hue}, 88%, ${visibleLightness}%, ${visibleOpacity})`;
   }
 
 
