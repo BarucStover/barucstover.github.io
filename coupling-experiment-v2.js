@@ -195,7 +195,12 @@
       chartWrap.classList.add("analysis-ready");
     }
 
-    draw();
+    // Reveal the canvas as well as its container.
+    canvas.classList.add("analysis-ready");
+
+    requestAnimationFrame(() => {
+      draw();
+    });
     renderResults();
 
     status.textContent =
